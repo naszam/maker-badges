@@ -86,3 +86,10 @@ Clone this GitHub repository.
    $ truffle migrate --network kovan
    ```
 
+## Inspiration & References
+
+
+## About
+
+Project created by [Nazzareno Massari](https://www.nazzarenomassari.com), Scott Herren in collaboration with Bryan Flynn.
+Team MetaBadges from HackMoney ETHGlobal Virtual Hackathon.
