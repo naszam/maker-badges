@@ -39,6 +39,7 @@ contract BadgeFactory is Ownable, AccessControl, ERC721Burnable, ERC721Holder {
       }
   */
 
+  event MinterAdded(address indexed minter);
   event NewTemplate(uint256 communityId, string name, string description, string image, uint256 limit);
   event NewBadge(uint256 tokenId, uint256 templateId, string tokenURI);
 
@@ -72,6 +73,12 @@ contract BadgeFactory is Ownable, AccessControl, ERC721Burnable, ERC721Holder {
     require(bytes(templates[_templateId].name).length != 0, "Template needs to exist");
     require(templates[_templateId].owner == msg.sender, "You do not own this template");
     _;
+  }
+
+  function addMinter(address to) internal onlyOwner returns (bool){
+    _setupRole(MINTER_ROLE, to);
+    emit MinterAdded(to);
+    return true;
   }
 
   function mintWithTokenURI(address to, uint256 tokenId, string memory tokenURI) public onlyMinter returns (bool) {
