@@ -30,9 +30,9 @@ Clone this GitHub repository.
     ```sh
     $ npm install -g ganache-cli
     ```
-    - OpenZeppelin Contracts v3.0:
+    - OpenZeppelin Contracts v3.0.1:
     ```sh
-    $ npm install -g @openzeppelin/contracts@3.0.0
+    $ npm install -g @openzeppelin/contracts
     ```
     - MythX for Truffle (optional):
     ```sh
