@@ -33,10 +33,6 @@ PotLike  private pot;
 
 uint constant WAD = 10 ** 18;
 
-function mul(uint x, uint y) internal pure returns (uint z) {
-        require(y == 0 || (z = x * y) / y == x);
-    }
-
 function wmul(uint x, uint y) internal pure returns (uint z) {
         // always rounds down
         z = mul(x, y) / WAD;
