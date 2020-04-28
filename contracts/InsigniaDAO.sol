@@ -20,6 +20,11 @@ contract InsigniaDAO {
 
 using SafeMath for uint256;
 
+mapping (address => uint256) public badges;
+
+// Events
+event BadgeActivated(address guy, uint256 badgeId);
+
 // Data
 PotLike  private pot;
 
@@ -27,6 +32,15 @@ PotLike  private pot;
 // Math
 
 uint constant WAD = 10 ** 18;
+
+function mul(uint x, uint y) internal pure returns (uint z) {
+        require(y == 0 || (z = x * y) / y == x);
+    }
+
+function wmul(uint x, uint y) internal pure returns (uint z) {
+        // always rounds down
+        z = mul(x, y) / WAD;
+    }
 
 constructor() public {
 
@@ -37,11 +51,16 @@ constructor() public {
 function balanceOf(address guy) public view returns (uint256) {
    uint256 slice = pot.pie(guy);
    uint256 chi = pot.chi();
-   return slice.mul(chi).div(WAD);
+   return wmul(slice, chi);
 }
 
-
-
+function dsrChallange(uint256 badgeId) public returns (bool) {
+   uint256 balance = balanceOf(msg.sender);
+   require(balance == 1, "The caller has not accrued 1 Dai interest");
+   badges[msg.sender]= badgeId;
+   emit BadgeActivated(msg.sender, badgeId);
+   return true;
+}
 
 
 
