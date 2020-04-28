@@ -7,18 +7,14 @@ pragma solidity 0.6.6;
 /// @dev All function calls are currently implemented without side effecs through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
 
+import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Holder.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract BadgeFactory is Ownable, AccessControl, ERC721Burnable, ERC721Holder {
+contract BadgeFactory is BadgeRoles, ERC721Burnable, ERC721Holder {
 
   using SafeMath for uint256;
   using Address for address;
-
-  // Create a new role identifier for the minter role
-  bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
   /*
       Badge metadata format
@@ -46,7 +42,6 @@ contract BadgeFactory is Ownable, AccessControl, ERC721Burnable, ERC721Holder {
       }
   */
 
-  event MinterAdded(address indexed minter);
   event NewTemplate(uint256 communityId, string name, string description, string image, uint256 limit);
   event NewBadge(uint256 tokenId, uint256 templateId, string tokenURI);
 
@@ -71,21 +66,10 @@ contract BadgeFactory is Ownable, AccessControl, ERC721Burnable, ERC721Holder {
 
   }
 
-  modifier onlyMinter() {
-      require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
-      _;
-    }
-
   modifier onlyTemplateOwner(uint _templateId) {
     require(bytes(templates[_templateId].name).length != 0, "Template needs to exist");
     require(templates[_templateId].owner == msg.sender, "You do not own this template");
     _;
-  }
-
-  function addMinter(address to) internal onlyOwner returns (bool){
-    _setupRole(MINTER_ROLE, to);
-    emit MinterAdded(to);
-    return true;
   }
 
   function mintWithTokenURI(address to, uint256 tokenId, string memory tokenURI) public onlyMinter returns (bool) {
