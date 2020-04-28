@@ -6,7 +6,7 @@
 
 # InsigniaDAO
 
-> Non-Transferable MakerDAO Badges, [issue #433](https://github.com/makerdao/community/issues/433)
+> Non-transferable Badges for Maker Ecosystem Activity, [issue #433](https://github.com/makerdao/community/issues/433)
 
 
 # Mentors
