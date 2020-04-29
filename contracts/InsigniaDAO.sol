@@ -35,7 +35,7 @@ uint constant WAD = 10 ** 18;
 
 function wmul(uint x, uint y) internal pure returns (uint z) {
         // always rounds down
-        z = mul(x, y) / WAD;
+        z = x.mul(y) / WAD;
     }
 
 constructor() public {
