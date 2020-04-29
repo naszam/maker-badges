@@ -30,18 +30,27 @@ contract BadgeRoles is Ownable, AccessControl {
       _;
     }
 
+  modifier onlyAdmin() {
+    require(isAdmin(msg.sender), "Caller is not an admin");
+    _;
+  }
+
   // Functions
+  function isAdmin(address account) internal view returns (bool) {
+      return hasRole(DEFAULT_ADMIN_ROLE, account);
+  }
+
   function isMinter(address account) internal view returns (bool) {
     return hasRole(MINTER_ROLE, account);
   }
 
-  function addMinter(address account) internal onlyOwner returns (bool){
+  function addMinter(address account) internal onlyAdmin returns (bool){
     grantRole(MINTER_ROLE, account);
     emit MinterAdded(account);
     return true;
   }
 
-  function removeMinter(address account) internal onlyOwner returns (bool){
+  function removeMinter(address account) internal onlyAdmin returns (bool){
     revokeRole(MINTER_ROLE, account);
     emit MinterRemoved(account);
     return true;
