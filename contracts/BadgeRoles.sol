@@ -20,6 +20,11 @@ contract BadgeRoles is Ownable, AccessControl {
   event MinterAdded(address indexed minter);
   event MinterRemoved(address indexed minter);
 
+  constructor() public {
+        _setupRole(DEFAULT_ADMIN_ROLE, owner());
+        _setRoleAdmin(MINTER_ROLE, DEFAULT_ADMIN_ROLE);
+  }
+
   // Modifiers
   modifier onlyMinter() {
       require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
@@ -28,7 +33,7 @@ contract BadgeRoles is Ownable, AccessControl {
 
   // Functions
   function addMinter(address to) internal onlyOwner returns (bool){
-    _setupRole(MINTER_ROLE, to);
+    grantRole(MINTER_ROLE, to);
     emit MinterAdded(to);
     return true;
   }
