@@ -22,7 +22,6 @@ contract BadgeRoles is Ownable, AccessControl {
 
   constructor() public {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
-        _setRoleAdmin(MINTER_ROLE, DEFAULT_ADMIN_ROLE);
   }
 
   // Modifiers
