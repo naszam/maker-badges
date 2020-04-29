@@ -15,11 +15,6 @@ contract BadgeRoles is Ownable, AccessControl {
   // Create a new role identifier for the minter role
   bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-
-  // Events
-  event MinterAdded(address indexed minter);
-  event MinterRemoved(address indexed minter);
-
   constructor() public {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
   }
@@ -36,23 +31,21 @@ contract BadgeRoles is Ownable, AccessControl {
   }
 
   // Functions
-  function isAdmin(address account) internal view returns (bool) {
+  function isAdmin(address account) public view returns (bool) {
       return hasRole(DEFAULT_ADMIN_ROLE, account);
   }
 
-  function isMinter(address account) internal view returns (bool) {
+  function isMinter(address account) public view returns (bool) {
     return hasRole(MINTER_ROLE, account);
   }
 
-  function addMinter(address account) internal onlyAdmin returns (bool){
+  function addMinter(address account) public onlyAdmin returns (bool){
     grantRole(MINTER_ROLE, account);
-    emit MinterAdded(account);
     return true;
   }
 
-  function removeMinter(address account) internal onlyAdmin returns (bool){
+  function removeMinter(address account) public onlyAdmin returns (bool){
     revokeRole(MINTER_ROLE, account);
-    emit MinterRemoved(account);
     return true;
   }
 
