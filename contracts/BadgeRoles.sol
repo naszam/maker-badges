@@ -26,20 +26,24 @@ contract BadgeRoles is Ownable, AccessControl {
 
   // Modifiers
   modifier onlyMinter() {
-      require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
+      require(isMinter(msg.sender), "Caller is not a minter");
       _;
     }
 
   // Functions
-  function addMinter(address to) internal onlyOwner returns (bool){
-    grantRole(MINTER_ROLE, to);
-    emit MinterAdded(to);
+  function isMinter(address account) internal view returns (bool) {
+    return hasRole(MINTER_ROLE, account);
+  }
+
+  function addMinter(address account) internal onlyOwner returns (bool){
+    grantRole(MINTER_ROLE, account);
+    emit MinterAdded(account);
     return true;
   }
 
-  function removeMinter(address to) internal onlyOwner returns (bool){
-    revokeRole(MINTER_ROLE, to);
-    emit MinterRemoved(to);
+  function removeMinter(address account) internal onlyOwner returns (bool){
+    revokeRole(MINTER_ROLE, account);
+    emit MinterRemoved(account);
     return true;
   }
 
