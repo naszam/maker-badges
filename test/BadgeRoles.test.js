@@ -19,6 +19,7 @@ contract('BadgeRoles', function(accounts) {
 
   // Check that the owner is set as the deploying address
   // Check that the owner is set as admin when the contract is deployed
+  // Check that the owner is the only admin when the contract is deployed
   describe("Setup", async() => {
 
       it("OWNER should be set to the deploying address", async() => {
