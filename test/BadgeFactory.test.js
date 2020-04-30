@@ -72,6 +72,30 @@ contract('BadgeFactory', function(accounts) {
         })
 
       })
+
+      // Check destroyTemplate() for success when a minter is trying to destroy a template
+      // Check destroyTemplate() for sucessfully emit event when the template is destroyed
+      // Check destroyTemplate() for failure when a random address try to destroy a template
+      describe("destroyTemplate()", async () => {
+
+        it("minters should be able to destroy a template", async () => {
+          await instance.createTemplate(name, description, image, limit, {from:minter})
+          await instance.destroyTemplate(templateId, {from:minter})
+          await catchRevert(instance.getTemplate(templateId, {from:random}))
+        })
+
+        it("should emit the appropriate event when a template is destroyed", async () => {
+          await instance.createTemplate(name, description, image, limit, {from:minter})
+          const result = await instance.destroyTemplate(templateId, {from:minter})
+          assert.equal(result.logs[0].event, "TemplateDestroyed", "TemplateDestroyed event not emitted, check destroyTemplate method")
+        })
+
+        it("random address should not be able to destroy a template", async () => {
+          await instance.createTemplate(name, description, image, limit, {from:minter})
+          await catchRevert(instance.destroyTemplate(templateId, {from:random}))
+        })
+
+      })
    })
 
 
