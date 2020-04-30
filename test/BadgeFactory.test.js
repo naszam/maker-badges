@@ -60,6 +60,8 @@ contract('BadgeFactory', function(accounts) {
           assert.equal(result[1], description, "the description of the created template does not match the expected value")
           assert.equal(result[2], image, "the image of the created template does not match the expected value")
           assert.equal(result[3], limit, "the limit of the created template does not match the expected value")
+          const templatesCount = await instance.getTemplatesCount({from:random})
+          assert.equal(templatesCount, 1, "the number of templates does not match the expected value")
         })
 
         it("should emit the appropriate event when a template is created", async () => {
