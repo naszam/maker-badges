@@ -42,7 +42,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable, ERC721Holder {
       }
   */
 
-  event NewTemplate(uint256 communityId, string name, string description, string image, uint256 limit);
+  event NewTemplate(uint256 templateId, string name, string description, string image, uint256 limit);
   event NewBadge(uint256 tokenId, uint256 templateId, string tokenURI);
 
   struct BadgeTemplate {
@@ -60,7 +60,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable, ERC721Holder {
   mapping(uint256 => uint256) private _tokenTemplates;
 
   constructor()
-    ERC721("ProjectProof", "PROOF")
+    ERC721("InsigniaBadges", "BADGES")
     public
   {
 
