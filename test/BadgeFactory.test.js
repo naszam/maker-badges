@@ -82,6 +82,8 @@ contract('BadgeFactory', function(accounts) {
           await instance.createTemplate(name, description, image, limit, {from:minter})
           await instance.destroyTemplate(templateId, {from:minter})
           await catchRevert(instance.getTemplate(templateId, {from:random}))
+          const result = await instance.getTemplatesCount({from:random})
+          assert.equal(result, 0, "the number of templates does not match the expected value")
         })
 
         it("should emit the appropriate event when a template is destroyed", async () => {
