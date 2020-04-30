@@ -7,11 +7,9 @@ pragma solidity 0.6.6;
 /// @dev All function calls are currently implemented without side effecs through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
 
-import "./BadgeRoles.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721Holder.sol";
+import "@openzeppelin/contracts/presets/ERC721PresetMinterPauserAutoId.sol";
 
-contract BadgeFactory is BadgeRoles, ERC721Burnable, ERC721Holder {
+contract BadgeFactory is ERC721PresetMinterPauserAutoId {
 
   using SafeMath for uint256;
   using Address for address;
@@ -61,22 +59,20 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable, ERC721Holder {
   mapping(uint256 => uint256) private _tokenTemplates;
 
   constructor()
-    ERC721("InsigniaBadges", "BADGES")
+    ERC721PresetMinterPauserAutoId("InsigniaBadges", "BADGES", "baseURI")
     public
   {
+  }
 
+  modifier onlyMinter() {
+      require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
+      _;
   }
 
   modifier onlyTemplateOwner(uint _templateId) {
     require(bytes(templates[_templateId].name).length != 0, "Template needs to exist");
     require(templates[_templateId].owner == msg.sender, "You do not own this template");
     _;
-  }
-
-  function mintWithTokenURI(address to, uint256 tokenId, string memory tokenURI) public onlyMinter returns (bool) {
-    _mint(to, tokenId);
-    _setTokenURI(tokenId, tokenURI);
-    return true;
   }
 
   function _hasTemplate(address add, uint256 templateId) internal view returns (bool) {
@@ -87,7 +83,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable, ERC721Holder {
 
   // Getters
 
-  function getTemplate(uint256 templateId) public view returns (string memory name, string memory description, string memory image, uint256 limit) {
+  function getTemplate(uint256 templateId) public view whenNotPaused returns (string memory name, string memory description, string memory image, uint256 limit) {
     require(templates.length > templateId, "No template with that id");
     BadgeTemplate memory template = templates[templateId];
     return (template.name, template.description, template.image, template.limit);
@@ -96,11 +92,11 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable, ERC721Holder {
 
   // Templates
 
-  function getTemplatesCount() public view returns (uint256 count) {
+  function getTemplatesCount() public view whenNotPaused returns (uint256 count) {
     return templates.length;
   }
 
-  function createTemplate(string memory name, string memory description, string memory image, uint256 limit) public onlyMinter returns (uint256 _templateId) {
+  function createTemplate(string memory name, string memory description, string memory image, uint256 limit) public onlyMinter whenNotPaused returns (uint256 _templateId) {
 
     BadgeTemplate memory _newTemplate = BadgeTemplate({
        name: name,
@@ -115,7 +111,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable, ERC721Holder {
     return _templateId;
   }
 
-  function destroyTemplate(uint256 templateId) public onlyTemplateOwner(templateId) returns (bool) {
+  function destroyTemplate(uint256 templateId) public onlyTemplateOwner(templateId) whenNotPaused returns (bool) {
 
     _hasTemplate(msg.sender, templateId);
     require(_templateQuantities[templateId] == 0, "Cannnot remove a template that has badges");
@@ -128,27 +124,23 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable, ERC721Holder {
 
   // Badges
 
-  function getBadgeTemplate(uint256 tokenId) public view returns (uint256) {
+  function getBadgeTemplate(uint256 tokenId) public view whenNotPaused returns (uint256) {
     require(totalSupply() > tokenId, "No token with that id");
     return _tokenTemplates[tokenId];
   }
 
-  function getBadgeTemplateQuantity(uint256 templateId) public view returns (uint256) {
+  function getBadgeTemplateQuantity(uint256 templateId) public view whenNotPaused returns (uint256) {
     require(templates.length > templateId, "No template with that id");
     return _templateQuantities[templateId];
   }
 
-  function createBadge(address to, uint256 templateId, string memory tokenURI) public onlyTemplateOwner(templateId) returns (uint256 _tokenId) {
+  function createBadge(address to, uint256 templateId, string memory tokenURI) public onlyTemplateOwner(templateId) whenNotPaused returns (uint256 _tokenId) {
 
     _hasTemplate(msg.sender, templateId);
     require(_templateQuantities[templateId] < templates[templateId].limit,
       "You have reached the limit of NFTs");
     _tokenId = totalSupply();
-    mintWithTokenURI(
-      to,
-      _tokenId,
-      tokenURI
-    );
+    mint(to);
 
     // Increase the quantities
     _tokenTemplates[_tokenId] = templateId;
@@ -157,14 +149,16 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable, ERC721Holder {
     return _tokenId;
   }
 
-  function burnBadge(uint256 tokenId) public {
+  function burnBadge(uint256 tokenId) public whenNotPaused returns (bool){
     uint256 templateId = getBadgeTemplate(tokenId);
     burn(tokenId);
     _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
+    return true;
   }
-
+  /* To be fixed
   function _transfer(address from, address to, uint256 tokenId) internal override {
     require(!true, "ERC721: token transfer disabled");
     super._transfer(from, to, tokenId);
   }
+  */
 }
