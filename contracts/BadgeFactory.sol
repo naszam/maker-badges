@@ -7,9 +7,10 @@ pragma solidity 0.6.6;
 /// @dev All function calls are currently implemented without side effecs through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/presets/ERC721PresetMinterPauserAutoId.sol";
 
-contract BadgeFactory is ERC721PresetMinterPauserAutoId {
+contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
 
   using SafeMath for uint256;
   using Address for address;
@@ -155,10 +156,10 @@ contract BadgeFactory is ERC721PresetMinterPauserAutoId {
     _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
     return true;
   }
-  /* To be fixed
+  
   function _transfer(address from, address to, uint256 tokenId) internal override {
     require(!true, "ERC721: token transfer disabled");
     super._transfer(from, to, tokenId);
   }
-  */
+
 }
