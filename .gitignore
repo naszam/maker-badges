@@ -1,2 +1,3 @@
 build/
 contract/.BadgeRoles.sol
+test/BadgeRoles.test.js
