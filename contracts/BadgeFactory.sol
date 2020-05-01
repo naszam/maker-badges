@@ -43,7 +43,7 @@ contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
 
   event NewTemplate(uint256 templateId, string name, string description, string image, uint256 limit);
   event TemplateDestroyed(uint templateId);
-  event NewBadge(uint256 tokenId, uint256 templateId, string tokenURI);
+  event NewBadge(uint256 tokenId, uint256 templateId);
 
   struct BadgeTemplate {
     string name;
@@ -135,7 +135,7 @@ contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
     return _templateQuantities[templateId];
   }
 
-  function createBadge(address to, uint256 templateId, string memory tokenURI) public onlyTemplateOwner(templateId) whenNotPaused returns (uint256 _tokenId) {
+  function createBadge(address to, uint256 templateId) public onlyTemplateOwner(templateId) whenNotPaused returns (uint256 _tokenId) {
 
     _hasTemplate(msg.sender, templateId);
     require(_templateQuantities[templateId] < templates[templateId].limit,
@@ -146,7 +146,7 @@ contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
     // Increase the quantities
     _tokenTemplates[_tokenId] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-    emit NewBadge(_tokenId, templateId, tokenURI);
+    emit NewBadge(_tokenId, templateId);
     return _tokenId;
   }
 
@@ -156,7 +156,7 @@ contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
     _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
     return true;
   }
-  
+
   function _transfer(address from, address to, uint256 tokenId) internal override {
     require(!true, "ERC721: token transfer disabled");
     super._transfer(from, to, tokenId);
