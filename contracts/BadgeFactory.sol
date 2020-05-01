@@ -60,7 +60,7 @@ contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
   mapping(uint256 => uint256) private _tokenTemplates;
 
   constructor()
-    ERC721PresetMinterPauserAutoId("InsigniaBadges", "BADGES", "baseURI")
+    ERC721PresetMinterPauserAutoId("InsigniaBadges", "BADGES", "https://badges.makerdao.com/token/")
     public
   {
   }
