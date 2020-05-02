@@ -7,13 +7,17 @@ pragma solidity 0.6.6;
 /// @dev All function calls are currently implemented without side effecs through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/presets/ERC721PresetMinterPauserAutoId.sol";
+import "./BadgeRoles.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 
-contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
+contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   using SafeMath for uint256;
   using Address for address;
+  using Counters for Counters.Counter;
+
+  Counters.Counter private _tokenIdTracker;
 
   /*
       Badge metadata format
@@ -43,7 +47,7 @@ contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
 
   event NewTemplate(uint256 templateId, string name, string description, string image, uint256 limit);
   event TemplateDestroyed(uint templateId);
-  event NewBadge(uint256 tokenId, uint256 templateId);
+  event NewBadge(uint256 tokenId, uint256 templateId, string tokenURI);
 
   struct BadgeTemplate {
     string name;
@@ -60,20 +64,17 @@ contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
   mapping(uint256 => uint256) private _tokenTemplates;
 
   constructor()
-    ERC721PresetMinterPauserAutoId("InsigniaBadges", "BADGES", "https://badges.makerdao.com/token/")
+    ERC721("InsigniaBadges", "BADGES")
     public
   {
+    _setBaseURI("https://badges.makerdao.com/token/");
   }
 
-  modifier onlyMinter() {
-      require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
-      _;
-  }
-
-  modifier onlyTemplateOwner(uint _templateId) {
-    require(bytes(templates[_templateId].name).length != 0, "Template needs to exist");
-    require(templates[_templateId].owner == msg.sender, "You do not own this template");
-    _;
+  function mintWithTokenURI(address to, string memory tokenURI) internal returns (bool) {
+    _mint(to, _tokenIdTracker.current());
+    _setTokenURI(_tokenIdTracker.current(), tokenURI);
+    _tokenIdTracker.increment();
+    return true;
   }
 
   function _hasTemplate(address add, uint256 templateId) internal view returns (bool) {
@@ -97,7 +98,7 @@ contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
     return templates.length;
   }
 
-  function createTemplate(string memory name, string memory description, string memory image, uint256 limit) public onlyMinter whenNotPaused returns (uint256 _templateId) {
+  function createTemplate(string memory name, string memory description, string memory image, uint256 limit) public onlyTemplater whenNotPaused returns (uint256 _templateId) {
 
     BadgeTemplate memory _newTemplate = BadgeTemplate({
        name: name,
@@ -112,7 +113,7 @@ contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
     return _templateId;
   }
 
-  function destroyTemplate(uint256 templateId) public onlyTemplateOwner(templateId) whenNotPaused returns (bool) {
+  function destroyTemplate(uint256 templateId) public onlyTemplater whenNotPaused returns (bool) {
 
     _hasTemplate(msg.sender, templateId);
     require(_templateQuantities[templateId] == 0, "Cannnot remove a template that has badges");
@@ -135,18 +136,21 @@ contract BadgeFactory is Ownable, ERC721PresetMinterPauserAutoId {
     return _templateQuantities[templateId];
   }
 
-  function createBadge(address to, uint256 templateId) public onlyTemplateOwner(templateId) whenNotPaused returns (uint256 _tokenId) {
+  function activateBadge(address to, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
 
     _hasTemplate(msg.sender, templateId);
     require(_templateQuantities[templateId] < templates[templateId].limit,
       "You have reached the limit of NFTs");
-    _tokenId = totalSupply();
-    mint(to);
+
+    mintWithTokenURI(
+      to,
+      tokenURI
+    );
 
     // Increase the quantities
     _tokenTemplates[_tokenId] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-    emit NewBadge(_tokenId, templateId);
+    emit NewBadge(_tokenId, templateId, tokenURI);
     return _tokenId;
   }
 
