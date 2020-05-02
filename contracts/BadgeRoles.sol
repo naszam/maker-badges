@@ -28,49 +28,25 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
 
   // Modifiers
   modifier onlyTemplater() {
-      require(isTemplater(msg.sender), "Caller is not a template owner");
+      require(hasRole(TEMPLATER_ROLE, msg.sender), "Caller is not a template owner");
       _;
     }
 
-  modifier onlyAdmin() {
-    require(isAdmin(msg.sender), "Caller is not an admin");
-    _;
-  }
-
   // Functions
 
-  /// @notice Check if the address is an Admin
-  /// @dev Used in onlyAdmin() modifier
-  /// @param account Address to check
-  /// @return True if the account is an Admin
-  function isAdmin(address account) public view returns (bool) {
-      return hasRole(DEFAULT_ADMIN_ROLE, account);
+  /// @notice Pause all the functions
+  /// @dev the caller must have the 'PAUSER_ROLE'
+  function pause() public {
+    require(hasRole(PAUSER_ROLE, msg.sender), "InsigniaDAO: must have pauser role to pause");
+    _pause();
   }
 
-  /// @notice Check if the address is a Templater
-  /// @dev Used in onlyMinter() modifier
-  /// @param account Address to check
-  /// @return True if the account is a Templater
-  function isTemplater(address account) public view returns (bool) {
-    return hasRole(TEMPLATER_ROLE, account);
-  }
+  /// @notice Unpause all the functions
+  /// @dev the caller must have the 'PAUSER_ROLE'
+  function unpause() public {
+        require(hasRole(PAUSER_ROLE, msg.sender), "InsigniaDAO: must have pauser role to unpause");
+        _unpause();
+    }
 
-  /// @notice Add a new Templater
-  /// @dev Access restricted only for Admins
-  /// @param account Address of the new Templater
-  /// @return True if the account address is added as Templater
-  function addTemplater(address account) public onlyAdmin returns (bool){
-    grantRole(TEMPLATER_ROLE, account);
-    return true;
-  }
-
-  /// @notice Remove a Templater
-  /// @dev Access restricted only for Admins
-  /// @param account Templater address to remove
-  /// @return True if the account address if removed as Templater
-  function removeTemplater(address account) public onlyAdmin returns (bool){
-    revokeRole(TEMPLATER_ROLE, account);
-    return true;
-  }
 
 }
