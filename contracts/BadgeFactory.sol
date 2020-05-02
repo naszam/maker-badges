@@ -70,7 +70,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     _setBaseURI("https://badges.makerdao.com/token/");
   }
 
-  function mintWithTokenURI(address to, string memory tokenURI) internal returns (bool) {
+  function _mintWithTokenURI(address to, string memory tokenURI) internal returns (bool) {
     _mint(to, _tokenIdTracker.current());
     _setTokenURI(_tokenIdTracker.current(), tokenURI);
     _tokenIdTracker.increment();
@@ -136,13 +136,13 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return _templateQuantities[templateId];
   }
 
-  function activateBadge(address to, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
+  function _activateBadge(address to, uint256 templateId, string memory tokenURI) internal whenNotPaused returns (uint256 _tokenId) {
 
     _hasTemplate(msg.sender, templateId);
     require(_templateQuantities[templateId] < templates[templateId].limit,
       "You have reached the limit of NFTs");
 
-    mintWithTokenURI(
+    _mintWithTokenURI(
       to,
       tokenURI
     );
