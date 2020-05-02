@@ -1,5 +1,5 @@
-var BadgeFactory = artifacts.require("BadgeFactory");
+var InsigniaDAO = artifacts.require("InsigniaDAO");
 
 module.exports = function(deployer) { 
-	deployer.deploy(BadgeFactory); 
+	deployer.deploy(InsigniaDAO); 
 };
