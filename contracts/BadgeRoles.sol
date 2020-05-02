@@ -68,7 +68,7 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
   /// @dev Access restricted only for Admins
   /// @param account Templater address to remove
   /// @return True if the account address if removed as Templater
-  function removeMinter(address account) public onlyAdmin returns (bool){
+  function removeTemplater(address account) public onlyAdmin returns (bool){
     revokeRole(TEMPLATER_ROLE, account);
     return true;
   }
