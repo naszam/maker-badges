@@ -7,7 +7,7 @@ pragma solidity 0.6.6;
 /// @dev All function calls are currently implemented without side effecs through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
 
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import "./BadgeFactory.sol";
 
 interface PotLike {
 
@@ -16,14 +16,14 @@ interface PotLike {
 
 }
 
-contract InsigniaDAO {
+contract InsigniaDAO is BadgeFactory {
 
 using SafeMath for uint256;
+using Address for address;
 
-mapping (address => uint256) public badges;
 
 // Events
-event BadgeActivated(address guy, uint256 badgeId);
+event BadgeActivated(address guy, uint256 templateId, string tokenURI);
 
 // Data
 PotLike  private pot;
@@ -44,17 +44,17 @@ constructor() public {
 			pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
 	}
 
-function balanceOf(address guy) public view returns (uint256) {
+function balance(address guy) public view returns (uint256) {
    uint256 slice = pot.pie(guy);
    uint256 chi = pot.chi();
    return wmul(slice, chi);
 }
 
-function dsrChallange(uint256 badgeId) public returns (bool) {
-   uint256 balance = balanceOf(msg.sender);
-   require(balance == 1, "The caller has not accrued 1 Dai interest");
-   badges[msg.sender]= badgeId;
-   emit BadgeActivated(msg.sender, badgeId);
+function dsrChallange(uint256 templateId, string memory tokenURI) public returns (bool) {
+   uint256 interest = balance(msg.sender);
+   require(interest == 1, "The caller has not accrued 1 Dai interest");
+   _activateBadge(msg.sender, templateId, tokenURI);
+   emit BadgeActivated(msg.sender, templateId, tokenURI);
    return true;
 }
 
