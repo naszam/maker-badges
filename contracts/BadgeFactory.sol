@@ -154,7 +154,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return _tokenId;
   }
 
-  function burnBadge(uint256 tokenId) public whenNotPaused returns (bool){
+  function burnBadge(uint256 tokenId) public onlyTemplater whenNotPaused returns (bool){
     uint256 templateId = getBadgeTemplate(tokenId);
     burn(tokenId);
     _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
