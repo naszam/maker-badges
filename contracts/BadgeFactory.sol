@@ -11,6 +11,12 @@ import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 
+interface InsigniaDAO {
+
+    function verify(address guy) external view returns (bool);
+
+}
+
 contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   using SafeMath for uint256;
@@ -18,6 +24,11 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   using Counters for Counters.Counter;
 
   Counters.Counter private _tokenIdTracker;
+
+
+  InsigniaDAO internal insignia;
+
+
 
   /*
       Badge metadata format
@@ -63,11 +74,13 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   mapping(uint256 => uint256) private _templateQuantities;
   mapping(uint256 => uint256) private _tokenTemplates;
 
-  constructor()
+  constructor(address insignia_)
     ERC721("InsigniaBadges", "BADGES")
     public
   {
     _setBaseURI("https://badges.makerdao.com/token/");
+    insignia = InsigniaDAO(insignia_);
+
   }
 
   function _mintWithTokenURI(address to, string memory tokenURI) internal returns (bool) {
@@ -136,11 +149,11 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return _templateQuantities[templateId];
   }
 
-  function _activateBadge(address to, uint256 templateId, string memory tokenURI) internal whenNotPaused returns (uint256 _tokenId) {
-
+  function _activateBadge(address to, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
     _hasTemplate(msg.sender, templateId);
     require(_templateQuantities[templateId] < templates[templateId].limit,
       "You have reached the limit of NFTs");
+    require(insignia.verify(msg.sender)==true, "Caller is not a redeemer");
 
     _mintWithTokenURI(
       to,
