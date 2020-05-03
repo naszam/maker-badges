@@ -65,13 +65,13 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
   function dsrChallenge() public whenNotPaused returns (bool) {
     uint256 interest = balance(msg.sender);
     require(interest == 1, "The caller has not accrued 1 Dai interest");
-    redeemers.add(msg.sender);
+    redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
     emit DSRChallengeChecked(msg.sender);
     return true;
   }
 
   function verify(address guy) public view whenNotPaused returns (bool) {
-    require(redeemers.contains(guy) == true, "The address is not a redeemer");
+    require(redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(guy)))))) == true, "The address is not a redeemer");
     return true;
   }
 
