@@ -149,7 +149,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return _templateQuantities[templateId];
   }
 
-  function _activateBadge(address to, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
+  function activateBadge(address to, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
     _hasTemplate(msg.sender, templateId);
     require(_templateQuantities[templateId] < templates[templateId].limit,
       "You have reached the limit of NFTs");
