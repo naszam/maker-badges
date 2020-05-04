@@ -1,10 +1,12 @@
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
 var BadgeFactory = artifacts.require('./BadgeFactory')
+var InsigniaDAO = artifacts.require('./InsigniaDAO')
 
 contract('BadgeFactory', function(accounts) {
 
   const owner = accounts[0]
-  const random = accounts[3]
+  const random = accounts[1]
+  const redeemer = accounts[2]
 
   const DEFAULT_ADMIN_ROLE = "0x00"
   const name = "Beginner"
@@ -12,6 +14,11 @@ contract('BadgeFactory', function(accounts) {
   const image = "badge.pdf"
   const limit = "10"
   const templateId = "0"
+  const index1 = "0"
+  const index2 = "1"
+  const nameNFT = "InsigniaBadges"
+  const symbolNFT = "BADGES"
+  const baseURI = "https://badges.makerdao.com/token/"
 
 
 
@@ -19,7 +26,8 @@ contract('BadgeFactory', function(accounts) {
 
   // Before Each
   beforeEach(async () => {
-    instance = await BadgeFactory.new()
+    instance = await InsigniaDAO.new()
+    instance = await BadgeFactory.new(InsigniaDAO.address)
   })
 
   // Check that the owner is set as the deploying address
@@ -41,12 +49,84 @@ contract('BadgeFactory', function(accounts) {
 
   describe("Functions", () => {
 
-      // Check createTemplate() for success when a minter is trying to create a new template
+    // !Tested setting the mintWithTokenURI() fucntion to public with onlyTemplater access control
+    // Check mintWithTokenURI() for success when a templater is trying to mint a new token
+    describe("mintWithTokenURI()", async () => {
+      beforeEach(async function () {
+        await instance.mintWithTokenURI(redeemer, "https://ipfs.json", {from:owner})
+        await instance.mintWithTokenURI(redeemer, "https://ipfs.json", {from:owner})
+      });
+
+      it("check tokenId via tokenOfOwnerByIndex", async () => {
+        const firstTokenId = await instance.tokenOfOwnerByIndex(redeemer, index1, {from:random})
+        assert.equal(firstTokenId, "0", "the tokenId does not match the expected value")
+        const secondTokenId = await instance.tokenOfOwnerByIndex(redeemer, index2, {from:random})
+        assert.equal(secondTokenId, "1", "the tokenId does not match the expected value")
+      })
+
+      it("check tokenId via tokenByIndex()", async () => {
+        const firstTokenIdByIndex = await instance.tokenByIndex(index1, {from:random})
+        assert.equal(firstTokenIdByIndex, "0", "the tokenId does not match the expected value")
+        const secondTokenIdByIndex = await instance.tokenByIndex(index2, {from:random})
+        assert.equal(secondTokenIdByIndex, "1", "the tokenId does not match the expected value")
+      })
+
+    })
+
+    // Check burn() for success when redeemer is trying to burn its own token
+    describe("burn()", async () => {
+      beforeEach(async function () {
+        await instance.mintWithTokenURI(redeemer, "https://ipfs.json", {from:owner})
+        await instance.mintWithTokenURI(redeemer, "https://ipfs.json", {from:owner})
+        const tokenId = await instance.tokenOfOwnerByIndex(redeemer, index1, {from:random})
+        await instance.burn(tokenId, {from:redeemer})
+      });
+
+      it("removes that token from the token list of the owner", async () => {
+        const tokenId = await instance.tokenOfOwnerByIndex(redeemer, index1, {from:random})
+        assert.equal(tokenId, "1", "tokenId does not match the expected value" )
+      })
+
+      it("adjusts all tokens list", async () => {
+        const tokenId = await instance.tokenByIndex(index1, {from:random})
+        assert.equal(tokenId, "1", "tokenId does not match expected value")
+      })
+
+      it("burns all tokens", async () => {
+        await instance.burn("1", {from:redeemer})
+        const totSupply = await instance.totalSupply({from:random})
+        assert.equal(totSupply, "0", "totSupply does not match expected value")
+        await catchRevert(instance.tokenByIndex(index1, {from:random}))
+      })
+
+    })
+
+    // Check ERC721 metadata
+    describe("ERC721 metadata", async () => {
+
+      it("ERC721 has a name", async () => {
+        const result = await instance.name({from:random})
+        assert.equal(result, nameNFT, "name does not match the expected value" )
+      })
+
+      it("ERC721 has a symbol", async () => {
+        const result = await instance.symbol({from:random})
+        assert.equal(result, symbolNFT, "symbol does not match expected value")
+      })
+
+      it("ERC has a baseURI", async () => {
+        const result = await instance.baseURI({from:random})
+        assert.equal(result, baseURI, "baseURI does not match expected value")
+      })
+
+    })
+
+      // Check createTemplate() for success when a templater is trying to create a new template
       // Check createTemplate() for sucessfully emit event when the template is created
       // Check createTemplate() for failure when a random address try to create a new template
       describe("createTemplate()", async () => {
 
-        it("minters should be able to create a template", async () => {
+        it("templaters should be able to create a template", async () => {
           await instance.createTemplate(name, description, image, limit, {from:owner})
           const result = await instance.getTemplate(templateId, {from:random})
           assert.equal(result[0], name, "the name of the created template does not match the expected value")
@@ -68,13 +148,15 @@ contract('BadgeFactory', function(accounts) {
 
       })
 
-      // Check destroyTemplate() for success when a minter is trying to destroy a template
+      // Check destroyTemplate() for success when a templater is trying to destroy a template
       // Check destroyTemplate() for sucessfully emit event when the template is destroyed
       // Check destroyTemplate() for failure when a random address try to destroy a template
       describe("destroyTemplate()", async () => {
-
-        it("minters should be able to destroy a template", async () => {
+        beforeEach(async function () {
           await instance.createTemplate(name, description, image, limit, {from:owner})
+        });
+
+        it("templaters should be able to destroy a template", async () => {
           await instance.destroyTemplate(templateId, {from:owner})
           await catchRevert(instance.getTemplate(templateId, {from:random}))
           const result = await instance.getTemplatesCount({from:random})
@@ -82,19 +164,16 @@ contract('BadgeFactory', function(accounts) {
         })
 
         it("should emit the appropriate event when a template is destroyed", async () => {
-          await instance.createTemplate(name, description, image, limit, {from:owner})
           const result = await instance.destroyTemplate(templateId, {from:owner})
           assert.equal(result.logs[0].event, "TemplateDestroyed", "TemplateDestroyed event not emitted, check destroyTemplate method")
         })
 
         it("random address should not be able to destroy a template", async () => {
-          await instance.createTemplate(name, description, image, limit, {from:owner})
           await catchRevert(instance.destroyTemplate(templateId, {from:random}))
         })
 
       })
+
    })
-
-
 
 })
