@@ -56,14 +56,14 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 			  pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
 	}
 
-  function balance(address guy) internal view whenNotPaused returns (uint256) {
+  function _balance(address guy) internal view whenNotPaused returns (uint256) {
     uint256 slice = pot.pie(guy);
     uint256 chi = pot.chi();
     return wmul(slice, chi);
   }
 
   function dsrChallenge() public whenNotPaused returns (bool) {
-    uint256 interest = balance(msg.sender);
+    uint256 interest = _balance(msg.sender);
     require(interest == 1 ether, "The caller has not accrued 1 Dai interest");
     redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
     emit DSRChallengeChecked(msg.sender);
