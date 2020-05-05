@@ -104,32 +104,50 @@ contract('BadgeFactory', function(accounts) {
     // Check ERC721 metadata
     describe("ERC721 metadata", async () => {
 
-      it("ERC721 has a name", async () => {
+      it("has a name", async () => {
         const result = await instance.name({from:random})
         assert.equal(result, nameNFT, "name does not match the expected value" )
       })
 
-      it("ERC721 has a symbol", async () => {
+      it("has a symbol", async () => {
         const result = await instance.symbol({from:random})
         assert.equal(result, symbolNFT, "symbol does not match expected value")
       })
 
-      it("ERC721 has a baseURI", async () => {
+      it("has a baseURI", async () => {
         const result = await instance.baseURI({from:random})
         assert.equal(result, baseURI, "baseURI does not match expected value")
       })
 
-      it("ERC721 return a baseURI + tokenURI for tokenId", async () => {
+      it("return a baseURI + tokenURI for tokenId", async () => {
         await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
         const result = await instance.tokenURI("0", {from:random})
         assert.equal(result, "https://badges.makerdao.com/token/ipfs.json", "tokenURI does not match expected value")
       })
 
-      it("ERC721 reverts when querying metadata for non existent tokenId", async () => {
+      it("reverts when querying metadata for non existent tokenId", async () => {
         await catchRevert(instance.tokenURI("0",{from:random}))
       })
 
     })
+
+    // Check override _tranfer() function
+    describe("ERC721 override _transfer()", async () => {
+      beforeEach(async function () {
+        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
+      });
+
+      it("check transferFrom() for revert", async () => {
+        await catchRevert(instance.transferFrom(redeemer, random, "0", {from:random}))
+      })
+
+      it("check safeTransferFrom() for revert", async () => {
+        await catchRevert(instance.safeTransferFrom(redeemer, random, "0", {from:random}))
+      })
+
+    })
+
+
 
       // Check createTemplate() for success when a templater is trying to create a new template
       // Check createTemplate() for sucessfully emit event when the template is created
