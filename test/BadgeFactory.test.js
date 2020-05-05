@@ -53,8 +53,8 @@ contract('BadgeFactory', function(accounts) {
     // Check mintWithTokenURI() for success when a templater is trying to mint a new token
     describe("mintWithTokenURI()", async () => {
       beforeEach(async function () {
-        await instance.mintWithTokenURI(redeemer, "https://ipfs.json", {from:owner})
-        await instance.mintWithTokenURI(redeemer, "https://ipfs.json", {from:owner})
+        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
+        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
       });
 
       it("check tokenId via tokenOfOwnerByIndex", async () => {
@@ -76,8 +76,8 @@ contract('BadgeFactory', function(accounts) {
     // Check burn() for success when redeemer is trying to burn its own token
     describe("burn()", async () => {
       beforeEach(async function () {
-        await instance.mintWithTokenURI(redeemer, "https://ipfs.json", {from:owner})
-        await instance.mintWithTokenURI(redeemer, "https://ipfs.json", {from:owner})
+        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
+        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
         const tokenId = await instance.tokenOfOwnerByIndex(redeemer, index1, {from:random})
         await instance.burn(tokenId, {from:redeemer})
       });
@@ -114,9 +114,19 @@ contract('BadgeFactory', function(accounts) {
         assert.equal(result, symbolNFT, "symbol does not match expected value")
       })
 
-      it("ERC has a baseURI", async () => {
+      it("ERC721 has a baseURI", async () => {
         const result = await instance.baseURI({from:random})
         assert.equal(result, baseURI, "baseURI does not match expected value")
+      })
+
+      it("ERC721 return a baseURI + tokenURI for tokenId", async () => {
+        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
+        const result = await instance.tokenURI("0", {from:random})
+        assert.equal(result, "https://badges.makerdao.com/token/ipfs.json", "tokenURI does not match expected value")
+      })
+
+      it("ERC721 reverts when querying metadata for non existent tokenId", async () => {
+        await catchRevert(instance.tokenURI("0",{from:random}))
       })
 
     })
