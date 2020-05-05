@@ -43,9 +43,9 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   // Math
 
-  uint constant RAY = 10 ** 27;
+  uint256 constant RAY = 10 ** 27;
 
-  function rmul(uint x, uint y) internal view whenNotPaused returns (uint256 z) {
+  function rmul(uint256 x, uint256 y) internal view whenNotPaused returns (uint256 z) {
           // always rounds down
           z = x.mul(y) / RAY;
   }
@@ -61,7 +61,7 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   function _dai(address guy) internal view whenNotPaused returns (uint256 wad) {
     uint256 slice = pot.pie(guy);
-    uint chi = (now > pot.rho()) ? pot.drip() : pot.chi();
+    uint256 chi = (now > pot.rho()) ? pot.drip() : pot.chi();
     wad = rmul(slice, chi);
   }
 
