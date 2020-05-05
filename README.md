@@ -93,6 +93,7 @@ Clone this GitHub repository.
 - [ERC721](https://eips.ethereum.org/EIPS/eip-721)
 - [POAP](https://www.poap.xyz/)
 - [MakerDAO](https://makerdao.com/en/)
+- [Chai](https://chai.money/about.html)
 
 ## About
 
