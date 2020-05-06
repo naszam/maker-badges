@@ -24,6 +24,10 @@ interface PotLike {
 
 }
 
+interface DSChiefLike {
+  function votes(address) external view returns (bytes32);
+}
+
 contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   using SafeMath for uint256;
@@ -36,9 +40,11 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   // Events
   event DSRChallengeChecked(address guy);
+  event DSChiefChallangeChecked(address guy);
 
   // Data
   PotLike  internal pot;
+  DSChiefLike internal chief;
 
 
   // Math
@@ -55,8 +61,10 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
         _setupRole(PAUSER_ROLE, owner());
 
-        // MCD_POT Kovan Address https://changelog.makerdao.com/releases/kovan/1.0.5/contracts.json
+        // MCD_POT Kovan Address https://kovan.etherscan.io/address/0xea190dbdc7adf265260ec4da6e9675fd4f5a78bb#code
 			  pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
+        // MCD_ADM Kovan Address https://kovan.etherscan.io/address/0xbBFFC76e94B34F72D96D054b31f6424249c1337d#code
+        chief = DSChiefLike(0xbBFFC76e94B34F72D96D054b31f6424249c1337d);
 	}
 
   function _dai(address guy) internal view whenNotPaused returns (uint256 wad) {
@@ -70,6 +78,13 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
     require(interest == 1 ether, "The caller has not accrued 1 Dai interest");
     redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
     emit DSRChallengeChecked(msg.sender);
+    return true;
+  }
+
+  function chiefChallange() public whenNotPaused returns (bool) {
+    require(chief.votes(msg.sender) != 0x00, "The Caller is not voting on Governance Poll");
+    redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
+    emit DSChiefChallangeChecked(msg.sender);
     return true;
   }
 
