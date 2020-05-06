@@ -150,7 +150,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   }
 
   function activateBadge(address to, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
-    _hasTemplate(msg.sender, templateId);
+    require(templates.length > templateId, "No template with that id");
     require(_templateQuantities[templateId] < templates[templateId].limit,
       "You have reached the limit of NFTs");
     require(insignia.verify(msg.sender)==true, "Caller is not a redeemer");
