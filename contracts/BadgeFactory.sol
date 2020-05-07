@@ -2,7 +2,7 @@ pragma solidity 0.6.6;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari, Scott Herren, Bryan Flynn
-/// @notice BadgeFactory to manage Templates and Badges
+/// @notice BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
 /// @dev see https://github.com/makerdao/community/issues/537
 /// @dev All function calls are currently implemented without side effecs through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
@@ -20,6 +20,7 @@ interface InsigniaDAO {
 
 contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
+  /// Libraries
   using SafeMath for uint256;
   using Address for address;
   using Counters for Counters.Counter;
@@ -29,34 +30,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   InsigniaDAO internal insignia;
 
-
-
-  /*
-      Badge metadata format
-      {
-          "title": "Project Proof Badge Metadata",
-          "type": "object",
-          "properties": {
-              "name": {
-                  "type": "string",
-                  "description": "Identifies the badge template to which this NFT represents",
-              },
-              "description": {
-                  "type": "string",
-                  "description": "Describes the asset to which this NFT represents",
-              },
-              "image": {
-                  "type": "string",
-                  "description": "A URI pointing to a resource with mime type image/* representing the asset to which this NFT represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 4:5 inclusive.",
-              },
-              "unit_id": {
-                  "type": "integer",
-                  "description": "Specifies the id of this unit within its kind",
-              }
-          }
-      }
-  */
-
+  /// Events
   event NewTemplate(uint256 templateId, string name, string description, string image, uint256 limit);
   event TemplateDestroyed(uint templateId);
   event BadgeActivated(address redeemer, uint256 tokenId, uint256 templateId, string tokenURI);
@@ -71,7 +45,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   BadgeTemplate[] private templates;
 
-  // Supplies of each badge template
+  /// Supplies of each badge template
   mapping(uint256 => uint256) private _templateQuantities;
   mapping(uint256 => uint256) private _tokenTemplates;
 
@@ -84,17 +58,27 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   }
 
-  // Fallback
-
+  /// @notice Fallback function
+  /// @dev Added not payable to revert transactions not matching any other function which send value
   fallback() external {
     revert();
   }
 
+  /// @notice Set the baseURI
+  /// @dev Update the baseURI specified in the constructor
+  /// @param baseURI New baseURI
+  /// @return True if the new baseURI is set
   function setBaseURI(string memory baseURI) public onlyOwner returns (bool) {
     _setBaseURI(baseURI);
     return true;
   }
 
+  /// @notice Mint new token with tokenURI
+  /// @dev Use an auto-generated tokenId
+  /// @dev automatically concatenate baseURI with tokenURI via abi.encodePacked
+  /// @param to owner of the new token
+  /// @param tokenURI an <ipfs-hash>.json filename
+  /// @return True if the new token is minted
   function _mintWithTokenURI(address to, string memory tokenURI) internal returns (bool) {
     _mint(to, _tokenIdTracker.current());
     _setTokenURI(_tokenIdTracker.current(), tokenURI);
@@ -102,14 +86,21 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return true;
   }
 
-  function _hasTemplate(address add, uint256 templateId) internal view returns (bool) {
+  /// @notice Check if templateId exists and its owned by templater
+  /// @dev Internal function to check for templateId and caller
+  /// @param templater Address to check as the owner of the template
+  /// @param templateId Template Id to check if existent
+  /// @return True if the templateId exists and its owned by address add
+  function _hasTemplate(address templater, uint256 templateId) internal view returns (bool) {
     require(templates.length > templateId, "No template with that id");
-    require(templates[templateId].owner == add, "The community does not own the template");
+    require(templates[templateId].owner == templater, "The community does not own the template");
     return true;
   }
 
-  // Getters
-
+  /// @notice Getter function for templates
+  /// @dev Check if templateId exists
+  /// @param templateId Template Id of the template to return
+  /// @return name description image limit of the specified templateId
   function getTemplate(uint256 templateId) public view whenNotPaused returns (string memory name, string memory description, string memory image, uint256 limit) {
     require(templates.length > templateId, "No template with that id");
     BadgeTemplate memory template = templates[templateId];
