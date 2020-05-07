@@ -74,7 +74,7 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
   }
 
   function verify(address guy) public view whenNotPaused returns (bool) {
-    require(redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(guy)))))) == true, "The address is not a redeemer");
+    require(redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(guy)))))), "The address is not a redeemer");
     return true;
   }
 
