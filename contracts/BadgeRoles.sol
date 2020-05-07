@@ -3,7 +3,7 @@ pragma solidity 0.6.6;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari, Scott Herren, Bryan Flynn
-/// @notice BadgeRoles Access Management for Minter Role
+/// @notice BadgeRoles Access Management for Default Admin, Templater and Pauser Role
 /// @dev see https://github.com/makerdao/community/issues/537
 /// @dev All function calls are currently implemented without side effecs through TDD approach
 /// @dev OpenZeppelin v3.0 library is used for secure contract development
@@ -26,13 +26,13 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
         _setupRole(PAUSER_ROLE, owner());
   }
 
-  // Modifiers
+  /// Modifiers
   modifier onlyTemplater() {
       require(hasRole(TEMPLATER_ROLE, msg.sender), "Caller is not a template owner");
       _;
     }
 
-  // Functions
+  /// Functions
 
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
