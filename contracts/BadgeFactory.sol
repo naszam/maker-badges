@@ -59,7 +59,8 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   event NewTemplate(uint256 templateId, string name, string description, string image, uint256 limit);
   event TemplateDestroyed(uint templateId);
-  event BadgeActivated(uint256 tokenId, uint256 templateId, string tokenURI);
+  event BadgeActivated(address redeemer, uint256 tokenId, uint256 templateId, string tokenURI);
+  event BadgeBurned(address owner, uint256 tokenId);
 
   struct BadgeTemplate {
     string name;
@@ -164,7 +165,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     // Increase the quantities
     _tokenTemplates[_tokenId] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-    emit BadgeActivated(_tokenId, templateId, tokenURI);
+    emit BadgeActivated(msg.sender,_tokenId, templateId, tokenURI);
     return _tokenId;
   }
 
@@ -172,6 +173,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     uint256 templateId = getBadgeTemplate(tokenId);
     burn(tokenId);
     _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
+    emit BadgeBurned(msg.sender, tokenId);
     return true;
   }
 
