@@ -60,7 +60,6 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   event NewTemplate(uint256 templateId, string name, string description, string image, uint256 limit);
   event TemplateDestroyed(uint templateId);
   event BadgeActivated(address redeemer, uint256 tokenId, uint256 templateId, string tokenURI);
-  event BadgeBurned(address owner, uint256 tokenId);
 
   struct BadgeTemplate {
     string name;
@@ -83,6 +82,11 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     _setBaseURI("https://badges.makerdao.com/token/");
     insignia = InsigniaDAO(insignia_);
 
+  }
+
+  function setBaseURI(string memory baseURI) public onlyOwner returns (bool) {
+    _setBaseURI(baseURI);
+    return true;
   }
 
   function _mintWithTokenURI(address to, string memory tokenURI) internal returns (bool) {
@@ -173,7 +177,6 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     uint256 templateId = getBadgeTemplate(tokenId);
     burn(tokenId);
     _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
-    emit BadgeBurned(msg.sender, tokenId);
     return true;
   }
 
