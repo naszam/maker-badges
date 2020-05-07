@@ -10,6 +10,7 @@ pragma solidity 0.6.6;
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
+import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
 interface InsigniaDAO {
 
@@ -22,9 +23,9 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   using SafeMath for uint256;
   using Address for address;
   using Counters for Counters.Counter;
+  using MerkleProof for bytes32[];
 
   Counters.Counter private _tokenIdTracker;
-
 
   InsigniaDAO internal insignia;
 
@@ -149,14 +150,14 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return _templateQuantities[templateId];
   }
 
-  function activateBadge(address to, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
+  function activateBadge(bytes32[] memory proof, bytes32 root, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
     require(templates.length > templateId, "No template with that id");
     require(_templateQuantities[templateId] < templates[templateId].limit,
       "You have reached the limit of NFTs");
-    require(insignia.verify(msg.sender)==true, "Caller is not a redeemer");
+    require(insignia.verify(msg.sender) || proof.verify(root, keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
 
     _mintWithTokenURI(
-      to,
+      msg.sender,
       tokenURI
     );
 
