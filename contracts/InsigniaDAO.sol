@@ -59,6 +59,16 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 			  pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
   }
 
+  // Fallback
+
+  fallback() external payable {
+    revert();
+  }
+
+  receive() external payable {
+    revert();
+  }
+
   function _dai(address guy) internal view whenNotPaused returns (uint256 wad) {
     uint256 slice = pot.pie(guy);
     uint256 chi = (now > pot.rho()) ? pot.drip() : pot.chi();
