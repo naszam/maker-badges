@@ -84,6 +84,12 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   }
 
+  // Fallback
+
+  fallback() external {
+    revert();
+  }
+
   function setBaseURI(string memory baseURI) public onlyOwner returns (bool) {
     _setBaseURI(baseURI);
     return true;
