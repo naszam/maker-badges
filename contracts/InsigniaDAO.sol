@@ -61,11 +61,7 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   // Fallback
 
-  fallback() external payable {
-    revert();
-  }
-
-  receive() external payable {
+  fallback() external {
     revert();
   }
 
