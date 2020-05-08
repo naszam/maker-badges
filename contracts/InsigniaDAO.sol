@@ -2,7 +2,7 @@ pragma solidity 0.6.7;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari, Scott Herren, Bryan Flynn
-/// @notice InsigniaDAO to check for activities on maker system and activate badges
+/// @notice InsigniaDAO to check for activities on maker ecosystem and keep track of redeemers
 /// @dev see https://github.com/makerdao/community/issues/537
 /// @dev All function calls are currently implemented without side effecs through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
@@ -26,6 +26,7 @@ interface PotLike {
 
 contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
+  /// Libraries
   using SafeMath for uint256;
   using Address for address;
   using EnumerableSet for EnumerableSet.AddressSet;
@@ -34,15 +35,12 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   EnumerableSet.AddressSet private redeemers;
 
-  // Events
+  /// Events
   event DSRChallengeChecked(address guy);
 
-  // Data
   PotLike  internal pot;
 
-
-  // Math
-
+  /// Math
   uint256 constant RAY = 10 ** 27;
 
   function rmul(uint256 x, uint256 y) internal view whenNotPaused returns (uint256 z) {
@@ -59,18 +57,25 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 			  pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
   }
 
-  // Fallback
-
+  /// @notice Fallback function
+  /// @dev Added not payable to revert transactions not matching any other function which send value
   fallback() external {
     revert();
   }
 
+  /// @notice Return the accrued interest of guy on Pot
+  /// @dev Based on Chai dai() function
+  /// @param guy Address to check
+  /// @return wad Accrued interest of guy
   function _dai(address guy) internal view whenNotPaused returns (uint256 wad) {
     uint256 slice = pot.pie(guy);
     uint256 chi = (now > pot.rho()) ? pot.drip() : pot.chi();
     wad = rmul(slice, chi);
   }
 
+  /// @notice First Challange: Earn 1$ interest on DSR
+  /// @dev Keep track of the hash of the caller if successful
+  /// @return True if the caller successfully checked for challange
   function dsrChallenge() public whenNotPaused returns (bool) {
     uint256 interest = _dai(msg.sender);
     require(interest == 1 ether, "The caller has not accrued 1 Dai interest");
@@ -79,6 +84,10 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
     return true;
   }
 
+  /// @notice Check if guy is a redeemer
+  /// @dev Verify if the hash of guy address exists
+  /// @param guy Address to verify
+  /// @return True if guy is a redeemer
   function verify(address guy) public view whenNotPaused returns (bool) {
     require(redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(guy)))))), "The address is not a redeemer");
     return true;
