@@ -200,7 +200,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @notice Burn Badge
   /// @dev burn() Check if the caller is approved or owner of the Badge
   /// @param tokenId Token Id of the Badge to burn
-  /// return True if the Badge has been burned
+  /// @return True if the Badge has been burned
   function burnBadge(uint256 tokenId) public whenNotPaused returns (bool){
     uint256 templateId = getBadgeTemplate(tokenId);
     burn(tokenId);
