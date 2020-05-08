@@ -100,7 +100,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @notice Getter function for templates
   /// @dev Check if templateId exists
   /// @param templateId Template Id of the template to return
-  /// @return name description image limit of the specified templateId
+  /// @return name description image limit Of the specified templateId
   function getTemplate(uint256 templateId) public view whenNotPaused returns (string memory name, string memory description, string memory image, uint256 limit) {
     require(templates.length > templateId, "No template with that id");
     BadgeTemplate memory template = templates[templateId];
@@ -108,12 +108,22 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   }
 
 
-  // Templates
+  /// Templates
 
+  /// @notice Getter function for templates count
+  /// @dev Return lenght of template array
+  /// @return count The current number of templates
   function getTemplatesCount() public view whenNotPaused returns (uint256 count) {
     return templates.length;
   }
 
+  /// @notice Create a new template
+  /// @dev Access restricted to only Templaters
+  /// @param name The name of the new template
+  /// @param description A description of the new template
+  /// @param image A filename of the new template
+  /// @param limit The limit of the the NFTs
+  /// @return _templateId The template Id
   function createTemplate(string memory name, string memory description, string memory image, uint256 limit) public onlyTemplater whenNotPaused returns (uint256 _templateId) {
 
     BadgeTemplate memory _newTemplate = BadgeTemplate({
@@ -129,11 +139,16 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return _templateId;
   }
 
+  /// @notice Destroy a template
+  /// @dev Access restricted to only Templaters
+  /// @param templateId The template Id
+  /// @return True if the template has been destroyed
   function destroyTemplate(uint256 templateId) public onlyTemplater whenNotPaused returns (bool) {
 
     _hasTemplate(msg.sender, templateId);
-    require(_templateQuantities[templateId] == 0, "Cannnot remove a template that has badges");
+    require(_templateQuantities[templateId] == 0, "Cannot remove a template that has badges");
 
+    /// Swap & Delete
     templates[templateId] = templates[templates.length.sub(1)];
     templates.pop();
     emit TemplateDestroyed(templateId);
@@ -142,26 +157,38 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   // Badges
 
+  /// @notice Getter function for templateId associated with the tokenId
+  /// @dev Check if the tokenId exists
+  /// @param tokenId Token Id of the Badge
+  /// @return Template Id associated with the tokenId
   function getBadgeTemplate(uint256 tokenId) public view whenNotPaused returns (uint256) {
-    require(totalSupply() > tokenId, "No token with that id");
+    require(_tokenIdTracker.current() >= tokenId, "No token with that id");
     return _tokenTemplates[tokenId];
   }
 
+  /// @notice Getter function for number of badges associated with templateId
+  /// @dev Check if the template Id exists
+  /// @param templateId Template Id
+  /// @return Quantity of Badges associated with templateId
   function getBadgeTemplateQuantity(uint256 templateId) public view whenNotPaused returns (uint256) {
     require(templates.length > templateId, "No template with that id");
     return _templateQuantities[templateId];
   }
 
+  /// @notice Activate Badge by redeemers
+  /// @dev Verify if the caller is a redeemer
+  /// @param proof Merkle Proof
+  /// @param root Root Hash
+  /// @param templateId Template Id
+  /// @param tokenURI Token URI
+  /// @return _tokenId Token Id of the new Badge
   function activateBadge(bytes32[] memory proof, bytes32 root, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
     require(templates.length > templateId, "No template with that id");
     require(_templateQuantities[templateId] < templates[templateId].limit,
       "You have reached the limit of NFTs");
     require(insignia.verify(msg.sender) || proof.verify(root, keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
 
-    _mintWithTokenURI(
-      msg.sender,
-      tokenURI
-    );
+    _mintWithTokenURI(msg.sender, tokenURI);
 
     // Increase the quantities
     _tokenTemplates[_tokenId] = templateId;
@@ -170,6 +197,10 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return _tokenId;
   }
 
+  /// @notice Burn Badge
+  /// @dev burn() Check if the caller is approved or owner of the Badge
+  /// @param tokenId Token Id of the Badge to burn
+  /// return True if the Badge has been burned
   function burnBadge(uint256 tokenId) public whenNotPaused returns (bool){
     uint256 templateId = getBadgeTemplate(tokenId);
     burn(tokenId);
@@ -177,6 +208,9 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return true;
   }
 
+  /// @notice ERC721 _transfer() Disabled
+  /// @dev _transfer() has been overriden
+  /// @dev reverts on transferFrom() and safeTransferFrom()
   function _transfer(address from, address to, uint256 tokenId) internal override {
     require(!true, "ERC721: token transfer disabled");
     super._transfer(from, to, tokenId);
