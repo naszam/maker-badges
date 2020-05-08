@@ -11,7 +11,7 @@ contract('BadgeFactory', function(accounts) {
   const DEFAULT_ADMIN_ROLE = "0x00"
   const name = "Beginner"
   const description = "Beginner Template"
-  const image = "badge.pdf"
+  const image = "badge.png"
   const limit = "10"
   const templateId = "0"
   const index1 = "0"
