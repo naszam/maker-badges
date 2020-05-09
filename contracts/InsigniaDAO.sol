@@ -64,6 +64,10 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
     revert();
   }
 
+  /// @notice Set Merkle Tree Root Hash
+  /// @dev Called by owner to update root hash for different address batches
+  /// @param rootHash Root hash of the Merkle Tree
+  /// @return True if successfully updated
   function setRootHash(bytes32 rootHash) public onlyOwner whenNotPaused returns (bool) {
     root = rootHash;
     return true;
