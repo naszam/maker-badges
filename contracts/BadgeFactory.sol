@@ -33,8 +33,8 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   /// Events
   event NewTemplate(uint256 templateId, string name, string description, string image);
-  event BadgeActivated(address redeemer, uint256 tokenId, uint256 templateId, string tokenURI);
   event TemplateDestroyed(uint256 templateId);
+  event BadgeActivated(address redeemer, uint256 tokenId, uint256 templateId, string tokenURI);
 
   struct BadgeTemplate {
     string name;
