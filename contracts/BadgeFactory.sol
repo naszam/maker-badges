@@ -23,7 +23,6 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   /// Libraries
   using SafeMath for uint256;
-  using Address for address;
   using Counters for Counters.Counter;
   using MerkleProof for bytes32[];
 

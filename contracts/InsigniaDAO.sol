@@ -11,7 +11,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 
 interface PotLike {
@@ -27,7 +26,6 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   /// Libraries
   using SafeMath for uint256;
-  using Address for address;
   using EnumerableSet for EnumerableSet.AddressSet;
 
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
