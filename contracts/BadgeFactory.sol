@@ -15,6 +15,7 @@ import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 interface InsigniaDAO {
 
     function verify(address guy) external view returns (bool);
+    function root() external view returns (bytes32);
 
 }
 
@@ -31,16 +32,15 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   InsigniaDAO internal insignia;
 
   /// Events
-  event NewTemplate(uint256 templateId, string name, string description, string image, uint256 limit);
-  event TemplateDestroyed(uint templateId);
+  event NewTemplate(uint256 templateId, string name, string description, string image);
   event BadgeActivated(address redeemer, uint256 tokenId, uint256 templateId, string tokenURI);
+  event BadgeDestroyed(uint256 templateId);
 
   struct BadgeTemplate {
     string name;
     string description;
     string image;
     address owner;
-    uint256 limit;
   }
 
   BadgeTemplate[] private templates;
@@ -100,11 +100,11 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @notice Getter function for templates
   /// @dev Check if templateId exists
   /// @param templateId Template Id of the template to return
-  /// @return name description image limit Of the specified templateId
-  function getTemplate(uint256 templateId) public view whenNotPaused returns (string memory name, string memory description, string memory image, uint256 limit) {
+  /// @return name description image Of the specified templateId
+  function getTemplate(uint256 templateId) public view whenNotPaused returns (string memory name, string memory description, string memory image) {
     require(templates.length > templateId, "No template with that id");
     BadgeTemplate memory template = templates[templateId];
-    return (template.name, template.description, template.image, template.limit);
+    return (template.name, template.description, template.image);
   }
 
 
@@ -122,20 +122,18 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param name The name of the new template
   /// @param description A description of the new template
   /// @param image A filename of the new template
-  /// @param limit The limit of the the NFTs
   /// @return _templateId The template Id
-  function createTemplate(string memory name, string memory description, string memory image, uint256 limit) public onlyTemplater whenNotPaused returns (uint256 _templateId) {
+  function createTemplate(string memory name, string memory description, string memory image) public onlyTemplater whenNotPaused returns (uint256 _templateId) {
 
     BadgeTemplate memory _newTemplate = BadgeTemplate({
        name: name,
        owner: msg.sender,
        description: description,
-       image: image,
-       limit: limit
+       image: image
     });
     templates.push(_newTemplate);
     _templateId = templates.length.sub(1);
-    emit NewTemplate(_templateId, name, description, image, limit);
+    emit NewTemplate(_templateId, name, description, image);
     return _templateId;
   }
 
@@ -151,7 +149,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     /// Swap & Delete
     templates[templateId] = templates[templates.length.sub(1)];
     templates.pop();
-    emit TemplateDestroyed(templateId);
+    emit BadgeDestroyed(templateId);
     return true;
   }
 
@@ -178,15 +176,12 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @notice Activate Badge by redeemers
   /// @dev Verify if the caller is a redeemer
   /// @param proof Merkle Proof
-  /// @param root Root Hash
   /// @param templateId Template Id
   /// @param tokenURI Token URI
   /// @return _tokenId Token Id of the new Badge
-  function activateBadge(bytes32[] memory proof, bytes32 root, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
+  function activateBadge(bytes32[] memory proof, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
     require(templates.length > templateId, "No template with that id");
-    require(_templateQuantities[templateId] < templates[templateId].limit,
-      "You have reached the limit of NFTs");
-    require(insignia.verify(msg.sender) || proof.verify(root, keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
+    require(insignia.verify(msg.sender) || proof.verify(insignia.root(), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
 
     _mintWithTokenURI(msg.sender, tokenURI);
 

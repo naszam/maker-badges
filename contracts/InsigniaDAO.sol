@@ -21,7 +21,6 @@ interface PotLike {
     function rho() external view returns (uint256);
     function drip() external view returns (uint256);
 
-
 }
 
 contract InsigniaDAO is Ownable, AccessControl, Pausable {
@@ -32,6 +31,8 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
   using EnumerableSet for EnumerableSet.AddressSet;
 
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+
+  bytes32 public root;
 
   EnumerableSet.AddressSet private redeemers;
 
@@ -63,6 +64,11 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
     revert();
   }
 
+  function setRootHash(bytes32 rootHash) public onlyOwner whenNotPaused returns (bool) {
+    root = rootHash;
+    return true;
+  }
+
   /// @notice Return the accrued interest of guy on Pot
   /// @dev Based on Chai dai() function
   /// @param guy Address to check
@@ -77,8 +83,7 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
   /// @dev Keep track of the hash of the caller if successful
   /// @return True if the caller successfully checked for challange
   function dsrChallenge() public whenNotPaused returns (bool) {
-    uint256 interest = _dai(msg.sender);
-    require(interest == 1 ether, "The caller has not accrued 1 Dai interest");
+    require(_dai(msg.sender) == 1 ether, "The caller has not accrued 1 Dai interest");
     redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
     emit DSRChallengeChecked(msg.sender);
     return true;
