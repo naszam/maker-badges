@@ -12,7 +12,6 @@ contract('BadgeFactory', function(accounts) {
   const name = "Beginner"
   const description = "Beginner Template"
   const image = "badge.png"
-  const limit = "10"
   const templateId = "0"
   const index1 = "0"
   const index2 = "1"
@@ -155,23 +154,22 @@ contract('BadgeFactory', function(accounts) {
       describe("createTemplate()", async () => {
 
         it("templaters should be able to create a template", async () => {
-          await instance.createTemplate(name, description, image, limit, {from:owner})
+          await instance.createTemplate(name, description, image, {from:owner})
           const result = await instance.getTemplate(templateId, {from:random})
           assert.equal(result[0], name, "the name of the created template does not match the expected value")
           assert.equal(result[1], description, "the description of the created template does not match the expected value")
           assert.equal(result[2], image, "the image of the created template does not match the expected value")
-          assert.equal(result[3], limit, "the limit of the created template does not match the expected value")
           const templatesCount = await instance.getTemplatesCount({from:random})
           assert.equal(templatesCount, 1, "the number of templates does not match the expected value")
         })
 
         it("should emit the appropriate event when a template is created", async () => {
-          const result = await instance.createTemplate(name, description, image, limit, {from:owner})
+          const result = await instance.createTemplate(name, description, image, {from:owner})
           assert.equal(result.logs[0].event, "NewTemplate", "NewTemplate event not emitted, check createTemplate method")
         })
 
         it("random address should not be able to create a new template", async () => {
-          await catchRevert(instance.createTemplate(name, description, image, limit, {from:random}))
+          await catchRevert(instance.createTemplate(name, description, image, {from:random}))
         })
 
       })
@@ -181,7 +179,7 @@ contract('BadgeFactory', function(accounts) {
       // Check destroyTemplate() for failure when a random address try to destroy a template
       describe("destroyTemplate()", async () => {
         beforeEach(async function () {
-          await instance.createTemplate(name, description, image, limit, {from:owner})
+          await instance.createTemplate(name, description, image, {from:owner})
         });
 
         it("templaters should be able to destroy a template", async () => {
