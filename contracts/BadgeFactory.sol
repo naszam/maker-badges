@@ -160,7 +160,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param tokenId Token Id of the Badge
   /// @return Template Id associated with the tokenId
   function getBadgeTemplate(uint256 tokenId) public view whenNotPaused returns (uint256) {
-    require(_tokenIdTracker.current() >= tokenId, "No token with that id");
+    require(_exists(tokenId), "ERC721: No token with that id");
     return _tokenTemplates[tokenId];
   }
 
