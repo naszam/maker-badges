@@ -32,7 +32,6 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   /// Events
   event NewTemplate(uint256 templateId, string name, string description, string image);
-  event TemplateDestroyed(uint256 templateId);
   event BadgeActivated(address redeemer, uint256 tokenId, uint256 templateId, string tokenURI);
 
   struct BadgeTemplate {
@@ -134,22 +133,6 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     _templateId = templates.length.sub(1);
     emit NewTemplate(_templateId, name, description, image);
     return _templateId;
-  }
-
-  /// @notice Destroy a template
-  /// @dev Access restricted to only Templaters
-  /// @param templateId The template Id
-  /// @return True if the template has been destroyed
-  function destroyTemplate(uint256 templateId) public onlyTemplater whenNotPaused returns (bool) {
-
-    _hasTemplate(msg.sender, templateId);
-    require(_templateQuantities[templateId] == 0, "Cannot remove a template that has badges");
-
-    /// Swap & Delete
-    templates[templateId] = templates[templates.length.sub(1)];
-    templates.pop();
-    emit TemplateDestroyed(templateId);
-    return true;
   }
 
   // Badges
