@@ -30,7 +30,7 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-  bytes32 public root;
+  mapping(uint256 => bytes32) public root;
 
   EnumerableSet.AddressSet private redeemers;
 
@@ -66,8 +66,8 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
   /// @dev Called by owner to update root hash for different address batches
   /// @param rootHash Root hash of the Merkle Tree
   /// @return True if successfully updated
-  function setRootHash(bytes32 rootHash) public onlyOwner whenNotPaused returns (bool) {
-    root = rootHash;
+  function setRootHash(uint256 templateId, bytes32 rootHash) public onlyOwner whenNotPaused returns (bool) {
+    root[templateId] = rootHash;
     return true;
   }
 
