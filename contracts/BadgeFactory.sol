@@ -84,17 +84,6 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return true;
   }
 
-  /// @notice Check if templateId exists and its owned by templater
-  /// @dev Internal function to check for templateId and caller
-  /// @param templater Address to check as the owner of the template
-  /// @param templateId Template Id to check if existent
-  /// @return True if the templateId exists and its owned by address add
-  function _hasTemplate(address templater, uint256 templateId) internal view returns (bool) {
-    require(templates.length > templateId, "No template with that id");
-    require(templates[templateId].owner == templater, "The community does not own the template");
-    return true;
-  }
-
   /// @notice Getter function for templates
   /// @dev Check if templateId exists
   /// @param templateId Template Id of the template to return
