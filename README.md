@@ -34,6 +34,10 @@ Clone this GitHub repository.
     ```sh
     $ npm install -g @openzeppelin/contracts
     ```
+    - OpenGSN Contracts v0.9.0:
+    ```
+    $ npm install -g @opengsn/gsn
+    ```
     - MythX for Truffle (optional):
     ```sh
     $ npm install -g truffle-security
