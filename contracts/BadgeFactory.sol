@@ -11,7 +11,6 @@ import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
-import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
 
 interface InsigniaDAO {
 
@@ -20,7 +19,7 @@ interface InsigniaDAO {
 
 }
 
-contract BadgeFactory is BadgeRoles, ERC721Burnable, BaseRelayRecipient {
+contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   /// Libraries
   using SafeMath for uint256;
@@ -63,7 +62,10 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable, BaseRelayRecipient {
     revert();
   }
 
-  function _msgSender() internal override(Context, BaseRelayRecipient) view returns (address payable) {
+  /// @notice OpenGSN _msgSender()
+  /// @dev override _msgSender() in OZ Context.sol and BadgeRoles.sol
+  /// @return msg.sender after relay call
+  function _msgSender() internal override(Context, BadgeRoles) view returns (address payable) {
             return BaseRelayRecipient._msgSender();
   }
 
