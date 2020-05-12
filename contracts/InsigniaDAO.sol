@@ -1,7 +1,7 @@
-pragma solidity 0.6.7;
+opragma solidity 0.6.7;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
-/// @author Nazzareno Massari, Scott Herren, Bryan Flynn
+/// @author Nazzareno Massari, Scott Herren
 /// @notice InsigniaDAO to check for activities on maker ecosystem and keep track of redeemers
 /// @dev see https://github.com/makerdao/community/issues/537
 /// @dev All function calls are currently implemented without side effecs through TDD approach
