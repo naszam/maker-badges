@@ -10,14 +10,12 @@ pragma solidity 0.6.7;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
-import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
 
-contract BadgeRoles is Ownable, AccessControl, Pausable, BaseRelayRecipient {
+contract BadgeRoles is Ownable, AccessControl, Pausable {
 
-  // Roles
+  /// Roles
   bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-
 
   constructor() public {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
@@ -27,31 +25,38 @@ contract BadgeRoles is Ownable, AccessControl, Pausable, BaseRelayRecipient {
   }
 
   /// Modifiers
+  modifier onlyAdmin() {
+      require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin");
+      _;
+    }
+
   modifier onlyTemplater() {
-      require(hasRole(TEMPLATER_ROLE, _msgSender()), "Caller is not a template owner");
+      require(isTemplater(msg.sender), "Caller is not a template owner");
       _;
     }
 
   /// Functions
 
-  /// @notice OpenGSN _msgSender()
-  /// @dev override _msgSender() in OZ Context.sol
-  /// @return msg.sender after relay call
-  function _msgSender() internal override(Context, BaseRelayRecipient) virtual view returns (address payable) {
-            return BaseRelayRecipient._msgSender();
+  function isTemplater(address guy) public view returns (bool) {
+    return hasRole(TEMPLATER_ROLE, guy);
+  }
+
+  function addTemplater(address guy) public onlyAdmin returns (bool) {
+    grantRole(TEMPLATER_ROLE, guy);
+    return true;
   }
 
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function pause() public {
-    require(hasRole(PAUSER_ROLE, _msgSender()), "BadgeFactory: must have pauser role to pause");
+    require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to pause");
     _pause();
   }
 
   /// @notice Unpause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function unpause() public {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "BadgeFactory: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to unpause");
         _unpause();
     }
 
