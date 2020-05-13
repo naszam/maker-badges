@@ -26,7 +26,7 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
 
   /// Modifiers
   modifier onlyAdmin() {
-      require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin");
+      require(isAdmin(msg.sender), "Caller is not an admin");
       _;
     }
 
@@ -36,6 +36,10 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
     }
 
   /// Functions
+
+  function isAdmin(address guy) public view returns (bool) {
+    return hasRole(DEFAULT_ADMIN_ROLE, guy);
+  }
 
   function isTemplater(address guy) public view returns (bool) {
     return hasRole(TEMPLATER_ROLE, guy);
