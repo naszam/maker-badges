@@ -41,8 +41,6 @@ Clone this GitHub repository.
     - MythX CLI (optional):
     ```sh
     $ git clone git://github.com/dmuhs/mythx-cli
-    ```
-    ```
     $ sudo python setup.py install
     ```
 ## Running the project with local test network (ganache-cli)
