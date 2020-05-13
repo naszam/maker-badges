@@ -19,12 +19,23 @@ contract('BadgeRoles', function(accounts) {
 
   // Check that the owner is set as the deploying address
   // Check that the owner is set as admin when the contract is deployed
+  // Check that the owner is set as templater when the contract is deployed
   // Check that the owner is the only admin when the contract is deployed
   describe("Setup", async() => {
 
       it("OWNER should be set to the deploying address", async() => {
           const ownerAddress = await instance.owner()
           assert.equal(ownerAddress, owner, "the deploying address should be the owner")
+      })
+
+      it("OWNER should be set as the default admin when the contract is created", async() => {
+          const admin = await instance.isAdmin(owner, {from:random})
+          assert.isTrue(admin, "the owner should be set as the default admin")
+      })
+
+      it("OWNER should be set as templater when the contract is created", async() => {
+          const templater = await instance.isTemplater(owner, {from:random})
+          assert.isTrue(templater, "the owner should be set as templater")
       })
 
       it("Owner should be the only admin when the contract is created", async() => {
