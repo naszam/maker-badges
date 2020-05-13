@@ -37,6 +37,27 @@ contract('BadgeRoles', function(accounts) {
 
   describe("Functions", () => {
 
+    // Check addTemplater() for success when an admin is adding a new templater
+    // Check addTemplater() for sucessfully emit event when the templater is added
+    // Check addTemplater() for failure when a random address try to add a templater
+    describe("addTemplater()", async () => {
+
+      it("admin should be able to add a new templater", async () => {
+        await instance.addTemplater(templater, {from:owner})
+        const templaterAdded = await instance.isTemplater(templater, {from:random})
+        assert.isTrue(templaterAdded, "only admins can add a new templater")
+      })
+
+      it("should emit the appropriate event when a new templater is added", async () => {
+        const result = await instance.addTemplater(templater, {from:owner})
+        assert.equal(result.logs[0].event, "RoleGranted", "RoleGranted event not emitted, check addTemplater method")
+      })
+
+      it("random address should not be able to add a new templater", async () => {
+        await catchRevert(instance.addTemplater(templater, {from:random}))
+      })
+    })
+
     // Check pause() for success when a pauser is pausing all the functions
     // Check pause() for sucessfully emit event when the functions are paused
     // Check pause() for failure when a random address try to pause all the functions
