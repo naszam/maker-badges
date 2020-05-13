@@ -48,7 +48,7 @@ contract('BadgeFactory', function(accounts) {
 
   describe("Functions", () => {
 
-    // !Tested setting the mintWithTokenURI() fucntion to public with onlyTemplater access control
+    // !Tested setting the mintWithTokenURI() function set to public with onlyTemplater access control (remember to remove "_" before function)
     // Check mintWithTokenURI() for success when a templater is trying to mint a new token
     describe("mintWithTokenURI()", async () => {
       beforeEach(async function () {
@@ -170,32 +170,6 @@ contract('BadgeFactory', function(accounts) {
 
         it("random address should not be able to create a new template", async () => {
           await catchRevert(instance.createTemplate(name, description, image, {from:random}))
-        })
-
-      })
-
-      // Check destroyTemplate() for success when a templater is trying to destroy a template
-      // Check destroyTemplate() for sucessfully emit event when the template is destroyed
-      // Check destroyTemplate() for failure when a random address try to destroy a template
-      describe("destroyTemplate()", async () => {
-        beforeEach(async function () {
-          await instance.createTemplate(name, description, image, {from:owner})
-        });
-
-        it("templaters should be able to destroy a template", async () => {
-          await instance.destroyTemplate(templateId, {from:owner})
-          await catchRevert(instance.getTemplate(templateId, {from:random}))
-          const result = await instance.getTemplatesCount({from:random})
-          assert.equal(result, 0, "the number of templates does not match the expected value")
-        })
-
-        it("should emit the appropriate event when a template is destroyed", async () => {
-          const result = await instance.destroyTemplate(templateId, {from:owner})
-          assert.equal(result.logs[0].event, "TemplateDestroyed", "TemplateDestroyed event not emitted, check destroyTemplate method")
-        })
-
-        it("random address should not be able to destroy a template", async () => {
-          await catchRevert(instance.destroyTemplate(templateId, {from:random}))
         })
 
       })
