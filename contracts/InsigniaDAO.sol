@@ -1,4 +1,4 @@
-opragma solidity 0.6.7;
+pragma solidity 0.6.7;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari, Scott Herren
