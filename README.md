@@ -66,9 +66,9 @@ Clone this GitHub repository.
      $ mythx analyze
      ```
 ## MythX CLI Report
-Line | SWC Title | Severity | Short Description
---- | --- | --- | ---
-80 | Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
+Contract | Line | SWC Title | Severity | Short Description 
+--- | --- | --- | --- | ---
+InsignaDAO.sol | 80 | Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
 
 ## Deploy on Kovan Testnet
  - Get an Ethereum Account on Metamask.
