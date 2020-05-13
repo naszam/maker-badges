@@ -97,6 +97,10 @@ InsigniaDAO.sol | 80 | Timestamp Dependence | Low | A control flow decision is m
    $ truffle migrate --network kovan
    ```
 
+## Project deployed on Kovan
+[InsigniaDAO.sol](https://kovan.etherscan.io/address/0x7Cf0ef375998470D75044B10Cf2f6a5F8af34a20)  
+[BadgeFactory.sol](https://kovan.etherscan.io/address/0x276C2c2CF6F751D62C79c6C1693666D87B015B17)
+
 ## Inspiration & References
 
 - [open-proofs](https://github.com/rrecuero/open-proofs)
