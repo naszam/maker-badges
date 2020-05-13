@@ -13,6 +13,7 @@
 - Mariano Conti, [@nanexcool](https://github.com/nanexcool)
 - Josh Crites, [@critesjosh](https://github.com/critesjosh)
 - Yannis Stamelakos, [@i-stam](https://github.com/i-stam)
+- Dror Tirosh (OpenGSN), [@drortirosh](https://github.com/drortirosh)
 
 Project Setup
 ============
