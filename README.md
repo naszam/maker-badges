@@ -38,9 +38,12 @@ Clone this GitHub repository.
     ```
     $ npm install -g @opengsn/gsn
     ```
-    - MythX for Truffle (optional):
+    - MythX CLI (optional):
     ```sh
-    $ npm install -g truffle-security
+    $ git clone git://github.com/dmuhs/mythx-cli
+    ```
+    ```
+    $ sudo python setup.py install
     ```
 ## Running the project with local test network (ganache-cli)
 
@@ -60,9 +63,9 @@ Clone this GitHub repository.
      ```sh
      $ truffle test
      ```
-   - Analyze the smart contracts using MythX for Truffle with the following command (optional):
+   - Analyze the smart contracts using MythX CLI with the following command (optional):
      ```sh
-     $ truffle run verify
+     $ mythx analyze
      ```
 ## Deploy on Kovan Testnet
  - Get an Ethereum Account on Metamask.
