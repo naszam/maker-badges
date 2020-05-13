@@ -68,7 +68,7 @@ Clone this GitHub repository.
 ## MythX CLI Report
 Contract | Line | SWC Title | Severity | Short Description 
 --- | --- | --- | --- | ---
-InsignaDAO.sol | 80 | Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
+InsigniaDAO.sol | 80 | Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
 
 ## Deploy on Kovan Testnet
  - Get an Ethereum Account on Metamask.
