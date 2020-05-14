@@ -11,6 +11,8 @@ import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
+import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
+
 
 interface InsigniaDAO {
 
@@ -60,6 +62,13 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @dev Added not payable to revert transactions not matching any other function which send value
   fallback() external {
     revert();
+  }
+
+  /// @notice OpenGSN _msgSender()
+  /// @dev override _msgSender() in OZ Context.sol and BadgeRoles.sol
+  /// @return msg.sender after relay call
+  function _msgSender() internal override(Context, BadgeRoles) view returns (address payable) {
+            return BaseRelayRecipient._msgSender();
   }
 
   /// @notice Set the baseURI
@@ -114,7 +123,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
     BadgeTemplate memory _newTemplate = BadgeTemplate({
        name: name,
-       owner: msg.sender,
+       owner: _msgSender(),
        description: description,
        image: image
     });
@@ -152,14 +161,14 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @return _tokenId Token Id of the new Badge
   function activateBadge(bytes32[] memory proof, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
     require(templates.length > templateId, "No template with that id");
-    require(insignia.verify(msg.sender) || proof.verify(insignia.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
+    require(insignia.verify(_msgSender()) || proof.verify(insignia.roots(templateId), keccak256(abi.encodePacked(_msgSender()))), "Caller is not a redeemer");
 
-    _mintWithTokenURI(msg.sender, tokenURI);
+    _mintWithTokenURI(_msgSender(), tokenURI);
 
     // Increase the quantities
     _tokenTemplates[_tokenId] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-    emit BadgeActivated(msg.sender,_tokenId, templateId, tokenURI);
+    emit BadgeActivated(_msgSender(),_tokenId, templateId, tokenURI);
     return _tokenId;
   }
 
