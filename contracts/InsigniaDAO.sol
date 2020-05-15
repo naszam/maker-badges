@@ -1,4 +1,6 @@
 pragma solidity 0.6.7;
+pragma experimental ABIEncoderV2;
+
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari, Scott Herren
@@ -23,6 +25,24 @@ interface PotLike {
 
 }
 
+interface DSChiefLike {
+  function votes(address) external view returns (bytes32);
+}
+
+interface  FlipperLike {
+  struct Bid {
+    uint256 bid;
+    uint256 lot;
+    address guy;  // high bidder
+    uint48  tic;  // expiry time
+    uint48  end;
+    address usr;
+    address gal;
+    uint256 tab;
+}
+  function bids(uint256) external view returns (Bid memory);
+}
+
 contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
 
   /// Libraries
@@ -36,9 +56,12 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
   EnumerableSet.AddressSet private redeemers;
 
   /// Events
-  event DSRChallengeChecked(address guy);
+  event redeemerChecked(address guy);
 
+  /// Data
   PotLike  internal pot;
+  DSChiefLike internal chief;
+  FlipperLike internal flipper;
 
   /// Math
   uint256 constant RAY = 10 ** 27;
@@ -53,8 +76,13 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
 
         _setupRole(PAUSER_ROLE, owner());
 
-        // MCD_POT Kovan Address https://kovan.etherscan.io/address/0xea190dbdc7adf265260ec4da6e9675fd4f5a78bb#code
+        /// MCD_POT Kovan Address https://kovan.etherscan.io/address/0xea190dbdc7adf265260ec4da6e9675fd4f5a78bb#code
 			  pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
+        /// MCD_ADM Kovan Address https://kovan.etherscan.io/address/0xbBFFC76e94B34F72D96D054b31f6424249c1337d#code
+        chief = DSChiefLike(0xbBFFC76e94B34F72D96D054b31f6424249c1337d);
+        /// MCD_FLIP_ETH_A Kovan Address https://kovan.etherscan.io/address/0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b#code
+        flipper = FlipperLike(0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b);
+
   }
 
   /// @notice Fallback function
@@ -89,13 +117,13 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
     wad = rmul(slice, chi);
   }
 
-  /// @notice First Challange: Earn 1$ interest on DSR
+  /// @notice Check Redeemer
   /// @dev Keep track of the hash of the caller if successful
-  /// @return True if the caller successfully checked for challange
-  function dsrChallenge() public whenNotPaused returns (bool) {
-    require(_dai(_msgSender()) == 1 ether, "The caller has not accrued 1 Dai interest");
+  /// @return True if the caller successfully checked for activities on MakerDAO
+  function checkRedeemer(uint256 id) public whenNotPaused returns (bool) {
+    require(_dai(_msgSender()) == 1 ether ||chief.votes(_msgSender()) != 0x00 || flipper.bids(id).guy == _msgSender() , "The caller has not done any actvitiy on MakerDAO");
     redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
-    emit DSRChallengeChecked(_msgSender());
+    emit redeemerChecked(_msgSender());
     return true;
   }
 
