@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 pragma solidity 0.6.7;
 pragma experimental ABIEncoderV2;
 
+=======
+/// SPDX-License-Identifier: GPL-3.0
+pragma solidity 0.6.8;
+>>>>>>> f175dbc... update to solc v0.6.8
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari, Scott Herren
