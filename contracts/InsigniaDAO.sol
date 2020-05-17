@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-pragma solidity 0.6.7;
-pragma experimental ABIEncoderV2;
-
-=======
 /// SPDX-License-Identifier: GPL-3.0
 pragma solidity 0.6.8;
->>>>>>> f175dbc... update to solc v0.6.8
+pragma experimental ABIEncoderV2;
+
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari, Scott Herren
@@ -83,17 +79,14 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
 
         /// MCD_POT Kovan Address https://kovan.etherscan.io/address/0xea190dbdc7adf265260ec4da6e9675fd4f5a78bb#code
 			  pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
-<<<<<<< HEAD
+
         /// MCD_ADM Kovan Address https://kovan.etherscan.io/address/0xbBFFC76e94B34F72D96D054b31f6424249c1337d#code
         chief = DSChiefLike(0xbBFFC76e94B34F72D96D054b31f6424249c1337d);
         /// MCD_FLIP_ETH_A Kovan Address https://kovan.etherscan.io/address/0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b#code
         flipper = FlipperLike(0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b);
 
-=======
-
         /// OpenGSN TruestedForwarder on Kovan
         trustedForwarder = 0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B;
->>>>>>> 28fd81b... set opegsn trustedForwarder on kovan
   }
 
   /// @notice Fallback function
