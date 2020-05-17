@@ -25,6 +25,9 @@ contract BadgeRoles is Ownable, AccessControl, Pausable, BaseRelayRecipient {
 
         _setupRole(TEMPLATER_ROLE, owner());
         _setupRole(PAUSER_ROLE, owner());
+
+        /// OpenGSN TruestedForwarder on Kovan
+        trustedForwarder =  0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B;
   }
 
   /// Modifiers
