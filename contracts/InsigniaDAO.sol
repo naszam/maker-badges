@@ -56,6 +56,9 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
 
         // MCD_POT Kovan Address https://kovan.etherscan.io/address/0xea190dbdc7adf265260ec4da6e9675fd4f5a78bb#code
 			  pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
+
+        /// OpenGSN TruestedForwarder on Kovan
+        trustedForwarder = 0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B;
   }
 
   /// @notice Fallback function
