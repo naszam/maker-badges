@@ -129,13 +129,19 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
   function checkRedeemer(uint256 id) public whenNotPaused returns (bool) {
 
     if (_dai(_msgSender()) == 1 ether) {
+      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))))) {
       redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
+      }
       emit PotChecked(_msgSender());
     }else if(chief.votes(_msgSender()) != 0x00) {
+      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))))) {
       redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
+      }
       emit DSChiefChecked(_msgSender());
     }else if(flipper.bids(id).guy == _msgSender()) {
+      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))))) {
       redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
+      }
       emit FlipperChecked(_msgSender());
     }else {
       return false;
