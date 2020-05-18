@@ -12,7 +12,6 @@ import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
-import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
 
 
 interface InsigniaDAO {
