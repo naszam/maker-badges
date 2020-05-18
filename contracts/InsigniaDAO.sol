@@ -57,7 +57,9 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
   EnumerableSet.AddressSet private redeemers;
 
   /// Events
-  event redeemerChecked(address guy);
+  event PotChecked(address guy);
+  event DSChiefChecked(address guy);
+  event FlipperChecked(address guy);
 
   /// Data
   PotLike  internal pot;
@@ -123,11 +125,21 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
 
   /// @notice Check Redeemer
   /// @dev Keep track of the hash of the caller if successful
-  /// @return True if the caller successfully checked for activities on MakerDAO
+  /// @return True/False if the caller successfully checked for activities on MakerDAO or not
   function checkRedeemer(uint256 id) public whenNotPaused returns (bool) {
-    require(_dai(_msgSender()) == 1 ether ||chief.votes(_msgSender()) != 0x00 || flipper.bids(id).guy == _msgSender() , "The caller has not done any actvitiy on MakerDAO");
-    redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
-    emit redeemerChecked(_msgSender());
+
+    if (_dai(_msgSender()) == 1 ether) {
+      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
+      emit PotChecked(_msgSender());
+    }else if(chief.votes(_msgSender()) != 0x00) {
+      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
+      emit DSChiefChecked(_msgSender());
+    }else if(flipper.bids(id).guy == _msgSender()) {
+      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
+      emit FlipperChecked(_msgSender());
+    }else {
+      return false;
+    }
     return true;
   }
 
