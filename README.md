@@ -99,7 +99,7 @@ InsigniaDAO.sol | 80 | Timestamp Dependence | Low | A control flow decision is m
 
 ## Project deployed on Kovan
 [InsigniaDAO.sol (OpenGSN)](https://kovan.etherscan.io/address/0x098798b4aF578F9c0d933e114576d32550b24C75)  
-[BadgeFactory.sol (OpenGSN)](https://kovan.etherscan.io/address/0x3Aa897f4fE6306a9C047F30b7B62555b20F63092)
+[BadgeFactory.sol (OpenGSN)](https://kovan.etherscan.io/address/0x3Aa897f4fE6306a9C047F30b7B62555b20F63092)  
 [BadgePaymaster.sol (OpenGSN)](https://kovan.etherscan.io/address/0x7Db6a577bD62e25b4f9F6cA684780DBeC356ca72)
 
 ## Inspiration & References
