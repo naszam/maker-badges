@@ -118,7 +118,7 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
   /// @return True/False if the caller successfully checked for activities on MakerDAO or not
   function checkRedeemer(uint256 id) public whenNotPaused returns (bool) {
 
-    if (_dai(msg.sender) == 1 ether) {
+    if (_dai(msg.sender) >= 1 ether) {
       if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))))) {
       redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
       }
