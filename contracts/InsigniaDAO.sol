@@ -15,7 +15,6 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
-import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
 
 interface PotLike {
 
@@ -44,7 +43,7 @@ interface  FlipperLike {
   function bids(uint256) external view returns (Bid memory);
 }
 
-contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
+contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   /// Libraries
   using SafeMath for uint256;
@@ -87,21 +86,12 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
         /// MCD_FLIP_ETH_A Kovan Address https://kovan.etherscan.io/address/0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b#code
         flipper = FlipperLike(0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b);
 
-        /// OpenGSN TruestedForwarder on Kovan
-        trustedForwarder = 0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B;
   }
 
   /// @notice Fallback function
   /// @dev Added not payable to revert transactions not matching any other function which send value
   fallback() external {
     revert();
-  }
-
-  /// @notice OpenGSN _msgSender()
-  /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
-  /// @return msg.sender after relay call
-  function _msgSender() internal override(Context, BaseRelayRecipient) view returns (address payable) {
-            return BaseRelayRecipient._msgSender();
   }
 
   /// @notice Set Merkle Tree Root Hashes array
@@ -128,21 +118,21 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
   /// @return True/False if the caller successfully checked for activities on MakerDAO or not
   function checkRedeemer(uint256 id) public whenNotPaused returns (bool) {
 
-    if (_dai(_msgSender()) == 1 ether) {
+    if (_dai(msg.sender) == 1 ether) {
       if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))))) {
-      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
+      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
       }
-      emit PotChecked(_msgSender());
-    }else if(chief.votes(_msgSender()) != 0x00) {
-      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))))) {
-      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
+      emit PotChecked(msg.sender);
+    }else if(chief.votes(msg.sender) != 0x00) {
+      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))))) {
+      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
       }
-      emit DSChiefChecked(_msgSender());
-    }else if(flipper.bids(id).guy == _msgSender()) {
-      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))))) {
-      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
+      emit DSChiefChecked(msg.sender);
+    }else if(flipper.bids(id).guy == msg.sender) {
+      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))))) {
+      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
       }
-      emit FlipperChecked(_msgSender());
+      emit FlipperChecked(msg.sender);
     }else {
       return false;
     }
@@ -161,14 +151,14 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function pause() public {
-    require(hasRole(PAUSER_ROLE, _msgSender()), "InsigniaDAO: must have pauser role to pause");
+    require(hasRole(PAUSER_ROLE, msg.sender), "InsigniaDAO: must have pauser role to pause");
     _pause();
   }
 
   /// @notice Unpause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function unpause() public {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "InsigniaDAO: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, msg.sender), "InsigniaDAO: must have pauser role to unpause");
         _unpause();
     }
 
