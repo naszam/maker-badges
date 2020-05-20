@@ -159,15 +159,11 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     // Increase the quantities
     _tokenTemplates[_tokenId] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-<<<<<<< HEAD
 
     (bool success) = _mintWithTokenURI(_msgSender(), tokenURI);
     require(success, "Token not minted");
 
-    emit BadgeActivated(_msgSender(),_tokenId, templateId, tokenURI);
-=======
     emit BadgeActivated(msg.sender,_tokenId, templateId, tokenURI);
->>>>>>> e633f7a... clean up GSNv2 BaseRelayRecipient
     return _tokenId;
   }
 
