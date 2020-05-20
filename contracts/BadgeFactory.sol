@@ -163,11 +163,13 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     require(templates.length > templateId, "No template with that id");
     require(insignia.verify(_msgSender()) || proof.verify(insignia.roots(templateId), keccak256(abi.encodePacked(_msgSender()))), "Caller is not a redeemer");
 
-    _mintWithTokenURI(_msgSender(), tokenURI);
-
     // Increase the quantities
     _tokenTemplates[_tokenId] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
+
+    (bool success) = _mintWithTokenURI(_msgSender(), tokenURI);
+    require(success, "Token not minted");
+
     emit BadgeActivated(_msgSender(),_tokenId, templateId, tokenURI);
     return _tokenId;
   }
@@ -178,8 +180,8 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @return True if the Badge has been burned
   function burnBadge(uint256 tokenId) public whenNotPaused returns (bool){
     uint256 templateId = getBadgeTemplate(tokenId);
-    burn(tokenId);
     _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
+    burn(tokenId);
     return true;
   }
 
