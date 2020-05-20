@@ -13,7 +13,6 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
-import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
 
 interface PotLike {
 
@@ -24,7 +23,7 @@ interface PotLike {
 
 }
 
-contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
+contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   /// Libraries
   using SafeMath for uint256;
@@ -57,21 +56,12 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
         // MCD_POT Kovan Address https://kovan.etherscan.io/address/0xea190dbdc7adf265260ec4da6e9675fd4f5a78bb#code
 			  pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
 
-        /// OpenGSN TruestedForwarder on Kovan
-        trustedForwarder = 0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B;
   }
 
   /// @notice Fallback function
   /// @dev Added not payable to revert transactions not matching any other function which send value
   fallback() external {
     revert();
-  }
-
-  /// @notice OpenGSN _msgSender()
-  /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
-  /// @return msg.sender after relay call
-  function _msgSender() internal override(Context, BaseRelayRecipient) view returns (address payable) {
-            return BaseRelayRecipient._msgSender();
   }
 
   /// @notice Set Merkle Tree Root Hashes array
@@ -97,9 +87,9 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
   /// @dev Keep track of the hash of the caller if successful
   /// @return True if the caller successfully checked for challange
   function dsrChallenge() public whenNotPaused returns (bool) {
-    require(_dai(_msgSender()) == 1 ether, "The caller has not accrued 1 Dai interest");
-    redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))));
-    emit DSRChallengeChecked(_msgSender());
+    require(_dai(msg.sender) == 1 ether, "The caller has not accrued 1 Dai interest");
+    redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
+    emit DSRChallengeChecked(msg.sender);
     return true;
   }
 
@@ -115,14 +105,14 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function pause() public {
-    require(hasRole(PAUSER_ROLE, _msgSender()), "InsigniaDAO: must have pauser role to pause");
+    require(hasRole(PAUSER_ROLE, msg.sender), "InsigniaDAO: must have pauser role to pause");
     _pause();
   }
 
   /// @notice Unpause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function unpause() public {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "InsigniaDAO: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, msg.sender), "InsigniaDAO: must have pauser role to unpause");
         _unpause();
     }
 

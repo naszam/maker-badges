@@ -64,13 +64,6 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     revert();
   }
 
-  /// @notice OpenGSN _msgSender()
-  /// @dev override _msgSender() in OZ Context.sol and BadgeRoles.sol
-  /// @return msg.sender after relay call
-  function _msgSender() internal override(Context, BadgeRoles) view returns (address payable) {
-            return BaseRelayRecipient._msgSender();
-  }
-
   /// @notice Set the baseURI
   /// @dev Update the baseURI specified in the constructor
   /// @param baseURI New baseURI
@@ -123,7 +116,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
     BadgeTemplate memory _newTemplate = BadgeTemplate({
        name: name,
-       owner: _msgSender(),
+       owner: msg.sender,
        description: description,
        image: image
     });
@@ -161,14 +154,14 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @return _tokenId Token Id of the new Badge
   function activateBadge(bytes32[] memory proof, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
     require(templates.length > templateId, "No template with that id");
-    require(insignia.verify(_msgSender()) || proof.verify(insignia.roots(templateId), keccak256(abi.encodePacked(_msgSender()))), "Caller is not a redeemer");
+    require(insignia.verify(msg.sender) || proof.verify(insignia.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
 
     _mintWithTokenURI(_msgSender(), tokenURI);
 
     // Increase the quantities
     _tokenTemplates[_tokenId] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-    emit BadgeActivated(_msgSender(),_tokenId, templateId, tokenURI);
+    emit BadgeActivated(msg.sender,_tokenId, templateId, tokenURI);
     return _tokenId;
   }
 
