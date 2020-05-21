@@ -119,7 +119,7 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
   function checkRedeemer(uint256 id) public whenNotPaused returns (bool) {
 
     if (_dai(msg.sender) >= 1 ether) {
-      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(_msgSender()))))))) {
+      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))))) {
       redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
       }
       emit PotChecked(msg.sender);
