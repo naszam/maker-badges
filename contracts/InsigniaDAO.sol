@@ -44,7 +44,7 @@ interface  FlipperLike {
   function bids(uint256) external view returns (Bid memory);
 }
 
-contract InsigniaDAO is Ownable, AccessControl, Pausable {
+contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
 
   /// Libraries
   using SafeMath for uint256;
