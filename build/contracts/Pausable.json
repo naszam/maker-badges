@@ -2,6 +2,11 @@
   "contractName": "Pausable",
   "abi": [
     {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
       "anonymous": false,
       "inputs": [
         {
@@ -41,7 +46,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.8+commit.0bbfe453\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Paused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Unpaused\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"paused\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Contract module which allows children to implement an emergency stop mechanism that can be triggered by an authorized account. * This module is used through inheritance. It will make available the modifiers `whenNotPaused` and `whenPaused`, which can be applied to the functions of your contract. Note that they will not be pausable by simply including this module, only once the modifiers are put in place.\",\"methods\":{\"constructor\":{\"details\":\"Initializes the contract in unpaused state.\"},\"paused()\":{\"details\":\"Returns true if the contract is paused, and false otherwise.\"}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"@openzeppelin/contracts/utils/Pausable.sol\":\"Pausable\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/GSN/Context.sol\":{\"keccak256\":\"0x0de74dfa6b37943c1b834cbd8fb7a8d052e5ff80c7adb33692102dd6cd2985e9\",\"urls\":[\"bzz-raw://9d2d827fcf4a838f5821732c0acd6a40d21c2a5a2cfe2563feec91465f47bb60\",\"dweb:/ipfs/Qmex3wMKf5Sghbfvr288RUg1kP2uAyTMf11w83WbMbpQQc\"]},\"@openzeppelin/contracts/utils/Pausable.sol\":{\"keccak256\":\"0x0336d64bd695c5d8bb962fd3dacb3d26f52879b19e75472d7dea9f91f7add79a\",\"urls\":[\"bzz-raw://d709c1de86475b74fa4f614458e868213f8e5b13eed8b29b465793cd97e5c0f5\",\"dweb:/ipfs/QmYVgazum1VVeDoJYYmKhAJ1mcuTy8vidb2iFEMWcVdSeY\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.7+commit.b8d736ae\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Paused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Unpaused\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"paused\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Contract module which allows children to implement an emergency stop mechanism that can be triggered by an authorized account. * This module is used through inheritance. It will make available the modifiers `whenNotPaused` and `whenPaused`, which can be applied to the functions of your contract. Note that they will not be pausable by simply including this module, only once the modifiers are put in place.\",\"methods\":{\"constructor\":{\"details\":\"Initializes the contract in unpaused state.\"},\"paused()\":{\"details\":\"Returns true if the contract is paused, and false otherwise.\"}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"@openzeppelin/contracts/utils/Pausable.sol\":\"Pausable\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/GSN/Context.sol\":{\"keccak256\":\"0x0de74dfa6b37943c1b834cbd8fb7a8d052e5ff80c7adb33692102dd6cd2985e9\",\"urls\":[\"bzz-raw://9d2d827fcf4a838f5821732c0acd6a40d21c2a5a2cfe2563feec91465f47bb60\",\"dweb:/ipfs/Qmex3wMKf5Sghbfvr288RUg1kP2uAyTMf11w83WbMbpQQc\"]},\"@openzeppelin/contracts/utils/Pausable.sol\":{\"keccak256\":\"0x0336d64bd695c5d8bb962fd3dacb3d26f52879b19e75472d7dea9f91f7add79a\",\"urls\":[\"bzz-raw://d709c1de86475b74fa4f614458e868213f8e5b13eed8b29b465793cd97e5c0f5\",\"dweb:/ipfs/QmYVgazum1VVeDoJYYmKhAJ1mcuTy8vidb2iFEMWcVdSeY\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -57,7 +62,6 @@
       ]
     },
     "id": 3880,
-    "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -1052,7 +1056,6 @@
       ]
     },
     "id": 3880,
-    "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -2041,11 +2044,11 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.6.8+commit.0bbfe453.Emscripten.clang"
+    "version": "0.6.7+commit.b8d736ae.Emscripten.clang"
   },
   "networks": {},
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-05-20T13:49:15.282Z",
+  "updatedAt": "2020-05-13T19:41:12.375Z",
   "devdoc": {
     "details": "Contract module which allows children to implement an emergency stop mechanism that can be triggered by an authorized account. * This module is used through inheritance. It will make available the modifiers `whenNotPaused` and `whenPaused`, which can be applied to the functions of your contract. Note that they will not be pausable by simply including this module, only once the modifiers are put in place.",
     "methods": {

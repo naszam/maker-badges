@@ -1,9 +1,9 @@
 {
   "contractName": "MerkleProof",
   "abi": [],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.8+commit.0bbfe453\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"details\":\"These functions deal with verification of Merkle trees (hash trees),\",\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"@openzeppelin/contracts/cryptography/MerkleProof.sol\":\"MerkleProof\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/cryptography/MerkleProof.sol\":{\"keccak256\":\"0x169f43befe6b7b973f4fac92a53a74e480a04a490aa84901fdaaf4b423991920\",\"urls\":[\"bzz-raw://299172b91507b45d6409024bb4977bfd7999713e15b687c0357f46d371f78e2e\",\"dweb:/ipfs/QmSZDnjpgBKSWENKouFfPXbb88kKuK9uL4oG5FvKt4tCzN\"]}},\"version\":1}",
-  "bytecode": "0x60566023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220bbf532144f0f10d90746e9a97f6978028952a5f2d673f00c4d55f26acf7bada964736f6c63430006080033",
-  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220bbf532144f0f10d90746e9a97f6978028952a5f2d673f00c4d55f26acf7bada964736f6c63430006080033",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.7+commit.b8d736ae\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"details\":\"These functions deal with verification of Merkle trees (hash trees),\",\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"@openzeppelin/contracts/cryptography/MerkleProof.sol\":\"MerkleProof\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/cryptography/MerkleProof.sol\":{\"keccak256\":\"0x169f43befe6b7b973f4fac92a53a74e480a04a490aa84901fdaaf4b423991920\",\"urls\":[\"bzz-raw://299172b91507b45d6409024bb4977bfd7999713e15b687c0357f46d371f78e2e\",\"dweb:/ipfs/QmSZDnjpgBKSWENKouFfPXbb88kKuK9uL4oG5FvKt4tCzN\"]}},\"version\":1}",
+  "bytecode": "0x60566023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220e29ea5a48e6b1bc48c84e5c8e52795d8d8f84501c3b909ef6eff34ef0168040b64736f6c63430006070033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220e29ea5a48e6b1bc48c84e5c8e52795d8d8f84501c3b909ef6eff34ef0168040b64736f6c63430006070033",
   "immutableReferences": {},
   "sourceMap": "110:1135:7:-:0;;132:2:-1;166:7;155:9;146:7;137:37;255:7;249:14;246:1;241:23;235:4;232:33;222:2;;269:9;222:2;293:9;290:1;283:20;323:4;314:7;306:22;347:7;338;331:24",
   "deployedSourceMap": "110:1135:7:-:0;;;;;;12:1:-1;9;2:12",
@@ -17,7 +17,6 @@
       ]
     },
     "id": 1392,
-    "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -941,7 +940,6 @@
       ]
     },
     "id": 1392,
-    "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -1859,11 +1857,11 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.6.8+commit.0bbfe453.Emscripten.clang"
+    "version": "0.6.7+commit.b8d736ae.Emscripten.clang"
   },
   "networks": {},
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-05-20T13:49:15.214Z",
+  "updatedAt": "2020-05-13T19:41:12.304Z",
   "devdoc": {
     "details": "These functions deal with verification of Merkle trees (hash trees),",
     "methods": {}
