@@ -69,7 +69,11 @@
         2735
       ]
     },
+<<<<<<< HEAD
     "id": 2736,
+=======
+    "id": 1321,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -1443,7 +1447,11 @@
         2735
       ]
     },
+<<<<<<< HEAD
     "id": 2736,
+=======
+    "id": 1321,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -2816,7 +2824,11 @@
   },
   "networks": {},
   "schemaVersion": "3.1.0",
+<<<<<<< HEAD
   "updatedAt": "2020-05-19T14:43:54.042Z",
+=======
+  "updatedAt": "2020-05-20T13:49:15.212Z",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   "devdoc": {
     "details": "Contract module which provides a basic access control mechanism, where there is an account (an owner) that can be granted exclusive access to specific functions. * By default, the owner account will be the one that deploys the contract. This can later be changed with {transferOwnership}. * This module is used through inheritance. It will make available the modifier `onlyOwner`, which can be applied to your functions to restrict their use to the owner.",
     "methods": {

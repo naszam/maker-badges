@@ -16,7 +16,11 @@
         2904
       ]
     },
+<<<<<<< HEAD
     "id": 2905,
+=======
+    "id": 1392,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -940,7 +944,11 @@
         2904
       ]
     },
+<<<<<<< HEAD
     "id": 2905,
+=======
+    "id": 1392,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -1863,7 +1871,11 @@
   },
   "networks": {},
   "schemaVersion": "3.1.0",
+<<<<<<< HEAD
   "updatedAt": "2020-05-19T14:43:54.045Z",
+=======
+  "updatedAt": "2020-05-20T13:49:15.214Z",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   "devdoc": {
     "details": "These functions deal with verification of Merkle trees (hash trees),",
     "methods": {}

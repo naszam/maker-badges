@@ -220,7 +220,11 @@
         2626
       ]
     },
+<<<<<<< HEAD
     "id": 2627,
+=======
+    "id": 1212,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -3626,7 +3630,11 @@
         2626
       ]
     },
+<<<<<<< HEAD
     "id": 2627,
+=======
+    "id": 1212,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -7031,7 +7039,11 @@
   },
   "networks": {},
   "schemaVersion": "3.1.0",
+<<<<<<< HEAD
   "updatedAt": "2020-05-19T14:43:54.039Z",
+=======
+  "updatedAt": "2020-05-20T13:49:15.206Z",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   "devdoc": {
     "details": "Contract module that allows children to implement role-based access control mechanisms. * Roles are referred to by their `bytes32` identifier. These should be exposed in the external API and be unique. The best way to achieve this is by using `public constant` hash digests: * ``` bytes32 public constant MY_ROLE = keccak256(\"MY_ROLE\"); ``` * Roles can be used to represent a set of permissions. To restrict access to a function call, use {hasRole}: * ``` function foo() public {    require(hasRole(MY_ROLE, msg.sender));    ... } ``` * Roles can be granted and revoked dynamically via the {grantRole} and {revokeRole} functions. Each role has an associated admin role, and only accounts that have a role's admin role can call {grantRole} and {revokeRole}. * By default, the admin role for all roles is `DEFAULT_ADMIN_ROLE`, which means that only accounts with this role will be able to grant or revoke other roles. More complex role relationships can be created by using {_setRoleAdmin}. * WARNING: The `DEFAULT_ADMIN_ROLE` is also its own admin: it has permission to grant and revoke this role. Extra precautions should be taken to secure accounts that have been granted it.",
     "methods": {

@@ -52,8 +52,13 @@
   "bytecode": "0x608060405234801561001057600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555061019d806100606000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c8063445df0ac146100465780638da5cb5b14610064578063fdacd576146100ae575b600080fd5b61004e6100dc565b6040518082815260200191505060405180910390f35b61006c6100e2565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6100da600480360360208110156100c457600080fd5b8101908080359060200190929190505050610107565b005b60015481565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141561016457806001819055505b5056fea2646970667358221220557d552334a8eaa9dcb28d6b3fc341c396be010e275295e559bf3e501c7607dd64736f6c63430006080033",
   "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100415760003560e01c8063445df0ac146100465780638da5cb5b14610064578063fdacd576146100ae575b600080fd5b61004e6100dc565b6040518082815260200191505060405180910390f35b61006c6100e2565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6100da600480360360208110156100c457600080fd5b8101908080359060200190929190505050610107565b005b60015481565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141561016457806001819055505b5056fea2646970667358221220557d552334a8eaa9dcb28d6b3fc341c396be010e275295e559bf3e501c7607dd64736f6c63430006080033",
   "immutableReferences": {},
+<<<<<<< HEAD
   "sourceMap": "61:311:4:-:0;;;150:50;5:9:-1;2:2;;;27:1;24;17:12;2:2;150:50:4;185:10;177:5;;:18;;;;;;;;;;;;;;;;;;61:311;;;;;;",
   "deployedSourceMap": "61:311:4:-:0;;;;5:9:-1;2:2;;;27:1;24;17:12;2:2;61:311:4;;;;;;;;;;;;;;;;;;;;;;;;;;12:1:-1;9;2:12;109:36:4;;;:::i;:::-;;;;;;;;;;;;;;;;;;;85:20;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;267:103;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;267:103:4;;;;;;;;;;;;;;;;;:::i;:::-;;109:36;;;;:::o;85:20::-;;;;;;;;;;;;;:::o;267:103::-;250:5;;;;;;;;;;;236:19;;:10;:19;;;232:26;;;356:9:::1;329:24;:36;;;;232:26:::0;267:103;:::o",
+=======
+  "sourceMap": "61:311:3:-:0;;;150:50;5:9:-1;2:2;;;27:1;24;17:12;2:2;150:50:3;185:10;177:5;;:18;;;;;;;;;;;;;;;;;;61:311;;;;;;",
+  "deployedSourceMap": "61:311:3:-:0;;;;5:9:-1;2:2;;;27:1;24;17:12;2:2;61:311:3;;;;;;;;;;;;;;;;;;;;;;;;;;12:1:-1;9;2:12;109:36:3;;;:::i;:::-;;;;;;;;;;;;;;;;;;;85:20;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;267:103;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;267:103:3;;;;;;;;;;;;;;;;;:::i;:::-;;109:36;;;;:::o;85:20::-;;;;;;;;;;;;;:::o;267:103::-;250:5;;;;;;;;;;;236:19;;:10;:19;;;232:26;;;356:9:::1;329:24;:36;;;;232:26:::0;267:103;:::o",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   "source": "/// SPDX-License-Identifier: GPL-3.0\npragma solidity 0.6.8;\n\ncontract Migrations {\n  address public owner;\n  uint public last_completed_migration;\n\n  constructor() public {\n    owner = msg.sender;\n  }\n\n  modifier restricted() {\n    if (msg.sender == owner) _;\n  }\n\n  function setCompleted(uint completed) public restricted {\n    last_completed_migration = completed;\n  }\n}\n",
   "sourcePath": "/home/sencha/insigniadao/contracts/Migrations.sol",
   "ast": {
@@ -63,7 +68,11 @@
         1053
       ]
     },
+<<<<<<< HEAD
     "id": 1054,
+=======
+    "id": 920,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": "GPL-3.0",
     "nodeType": "SourceUnit",
     "nodes": [
@@ -75,7 +84,11 @@
           ".8"
         ],
         "nodeType": "PragmaDirective",
+<<<<<<< HEAD
         "src": "37:22:4"
+=======
+        "src": "37:22:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
       },
       {
         "abstract": false,
@@ -99,8 +112,13 @@
             "name": "owner",
             "nodeType": "VariableDeclaration",
             "overrides": null,
+<<<<<<< HEAD
             "scope": 1053,
             "src": "85:20:4",
+=======
+            "scope": 919,
+            "src": "85:20:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -111,7 +129,11 @@
               "id": 1019,
               "name": "address",
               "nodeType": "ElementaryTypeName",
+<<<<<<< HEAD
               "src": "85:7:4",
+=======
+              "src": "85:7:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               "stateMutability": "nonpayable",
               "typeDescriptions": {
                 "typeIdentifier": "t_address",
@@ -129,8 +151,13 @@
             "name": "last_completed_migration",
             "nodeType": "VariableDeclaration",
             "overrides": null,
+<<<<<<< HEAD
             "scope": 1053,
             "src": "109:36:4",
+=======
+            "scope": 919,
+            "src": "109:36:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -141,7 +168,11 @@
               "id": 1021,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
+<<<<<<< HEAD
               "src": "109:4:4",
+=======
+              "src": "109:4:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -154,7 +185,11 @@
             "body": {
               "id": 1030,
               "nodeType": "Block",
+<<<<<<< HEAD
               "src": "171:29:4",
+=======
+              "src": "171:29:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               "statements": [
                 {
                   "expression": {
@@ -170,8 +205,13 @@
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
+<<<<<<< HEAD
                       "referencedDeclaration": 1020,
                       "src": "177:5:4",
+=======
+                      "referencedDeclaration": 886,
+                      "src": "177:5:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -188,7 +228,11 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": -15,
+<<<<<<< HEAD
                         "src": "185:3:4",
+=======
+                        "src": "185:3:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
@@ -202,13 +246,21 @@
                       "memberName": "sender",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": null,
+<<<<<<< HEAD
                       "src": "185:10:4",
+=======
+                      "src": "185:10:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_address_payable",
                         "typeString": "address payable"
                       }
                     },
+<<<<<<< HEAD
                     "src": "177:18:4",
+=======
+                    "src": "177:18:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -216,7 +268,11 @@
                   },
                   "id": 1029,
                   "nodeType": "ExpressionStatement",
+<<<<<<< HEAD
                   "src": "177:18:4"
+=======
+                  "src": "177:18:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                 }
               ]
             },
@@ -232,16 +288,27 @@
               "id": 1023,
               "nodeType": "ParameterList",
               "parameters": [],
+<<<<<<< HEAD
               "src": "161:2:4"
+=======
+              "src": "161:2:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             },
             "returnParameters": {
               "id": 1024,
               "nodeType": "ParameterList",
               "parameters": [],
+<<<<<<< HEAD
               "src": "171:0:4"
             },
             "scope": 1053,
             "src": "150:50:4",
+=======
+              "src": "171:0:3"
+            },
+            "scope": 919,
+            "src": "150:50:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
@@ -250,7 +317,11 @@
             "body": {
               "id": 1039,
               "nodeType": "Block",
+<<<<<<< HEAD
               "src": "226:37:4",
+=======
+              "src": "226:37:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               "statements": [
                 {
                   "condition": {
@@ -273,7 +344,11 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": -15,
+<<<<<<< HEAD
                         "src": "236:3:4",
+=======
+                        "src": "236:3:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
@@ -287,7 +362,11 @@
                       "memberName": "sender",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": null,
+<<<<<<< HEAD
                       "src": "236:10:4",
+=======
+                      "src": "236:10:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_address_payable",
                         "typeString": "address payable"
@@ -301,14 +380,23 @@
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
+<<<<<<< HEAD
                       "referencedDeclaration": 1020,
                       "src": "250:5:4",
+=======
+                      "referencedDeclaration": 886,
+                      "src": "250:5:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
+<<<<<<< HEAD
                     "src": "236:19:4",
+=======
+                    "src": "236:19:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -317,11 +405,19 @@
                   "falseBody": null,
                   "id": 1038,
                   "nodeType": "IfStatement",
+<<<<<<< HEAD
                   "src": "232:26:4",
+=======
+                  "src": "232:26:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                   "trueBody": {
                     "id": 1037,
                     "nodeType": "PlaceholderStatement",
+<<<<<<< HEAD
                     "src": "257:1:4"
+=======
+                    "src": "257:1:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                   }
                 }
               ]
@@ -335,9 +431,15 @@
               "id": 1032,
               "nodeType": "ParameterList",
               "parameters": [],
+<<<<<<< HEAD
               "src": "223:2:4"
             },
             "src": "204:59:4",
+=======
+              "src": "223:2:3"
+            },
+            "src": "204:59:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             "virtual": false,
             "visibility": "internal"
           },
@@ -345,7 +447,11 @@
             "body": {
               "id": 1051,
               "nodeType": "Block",
+<<<<<<< HEAD
               "src": "323:47:4",
+=======
+              "src": "323:47:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               "statements": [
                 {
                   "expression": {
@@ -361,8 +467,13 @@
                       "name": "last_completed_migration",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
+<<<<<<< HEAD
                       "referencedDeclaration": 1022,
                       "src": "329:24:4",
+=======
+                      "referencedDeclaration": 888,
+                      "src": "329:24:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -376,14 +487,23 @@
                       "name": "completed",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
+<<<<<<< HEAD
                       "referencedDeclaration": 1042,
                       "src": "356:9:4",
+=======
+                      "referencedDeclaration": 908,
+                      "src": "356:9:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
+<<<<<<< HEAD
                     "src": "329:36:4",
+=======
+                    "src": "329:36:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -391,7 +511,11 @@
                   },
                   "id": 1050,
                   "nodeType": "ExpressionStatement",
+<<<<<<< HEAD
                   "src": "329:36:4"
+=======
+                  "src": "329:36:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                 }
               ]
             },
@@ -410,15 +534,24 @@
                   "name": "restricted",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
+<<<<<<< HEAD
                   "referencedDeclaration": 1040,
                   "src": "312:10:4",
+=======
+                  "referencedDeclaration": 906,
+                  "src": "312:10:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
                     "typeString": "modifier ()"
                   }
                 },
                 "nodeType": "ModifierInvocation",
+<<<<<<< HEAD
                 "src": "312:10:4"
+=======
+                "src": "312:10:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               }
             ],
             "name": "setCompleted",
@@ -435,8 +568,13 @@
                   "name": "completed",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
+<<<<<<< HEAD
                   "scope": 1052,
                   "src": "289:14:4",
+=======
+                  "scope": 918,
+                  "src": "289:14:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -447,7 +585,11 @@
                     "id": 1041,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
+<<<<<<< HEAD
                     "src": "289:4:4",
+=======
+                    "src": "289:4:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -457,26 +599,45 @@
                   "visibility": "internal"
                 }
               ],
+<<<<<<< HEAD
               "src": "288:16:4"
+=======
+              "src": "288:16:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             },
             "returnParameters": {
               "id": 1046,
               "nodeType": "ParameterList",
               "parameters": [],
+<<<<<<< HEAD
               "src": "323:0:4"
             },
             "scope": 1053,
             "src": "267:103:4",
+=======
+              "src": "323:0:3"
+            },
+            "scope": 919,
+            "src": "267:103:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
+<<<<<<< HEAD
         "scope": 1054,
         "src": "61:311:4"
       }
     ],
     "src": "37:336:4"
+=======
+        "scope": 920,
+        "src": "61:311:3"
+      }
+    ],
+    "src": "37:336:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   },
   "legacyAST": {
     "absolutePath": "/home/sencha/insigniadao/contracts/Migrations.sol",
@@ -485,7 +646,11 @@
         1053
       ]
     },
+<<<<<<< HEAD
     "id": 1054,
+=======
+    "id": 920,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": "GPL-3.0",
     "nodeType": "SourceUnit",
     "nodes": [
@@ -497,7 +662,11 @@
           ".8"
         ],
         "nodeType": "PragmaDirective",
+<<<<<<< HEAD
         "src": "37:22:4"
+=======
+        "src": "37:22:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
       },
       {
         "abstract": false,
@@ -521,8 +690,13 @@
             "name": "owner",
             "nodeType": "VariableDeclaration",
             "overrides": null,
+<<<<<<< HEAD
             "scope": 1053,
             "src": "85:20:4",
+=======
+            "scope": 919,
+            "src": "85:20:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -533,7 +707,11 @@
               "id": 1019,
               "name": "address",
               "nodeType": "ElementaryTypeName",
+<<<<<<< HEAD
               "src": "85:7:4",
+=======
+              "src": "85:7:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               "stateMutability": "nonpayable",
               "typeDescriptions": {
                 "typeIdentifier": "t_address",
@@ -551,8 +729,13 @@
             "name": "last_completed_migration",
             "nodeType": "VariableDeclaration",
             "overrides": null,
+<<<<<<< HEAD
             "scope": 1053,
             "src": "109:36:4",
+=======
+            "scope": 919,
+            "src": "109:36:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -563,7 +746,11 @@
               "id": 1021,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
+<<<<<<< HEAD
               "src": "109:4:4",
+=======
+              "src": "109:4:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -576,7 +763,11 @@
             "body": {
               "id": 1030,
               "nodeType": "Block",
+<<<<<<< HEAD
               "src": "171:29:4",
+=======
+              "src": "171:29:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               "statements": [
                 {
                   "expression": {
@@ -592,8 +783,13 @@
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
+<<<<<<< HEAD
                       "referencedDeclaration": 1020,
                       "src": "177:5:4",
+=======
+                      "referencedDeclaration": 886,
+                      "src": "177:5:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -610,7 +806,11 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": -15,
+<<<<<<< HEAD
                         "src": "185:3:4",
+=======
+                        "src": "185:3:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
@@ -624,13 +824,21 @@
                       "memberName": "sender",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": null,
+<<<<<<< HEAD
                       "src": "185:10:4",
+=======
+                      "src": "185:10:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_address_payable",
                         "typeString": "address payable"
                       }
                     },
+<<<<<<< HEAD
                     "src": "177:18:4",
+=======
+                    "src": "177:18:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -638,7 +846,11 @@
                   },
                   "id": 1029,
                   "nodeType": "ExpressionStatement",
+<<<<<<< HEAD
                   "src": "177:18:4"
+=======
+                  "src": "177:18:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                 }
               ]
             },
@@ -654,16 +866,27 @@
               "id": 1023,
               "nodeType": "ParameterList",
               "parameters": [],
+<<<<<<< HEAD
               "src": "161:2:4"
+=======
+              "src": "161:2:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             },
             "returnParameters": {
               "id": 1024,
               "nodeType": "ParameterList",
               "parameters": [],
+<<<<<<< HEAD
               "src": "171:0:4"
             },
             "scope": 1053,
             "src": "150:50:4",
+=======
+              "src": "171:0:3"
+            },
+            "scope": 919,
+            "src": "150:50:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
@@ -672,7 +895,11 @@
             "body": {
               "id": 1039,
               "nodeType": "Block",
+<<<<<<< HEAD
               "src": "226:37:4",
+=======
+              "src": "226:37:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               "statements": [
                 {
                   "condition": {
@@ -695,7 +922,11 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": -15,
+<<<<<<< HEAD
                         "src": "236:3:4",
+=======
+                        "src": "236:3:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
@@ -709,7 +940,11 @@
                       "memberName": "sender",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": null,
+<<<<<<< HEAD
                       "src": "236:10:4",
+=======
+                      "src": "236:10:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_address_payable",
                         "typeString": "address payable"
@@ -723,14 +958,23 @@
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
+<<<<<<< HEAD
                       "referencedDeclaration": 1020,
                       "src": "250:5:4",
+=======
+                      "referencedDeclaration": 886,
+                      "src": "250:5:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
+<<<<<<< HEAD
                     "src": "236:19:4",
+=======
+                    "src": "236:19:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -739,11 +983,19 @@
                   "falseBody": null,
                   "id": 1038,
                   "nodeType": "IfStatement",
+<<<<<<< HEAD
                   "src": "232:26:4",
+=======
+                  "src": "232:26:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                   "trueBody": {
                     "id": 1037,
                     "nodeType": "PlaceholderStatement",
+<<<<<<< HEAD
                     "src": "257:1:4"
+=======
+                    "src": "257:1:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                   }
                 }
               ]
@@ -757,9 +1009,15 @@
               "id": 1032,
               "nodeType": "ParameterList",
               "parameters": [],
+<<<<<<< HEAD
               "src": "223:2:4"
             },
             "src": "204:59:4",
+=======
+              "src": "223:2:3"
+            },
+            "src": "204:59:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             "virtual": false,
             "visibility": "internal"
           },
@@ -767,7 +1025,11 @@
             "body": {
               "id": 1051,
               "nodeType": "Block",
+<<<<<<< HEAD
               "src": "323:47:4",
+=======
+              "src": "323:47:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               "statements": [
                 {
                   "expression": {
@@ -783,8 +1045,13 @@
                       "name": "last_completed_migration",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
+<<<<<<< HEAD
                       "referencedDeclaration": 1022,
                       "src": "329:24:4",
+=======
+                      "referencedDeclaration": 888,
+                      "src": "329:24:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -798,14 +1065,23 @@
                       "name": "completed",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
+<<<<<<< HEAD
                       "referencedDeclaration": 1042,
                       "src": "356:9:4",
+=======
+                      "referencedDeclaration": 908,
+                      "src": "356:9:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
+<<<<<<< HEAD
                     "src": "329:36:4",
+=======
+                    "src": "329:36:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -813,7 +1089,11 @@
                   },
                   "id": 1050,
                   "nodeType": "ExpressionStatement",
+<<<<<<< HEAD
                   "src": "329:36:4"
+=======
+                  "src": "329:36:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                 }
               ]
             },
@@ -832,15 +1112,24 @@
                   "name": "restricted",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
+<<<<<<< HEAD
                   "referencedDeclaration": 1040,
                   "src": "312:10:4",
+=======
+                  "referencedDeclaration": 906,
+                  "src": "312:10:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
                     "typeString": "modifier ()"
                   }
                 },
                 "nodeType": "ModifierInvocation",
+<<<<<<< HEAD
                 "src": "312:10:4"
+=======
+                "src": "312:10:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
               }
             ],
             "name": "setCompleted",
@@ -857,8 +1146,13 @@
                   "name": "completed",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
+<<<<<<< HEAD
                   "scope": 1052,
                   "src": "289:14:4",
+=======
+                  "scope": 918,
+                  "src": "289:14:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -869,7 +1163,11 @@
                     "id": 1041,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
+<<<<<<< HEAD
                     "src": "289:4:4",
+=======
+                    "src": "289:4:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -879,41 +1177,69 @@
                   "visibility": "internal"
                 }
               ],
+<<<<<<< HEAD
               "src": "288:16:4"
+=======
+              "src": "288:16:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             },
             "returnParameters": {
               "id": 1046,
               "nodeType": "ParameterList",
               "parameters": [],
+<<<<<<< HEAD
               "src": "323:0:4"
             },
             "scope": 1053,
             "src": "267:103:4",
+=======
+              "src": "323:0:3"
+            },
+            "scope": 919,
+            "src": "267:103:3",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
+<<<<<<< HEAD
         "scope": 1054,
         "src": "61:311:4"
       }
     ],
     "src": "37:336:4"
+=======
+        "scope": 920,
+        "src": "61:311:3"
+      }
+    ],
+    "src": "37:336:3"
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   },
   "compiler": {
     "name": "solc",
     "version": "0.6.8+commit.0bbfe453.Emscripten.clang"
   },
   "networks": {
-    "42": {
+    "1590000783054": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0x762A786D37bdA6d292B9D7F96CeEC36015730030",
       "transactionHash": "0x673ecc90d34c3a04c02fdc38fac2fd29558e1374ccd66473607394b34753da41"
     }
   },
   "schemaVersion": "3.1.0",
   "updatedAt": "2020-05-19T14:53:28.398Z",
+=======
+      "address": "0x2603493F7E432fb5BFA44Ab9f648119441124b3C",
+      "transactionHash": "0x120f8dbaa213abfc1882fc13a1911f666c2797d5b91ea2cb8fd4089136c66454"
+    }
+  },
+  "schemaVersion": "3.1.0",
+  "updatedAt": "2020-05-20T18:53:21.594Z",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

@@ -36,7 +36,11 @@
         2960
       ]
     },
+<<<<<<< HEAD
     "id": 2961,
+=======
+    "id": 1448,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -713,7 +717,11 @@
         2960
       ]
     },
+<<<<<<< HEAD
     "id": 2961,
+=======
+    "id": 1448,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -1389,7 +1397,11 @@
   },
   "networks": {},
   "schemaVersion": "3.1.0",
+<<<<<<< HEAD
   "updatedAt": "2020-05-19T14:43:54.046Z",
+=======
+  "updatedAt": "2020-05-20T13:49:15.216Z",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   "devdoc": {
     "details": "Implementation of the {IERC165} interface. * Contracts may inherit from this and call {_registerInterface} to declare their support of an interface.",
     "methods": {

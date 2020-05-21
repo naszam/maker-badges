@@ -347,7 +347,11 @@
         4320
       ]
     },
+<<<<<<< HEAD
     "id": 4321,
+=======
+    "id": 2808,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -648,7 +652,11 @@
         4320
       ]
     },
+<<<<<<< HEAD
     "id": 4321,
+=======
+    "id": 2808,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -948,7 +956,11 @@
   },
   "networks": {},
   "schemaVersion": "3.1.0",
+<<<<<<< HEAD
   "updatedAt": "2020-05-19T14:43:54.067Z",
+=======
+  "updatedAt": "2020-05-20T13:49:15.249Z",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   "devdoc": {
     "details": "See https://eips.ethereum.org/EIPS/eip-721",
     "methods": {

@@ -16,7 +16,11 @@
         4907
       ]
     },
+<<<<<<< HEAD
     "id": 4908,
+=======
+    "id": 3395,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -5991,7 +5995,11 @@
         4907
       ]
     },
+<<<<<<< HEAD
     "id": 4908,
+=======
+    "id": 3395,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -11965,7 +11973,11 @@
   },
   "networks": {},
   "schemaVersion": "3.1.0",
+<<<<<<< HEAD
   "updatedAt": "2020-05-19T14:43:54.069Z",
+=======
+  "updatedAt": "2020-05-20T13:49:15.255Z",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   "devdoc": {
     "details": "Library for managing an enumerable variant of Solidity's https://solidity.readthedocs.io/en/latest/types.html#mapping-types[`mapping`] type. * Maps have the following properties: * - Entries are added, removed, and checked for existence in constant time (O(1)). - Entries are enumerated in O(n). No guarantees are made on the ordering. * ``` contract Example {    // Add the library methods    using EnumerableMap for EnumerableMap.UintToAddressMap; *     // Declare a set state variable    EnumerableMap.UintToAddressMap private myMap; } ``` * As of v3.0.0, only maps of type `uint256 -> address` (`UintToAddressMap`) are supported.",
     "methods": {}

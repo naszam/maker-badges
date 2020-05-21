@@ -16,7 +16,11 @@
         4402
       ]
     },
+<<<<<<< HEAD
     "id": 4403,
+=======
+    "id": 2890,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -945,7 +949,11 @@
         4402
       ]
     },
+<<<<<<< HEAD
     "id": 4403,
+=======
+    "id": 2890,
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
@@ -1873,7 +1881,11 @@
   },
   "networks": {},
   "schemaVersion": "3.1.0",
+<<<<<<< HEAD
   "updatedAt": "2020-05-19T14:43:54.068Z",
+=======
+  "updatedAt": "2020-05-20T13:49:15.251Z",
+>>>>>>> ea7e333... Add makerdao activities + fix reentrancy on activateBadge() and burnBadge() + update to solc v0.6.8
   "devdoc": {
     "details": "Collection of functions related to the address type",
     "methods": {}
