@@ -26,14 +26,14 @@
 ### [InsigniaDAO](./contracts/InsigniaDAO.sol)
 > InsigniaDAO to check for activities on MakerDAO ecosystem and keep track of redeemers
 
-To enable InsigniaDAO to check for on-chain activities on MakerDAO ecosystem we are using three interface to map the functions that we'll use:
+To enable InsigniaDAO to check on-chain for activities on MakerDAO ecosystem we are using three interface to map the functions that we'll use:
 - **PotLike**: to check if a user has accrued 1 or more Dai from DSR, via **pie(address guy)**, **chi()**, **rho()** and **drip()** used in the internal function **_dai(address guy)** to return the **wad** or the current accrued Dai interest in DSR.
 - **DSChief**: to check if a user is voting on a Governance Poll via **votes(address)** a getter function to check who is currently voting.
 - **Flipper**: to check for high bidder in the current Bid in Collateral Auctions via **bids(id)** a getter function of current Bid on Flipper to check for **bids(id).guy** the high bidder.
 
-The function **checkRedeemer(uint id)** will check for the previous on-chain activities on MakerDAO and will store the hash of the caller address, casted in address type, into the OpenZeppelin EnumerableSet.AddressSet **redeemers** that will be verified in BadgeFactory via **verify(address guy)** function linked to it, to allow a redeemer to activate a Non-transferable Badge.
+The function **checkRedeemer(uint id)** will check on-chain for the previous activities on MakerDAO and will store the hash of the caller address, casted in address type, into the OpenZeppelin EnumerableSet.AddressSet **redeemers** that will be verified in BadgeFactory via **verify(address guy)** function linked to it, to allow a redeemer to activate a Non-transferable Badge.
 
-InsigniaDAO, let the owner to set an array of root hashes called **roots**, ordered by template Id to allow redemeers checked for off-chain activities via TheGraph on the front-end and stored into a Merkle Tree to activate Badge.
+InsigniaDAO, let the owner to set an array of root hashes called **roots**, ordered by template Id to allow redemeers checked for activities off-chain via TheGraph on the front-end and stored into a Merkle Tree to activate Badge.
 The getter function **roots(uint templateId)** is then linked to BadgeFactory and checked via OpenZeppelin MerkleProof.sol **verify()** function.
 
 The contract also inherites OpenZeppelic AccessControl.sol to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
@@ -41,11 +41,12 @@ The contract also inherites OpenZeppelic AccessControl.sol to set the Pauser rol
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
 > BadgeRoles Access Management for Default Admin, Templater and Pauser Role
 
-BadgeRoles is inheriting the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater and to add a Templater via **addTemplater(address guy)**.
+BadgeRoles inherites the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater and to add a Templater via **addTemplater(address guy)**.
 
 ### [BadgeFactory](./contracts/BadgeFactory.sol)
 > BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
  
+To enable BadgeFactory to verify redeemers for on-chain/off-chain checked activities on MakerDAO ecosystem
 
 Setup
 ============
