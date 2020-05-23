@@ -33,7 +33,7 @@ To enable InsigniaDAO to check on-chain for activities on MakerDAO ecosystem we 
 
 The function **checkRedeemer(uint id)** will check on-chain for the previous activities on MakerDAO and will store the hash of the caller address, casted in address type, into the OpenZeppelin EnumerableSet.AddressSet **redeemers** that will be verified in BadgeFactory via **verify(address guy)** function linked to it, to allow a redeemer to activate a Non-transferable Badge.
 
-InsigniaDAO, let the owner to set an array of root hashes called **roots**, ordered by template Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to activate Badge.
+InsigniaDAO, let the owner to set (via **setRootHashes(bytes[])**) an array of root hashes, called **roots**, ordered by template Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to activate Badge.
 The getter function **roots(uint templateId)** is then linked to BadgeFactory and checked via OpenZeppelin MerkleProof.sol **verify()** function.
 
 The contract also inherites OpenZeppelic AccessControl.sol to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
@@ -49,7 +49,7 @@ BadgeRoles inherites the OpenZeppelin AccessControl.sol, allowing the owner of t
 To enable BadgeFactory to verify redeemers checked on-chain/off-chain for activities on MakerDAO ecosystem, when they try to redeem their Badge, we're using the interface InsigniaDAO to map the function we'll use.  
 In particular, we'll use:
 - **verify(address guy)** to verify redeemers checked on-chain.
-- **roots(uint templateId)** to verify via MerkleProof.sol redeemers checked off-chain and stored into a Merkle Tree that is created for every Badge and updated by batches of checked redeemers daily.
+- **roots(uint templateId)** to verify via MerkleProof.sol redeemers checked off-chain and stored into a Merkle Tree that is created for every Badge and updated by owner of InsigniaDAO, batches of checked redeemers daily.
 
 
 Setup
