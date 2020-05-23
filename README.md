@@ -52,7 +52,7 @@ In particular, we'll use:
 - **verify(address guy)** to verify redeemers checked on-chain.
 - **roots(uint templateId)** a getter function to return root by templated Id to be verified via MerkleProof.sol **verify()** function, allowing redeemers checked off-chain and stored into a Merkle Tree to be able to redeem Badges.  
 
-A Merkle Tree is generated for every Badge and the root hash is updated by owner of InsigniaDAO daily to allow batches of redeemers to be checked and to redeem Badges.
+A Merkle Tree is generated for every Template and the root hash is updated by owner of InsigniaDAO daily to allow batches of redeemers to be checked and to redeem Badges.
 
 
 Setup
