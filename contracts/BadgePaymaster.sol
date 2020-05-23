@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari, Scott Herren
-/// @notice BadgePaymaster
+/// @notice BadgePaymaster pays for user's meta-transactions
 /// @dev see https://github.com/makerdao/community/issues/537
 /// @dev All function calls are currently implemented without side effecs through TDD approach
 /// @dev OpenZeppelin v3.0 library is used for secure contract development
