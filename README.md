@@ -36,12 +36,12 @@ The function **checkRedeemer(uint id)** will check on-chain for the previous act
 InsigniaDAO, let the owner to set (via **setRootHashes(bytes[]) memory rootHashes**) an array of root hashes, called **roots**, ordered by template Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to activate Badge.
 The getter function **roots(uint templateId)** is then linked to BadgeFactory and checked via OpenZeppelin MerkleProof.sol **verify()** function.
 
-The contract also inherites OpenZeppelic AccessControl.sol to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
+The contract also inherits OpenZeppelic AccessControl.sol to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
 
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
 > BadgeRoles Access Management for Default Admin, Templater and Pauser Role
 
-BadgeRoles inherites the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater and to add a Templater via **addTemplater(address guy)**.
+BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater and to add a Templater via **addTemplater(address guy)**.
 
 ### [BadgeFactory](./contracts/BadgeFactory.sol)
 > BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
@@ -52,7 +52,13 @@ In particular, we'll use:
 - **verify(address guy)** to verify redeemers checked on-chain.
 - **roots(uint templateId)** a getter function to return root by templated Id to be verified via MerkleProof.sol **verify()** function, allowing redeemers checked off-chain and stored into a Merkle Tree to be able to redeem Badges.  
 
-A Merkle Tree is generated for every Template and the root hash is updated by owner of InsigniaDAO daily to allow batches of redeemers to be checked and to redeem Badges.
+A Merkle Tree is generated for every Template and the root hash is updated by owner of InsigniaDAO daily to allow batches of redeemers to be checked and to redeem Badges.  
+
+BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template via **createTemplate()** specifying name, description and image.  
+
+It also inherits ERC721Burnable, where the **_transfer()** has been overridden to implment Non-transferable Badges, allowing redeemers checked on-chain/offchain to redeem a specific Badge for activity on MakerDAO ecosystem via **activateBadge()** that will verify if the caller is a redeemer and then will allow the user to mint a new Non-transferable Badge with tokenURI stored on IPFS.
+
+
 
 
 Setup
