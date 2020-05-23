@@ -24,7 +24,7 @@ Clone this GitHub repository.
 
   - Local dependencies
     - Truffle
-    - Ganache
+    - Ganache CLI
     - OpenZeppelin Contracts v3.0.1
     - OpenGSN Contracts v0.9.0
     - Truffle-Flattener
