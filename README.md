@@ -15,12 +15,43 @@
 - Yannis Stamelakos, [@i-stam](https://github.com/i-stam)
 - Dror Tirosh (OpenGSN), [@drortirosh](https://github.com/drortirosh)
 
-Project Setup
+## Sections
+* [Building Blocks](#building-blocks)
+* [Setup](#setup)
+* [Deploy](#deploy)
+* [About](#about)
+
+## Building Blocks
+
+### [InsigniaDAO](./contracts/InsigniaDAO.sol)
+> InsigniaDAO to check for activities on MakerDAO ecosystem and keep track of redeemers
+
+To enable InsigniaDAO to check for on-chain activities on MakerDAO ecosystem we are using three interface to map the functions that we'll use:
+- **PotLike**: to check if a user has accrued 1 or more Dai from DSR, via **pie(address guy)**, **chi()**, **rho()** and **drip()** used in the internal function **_dai(address guy)** to return the **wad** or the current accrued Dai interest in DSR.
+- **DSChief**: to check if a user is voting on a Governance Poll via **votes(address)** a getter function to check who is currently voting.
+- **Flipper**: to check for high bidder in the current Bid in Collateral Auctions via **bids(id)** a getter function of current Bid on Flipper to check for **bids(id).guy** the high bidder.
+
+The function **checkRedeemer(uint id)** will check for the previous on-chain activities on MakerDAO and will store the hash of the caller address, casted in address type, into the OpenZeppelin EnumerableSet.AddressSet **redeemers** that will be verified in BadgeFactory via **verify(address guy)** function linked to it, to allow a redeemer to activate a Non-transferable Badge.
+
+InsigniaDAO, let the owner to set an array of root hashes called **roots**, ordered by template Id to allow redemeers checked for off-chain activities via TheGraph on the front-end and stored into a Merkle Tree to activate Badge.
+The getter function **roots(uint templateId)** is then linked to BadgeFactory and checked via OpenZeppelin MerkleProof.sol **verify()** function.
+
+The contract also uses OpenZeppelic AccessControl.sol to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
+
+### [BadgeFactory](./contracts/BadgeFactory.sol)
+> BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
+ 
+
+### [BadgeRoles](./contracts/BadgeRoles.sol)
+> BadgeRoles Access Management for Default Admin, Templater and Pauser Role
+
+
+Setup
 ============
 
 Clone this GitHub repository.
 
-# Steps to compile and deploy
+# Steps to compile and test
 
   - Local dependencies:
     - Truffle
@@ -63,6 +94,8 @@ Contract | Line | SWC Title | Severity | Short Description
 --- | --- | --- | --- | ---
 InsigniaDAO.sol | 80 | Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
 
+Deploy
+============
 ## Deploy on Kovan Testnet
  - Get an Ethereum Account on Metamask.
  - On the landing page, click “Get Chrome Extension.”
@@ -93,6 +126,8 @@ InsigniaDAO.sol | 80 | Timestamp Dependence | Low | A control flow decision is m
 [InsigniaDAO.sol](https://kovan.etherscan.io/address/0x7Cf0ef375998470D75044B10Cf2f6a5F8af34a20)  
 [BadgeFactory.sol](https://kovan.etherscan.io/address/0x276C2c2CF6F751D62C79c6C1693666D87B015B17)
 
+About
+============
 ## Inspiration & References
 
 - [open-proofs](https://github.com/rrecuero/open-proofs)
@@ -102,7 +137,7 @@ InsigniaDAO.sol | 80 | Timestamp Dependence | Low | A control flow decision is m
 - [MakerDAO](https://makerdao.com/en/)
 - [Chai](https://chai.money/about.html)
 
-## About
+## Authors
 
 Project created by [Nazzareno Massari](https://www.nazzarenomassari.com), Scott Herren in collaboration with Bryan Flynn.  
 Team MetaBadges from HackMoney ETHGlobal Virtual Hackathon.
