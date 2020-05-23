@@ -98,9 +98,9 @@ In order to pay for user's meta-transaction BadgePaymaster inherits OpenGSN Base
 - **preRelayedCall()**
 - **postRelayedCall()**
 
-Once deployed, BadgePaymaster owner need to set RelayHub via **setRelayHub(IRelayHub hub)** that can be found on [Kovan](https://docs.opengsn.org/gsn-provider/networks.html).
+Once deployed, BadgePaymaster owner need to set RelayHub contract address via **setRelayHub(IRelayHub hub)** that can be found on [Kovan](https://docs.opengsn.org/gsn-provider/networks.html).
 
-Then the owner just need to fund the contract sending ether to BadgePaymaster contract address and the balanced will automatically updated in RelayHub.
+Finally the owner just need to fund the contract sending ether to BadgePaymaster contract address and the balanced will be automatically updated in RelayHub contract.
 
 Setup
 ============
