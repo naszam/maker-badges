@@ -75,7 +75,8 @@ During deployment the contract sets the following ERC721 metadata:
 - baseURI: "https://badges.makerdao.com/token/"  
 
 ### [BadgePaymaster](./contracts/BadgePaymaster.sol)
-> BadgeFactory to pays for transaction gas
+> BadgePaymaster to pay for user's meta-transactions
+
 
 Setup
 ============
