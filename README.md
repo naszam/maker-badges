@@ -38,6 +38,16 @@ The getter function **roots(uint templateId)** is then linked to BadgeFactory an
 
 The contract also inherits OpenZeppelic AccessControl.sol to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
 
+In order to integrate OpenGSN, InsigniaDAO inherits BaseRelayRecipient.sol and do the following changes:
+- msg.sender is replaced by **_msgSender()**.
+- **trustedForwarder** is set in the constructor with the address deployed on Kovan
+- the following function is added to override OpenZeppelin Context _msgSender():
+```
+  function _msgSender() internal override(Context, BaseRelayRecipient) view returns (address payable) {
+            return BaseRelayRecipient._msgSender();
+  }
+```
+
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
 > BadgeRoles Access Management for Default Admin, Templater and Pauser Role
 
