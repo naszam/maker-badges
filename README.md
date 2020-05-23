@@ -22,7 +22,7 @@ Clone this GitHub repository.
 
 # Steps to compile and deploy
 
-  - Local dependencies
+  - Local dependencies:
     - Truffle
     - Ganache CLI
     - OpenZeppelin Contracts v3.0.1
@@ -30,6 +30,7 @@ Clone this GitHub repository.
     ```sh
     $ npm i
     ```
+  - Global dependencies:
     - MythX CLI (optional):
     ```sh
     $ git clone git://github.com/dmuhs/mythx-cli
