@@ -9,7 +9,7 @@
 > Non-transferable Badges for Maker Ecosystem Activity, [issue #537](https://github.com/makerdao/community/issues/537)
 
 
-# Mentors
+## Mentors
 - Mariano Conti, [@nanexcool](https://github.com/nanexcool)
 - Josh Crites, [@critesjosh](https://github.com/critesjosh)
 - Yannis Stamelakos, [@i-stam](https://github.com/i-stam)
