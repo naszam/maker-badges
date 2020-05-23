@@ -46,7 +46,11 @@ BadgeRoles inherites the OpenZeppelin AccessControl.sol, allowing the owner of t
 ### [BadgeFactory](./contracts/BadgeFactory.sol)
 > BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
  
-To enable BadgeFactory to verify redeemers for on-chain/off-chain checked activities on MakerDAO ecosystem
+To enable BadgeFactory to verify redeemers for on-chain/off-chain checked activities on MakerDAO ecosystem we're using an interface to map the function we'll use from InsigniaDAO.
+In particular, we'll use:
+- **verify(address guy)** to verify redeemers checked on-chain.
+- **roots(uint templateId)** to verify via MerkleProof.sol redeemers checked off-chain and stored into a Merkle Tree that is created for every Badge and updated by batches of checked redeemers daily.
+
 
 Setup
 ============
