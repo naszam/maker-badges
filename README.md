@@ -31,13 +31,11 @@ Clone this GitHub repository.
     ```sh
     $ npm install -g ganache-cli
     ```
-    - OpenZeppelin Contracts v3.0.1:
+  - Local dependencies
+    - OpenZeppelin Contracts v3.0.1
+    - Truffle-Flattener
     ```sh
-    $ npm install -g @openzeppelin/contracts
-    ```
-    - OpenGSN Contracts v0.9.0:
-    ```
-    $ npm install -g @opengsn/gsn
+    $ npm i
     ```
     - MythX CLI (optional):
     ```sh
