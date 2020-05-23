@@ -40,7 +40,7 @@ The contract also inherits OpenZeppelic AccessControl.sol to set the Pauser role
 
 In order to integrate OpenGSN, InsigniaDAO inherits BaseRelayRecipient.sol and do the following changes:
 - msg.sender is replaced by **_msgSender()**.
-- **trustedForwarder** is set in the constructor with the address deployed on Kovan
+- **trustedForwarder** is set in the constructor with the address deployed on [Kovan](https://docs.opengsn.org/gsn-provider/networks.html)
 - the following function is added to override OpenZeppelin Context _msgSender():
 ```
   function _msgSender() internal override(Context, BaseRelayRecipient) view returns (address payable) {
@@ -73,6 +73,9 @@ During deployment the contract sets the following ERC721 metadata:
 - name: "InsigniaBadges"
 - symbol: "BADGES"
 - baseURI: "https://badges.makerdao.com/token/"  
+
+### [BadgePaymaster](./contracts/BadgePaymaster.sol)
+> BadgeFactory to pays for transaction gas
 
 Setup
 ============
