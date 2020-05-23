@@ -53,6 +53,16 @@ In order to integrate OpenGSN, InsigniaDAO inherits BaseRelayRecipient.sol and d
 
 BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater and to add a Templater via **addTemplater(address guy)**.
 
+In order to integrate OpenGSN, BadgeRoles inherits OpenGSN BaseRelayRecipient.sol and do the following changes:
+- msg.sender is replaced by **_msgSender()**.
+- **trustedForwarder** is set in the constructor with the address deployed on [Kovan](https://docs.opengsn.org/gsn-provider/networks.html)
+- the following function is added to override OpenZeppelin Context _msgSender():
+```
+  function _msgSender() internal override(Context, BaseRelayRecipient) view returns (address payable) {
+            return BaseRelayRecipient._msgSender();
+  }
+```
+
 ### [BadgeFactory](./contracts/BadgeFactory.sol)
 > BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
  
@@ -72,11 +82,25 @@ The owner of the Badge can then burn it eventually via **burnBadge(uint tokenId)
 During deployment the contract sets the following ERC721 metadata:
 - name: "InsigniaBadges"
 - symbol: "BADGES"
-- baseURI: "https://badges.makerdao.com/token/"  
+- baseURI: "https://badges.makerdao.com/token/"
 
+In order to integrate OpenGSN, BadgeFactory inherits BadgeRoles and add the following function to override the **_msgSender()** in OpenZeppelin Context and in BadgeRoles:
+```
+  function _msgSender() internal override(Context, BadgeRoles) view returns (address payable) {
+            return BaseRelayRecipient._msgSender();
+  }
+```
 ### [BadgePaymaster](./contracts/BadgePaymaster.sol)
 > BadgePaymaster to pay for user's meta-transactions
 
+In order to pay for user's meta-transaction BadgePaymaster inherits OpenGSN BasePaymaster.sol and implement the following functions:
+- **acceptRealyedCall()**
+- **preRelayedCall()**
+- **postRelayedCall()**
+
+Once deployed, BadgePaymaster owner need to set RelayHub via **setRelayHub(IRelayHub hub)** that can be found on [Kovan](https://docs.opengsn.org/gsn-provider/networks.html).
+
+Then the owner just need to fund the contract sending ether to BadgePaymaster contract address and the balanced will automatically updated in RelayHub.
 
 Setup
 ============
