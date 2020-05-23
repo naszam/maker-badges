@@ -36,15 +36,16 @@ The function **checkRedeemer(uint id)** will check for the previous on-chain act
 InsigniaDAO, let the owner to set an array of root hashes called **roots**, ordered by template Id to allow redemeers checked for off-chain activities via TheGraph on the front-end and stored into a Merkle Tree to activate Badge.
 The getter function **roots(uint templateId)** is then linked to BadgeFactory and checked via OpenZeppelin MerkleProof.sol **verify()** function.
 
-The contract also uses OpenZeppelic AccessControl.sol to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
-
-### [BadgeFactory](./contracts/BadgeFactory.sol)
-> BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
- 
+The contract also inherites OpenZeppelic AccessControl.sol to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
 
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
 > BadgeRoles Access Management for Default Admin, Templater and Pauser Role
 
+BadgeRoles is inheriting the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater and to add a Templater via **addTemplater(address guy)**.
+
+### [BadgeFactory](./contracts/BadgeFactory.sol)
+> BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
+ 
 
 Setup
 ============
