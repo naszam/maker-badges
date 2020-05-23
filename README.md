@@ -57,7 +57,7 @@ A Merkle Tree is generated for every Template and the root hash is updated by ow
 BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template via **createTemplate()** specifying name, description and image.  
 
 It also inherits ERC721Burnable, where the **_transfer()** has been overridden to implement Non-transferable feature, allowing redeemers checked on-chain/offchain to redeem a Badge for a specific activity on MakerDAO ecosystem via **activateBadge()** that will verify if the caller is a redeemer and then will allow the caller to mint a new Non-transferable Badge with tokenURI stored on IPFS (eg. "ipfs.json").      
-The owner of the Badge can then burn it eventually via **burnBadge(uint tokenId)** specifying the token Id of the NFT.  
+The owner of the Badge can then burn it eventually via **burnBadge(uint tokenId)** specifying the token Id of the Badge.  
 
 During deployment the contract sets the following ERC721 metadata:
 - name: "InsigniaBadges"
