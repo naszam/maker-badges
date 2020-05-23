@@ -22,16 +22,9 @@ Clone this GitHub repository.
 
 # Steps to compile and deploy
 
-  - Global dependencies
-    - Truffle:
-    ```sh
-    $ npm install -g truffle
-    ```
-    - Ganache:
-    ```sh
-    $ npm install -g ganache-cli
-    ```
   - Local dependencies
+    - Truffle
+    - Ganache
     - OpenZeppelin Contracts v3.0.1
     - Truffle-Flattener
     ```sh
