@@ -19,6 +19,7 @@
 * [Building Blocks](#building-blocks)
 * [Setup](#setup)
 * [Deploy](#deploy)
+* [Front-end](#front-end)
 * [About](#about)
 
 ## Building Blocks
@@ -143,6 +144,12 @@ Deploy
 ## Project deployed on Kovan
 [InsigniaDAO.sol](https://kovan.etherscan.io/address/0x7Cf0ef375998470D75044B10Cf2f6a5F8af34a20)  
 [BadgeFactory.sol](https://kovan.etherscan.io/address/0x276C2c2CF6F751D62C79c6C1693666D87B015B17)
+
+
+Front-end
+============
+
+https://github.com/scottrepreneur/meta-badges
 
 About
 ============
