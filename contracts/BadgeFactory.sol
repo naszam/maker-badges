@@ -34,7 +34,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   /// Events
   event NewTemplate(uint256 templateId, string name, string description, string image);
-  event BadgeActivated(address redeemer, uint256 tokenId, uint256 templateId, string tokenURI);
+  event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);
 
   struct BadgeTemplate {
     string name;
@@ -159,19 +159,18 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param templateId Template Id
   /// @param tokenURI Token URI
   /// @return _tokenId Token Id of the new Badge
-  function activateBadge(bytes32[] memory proof, uint256 templateId, string memory tokenURI) public whenNotPaused returns (uint256 _tokenId) {
+  function activateBadge(bytes32[] memory proof, bytes32 leaf, uint256 templateId, string memory tokenURI) public whenNotPaused returns (bool) {
     require(templates.length > templateId, "No template with that id");
-    require(insignia.verify(_msgSender()) || proof.verify(insignia.roots(templateId), keccak256(abi.encodePacked(_msgSender()))), "Caller is not a redeemer");
+    require(insignia.verify(_msgSender()) || proof.verify(insignia.roots(templateId), leaf), "Caller is not a redeemer");
 
     // Increase the quantities
-    _tokenTemplates[_tokenId] = templateId;
+    _tokenTemplates[_tokenIdTracker.current()] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
 
-    (bool success) = _mintWithTokenURI(_msgSender(), tokenURI);
-    require(success, "Token not minted");
+    require(_mintWithTokenURI(_msgSender(), tokenURI), "Token not minted");
 
-    emit BadgeActivated(_msgSender(),_tokenId, templateId, tokenURI);
-    return _tokenId;
+    emit BadgeActivated(_msgSender(), templateId, tokenURI);
+    return true;
   }
 
   /// @notice Burn Badge

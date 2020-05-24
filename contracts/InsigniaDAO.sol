@@ -152,9 +152,12 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable, BaseRelayRecipient {
   /// @param guy Address to verify
   /// @return True if guy is a redeemer
   function verify(address guy) public view whenNotPaused returns (bool) {
-    require(redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(guy)))))), "The address is not a redeemer");
-    return true;
+    if (redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(guy))))))){
+      return true;
+    }
+      return false;
   }
+
 
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
