@@ -76,6 +76,7 @@ Clone this GitHub repository.
     - Truffle
     - Ganache CLI
     - OpenZeppelin Contracts v3.0.1
+    - Truffle HD Wallet Provider
     - Truffle-Flattener
     ```sh
     $ npm i
