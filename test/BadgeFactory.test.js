@@ -1,3 +1,4 @@
+const { keccak256, keccakFromString, bufferToHex } = require('ethereumjs-util');
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
 const MerkleTree = require('./merkleTree.js').MerkleTree
 var BadgeFactory = artifacts.require('./BadgeFactory')
@@ -13,8 +14,11 @@ contract('BadgeFactory', function(accounts) {
   const merkleTree = new MerkleTree(addresses);
   const root = merkleTree.getHexRoot();
   //console.log(root)
-  const proof = merkleTree.getHexProof(redeemer);
+  const proof = merkleTree.getHexProof(addresses[2]);
   //console.log(proof)
+
+  const leaf = bufferToHex(keccakFromString(addresses[2]));
+  //console.log(leaf)
 
   const DEFAULT_ADMIN_ROLE = "0x00"
   const name = "Beginner"
@@ -26,6 +30,7 @@ contract('BadgeFactory', function(accounts) {
   const nameNFT = "InsigniaBadges"
   const symbolNFT = "BADGES"
   const baseURI = "https://badges.makerdao.com/token/"
+  const tokenURI = "ipfs.json"
 
 
 
@@ -59,8 +64,11 @@ contract('BadgeFactory', function(accounts) {
     describe("activateBadge()", async () => {
 
       it("activateBadge for redeemer account via InsigniaDAO verify()", async () => {
-        await instance1.addRedeemer(redeemer, {from:random})
-        const result = await instance.activateBadge(proof, templateId, tokenURI, {from:redeemer})
+        await instance.createTemplate(name, description, image, {from:owner})
+        await instance1.setRootHashes([root], {from:owner})
+        //const result = await instance1.roots(templateId, {from: random})
+        //assert.equal(result, root, "something wrong")
+        const result = await instance.activateBadge(proof, leaf, templateId, tokenURI, {from:random})
         assert.isTrue(result, "activateBadge not working")
       })
 
