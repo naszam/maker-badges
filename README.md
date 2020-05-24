@@ -8,6 +8,7 @@
 
 > Non-transferable Badges for Maker Ecosystem Activity, [issue #537](https://github.com/makerdao/community/issues/537)
 
+[Demo](https://youtu.be/oZhXjtDnKBM)
 
 ## Mentors
 - Mariano Conti, [@nanexcool](https://github.com/nanexcool)
