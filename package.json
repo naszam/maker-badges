@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^3.0.1",
+    "@truffle/hdwallet-provider": "^1.0.35",
     "ethereumjs-util": "^7.0.1",
     "ganache-cli": "^6.9.1",
     "gsn": "^0.0.1",
