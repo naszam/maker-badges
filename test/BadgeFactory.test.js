@@ -1,4 +1,5 @@
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
+const MerkleTree = require('./merkleTree.js').MerkleTree
 var BadgeFactory = artifacts.require('./BadgeFactory')
 var InsigniaDAO = artifacts.require('./InsigniaDAO')
 
@@ -7,6 +8,13 @@ contract('BadgeFactory', function(accounts) {
   const owner = accounts[0]
   const random = accounts[1]
   const redeemer = accounts[2]
+  const addresses = [owner, random, redeemer]
+
+  const merkleTree = new MerkleTree(addresses);
+  const root = merkleTree.getHexRoot();
+  //console.log(root)
+  const proof = merkleTree.getHexProof(redeemer);
+  //console.log(proof)
 
   const DEFAULT_ADMIN_ROLE = "0x00"
   const name = "Beginner"
@@ -25,7 +33,7 @@ contract('BadgeFactory', function(accounts) {
 
   // Before Each
   beforeEach(async () => {
-    instance = await InsigniaDAO.new()
+    instance1 = await InsigniaDAO.new()
     instance = await BadgeFactory.new(InsigniaDAO.address)
   })
 
@@ -47,6 +55,25 @@ contract('BadgeFactory', function(accounts) {
   })
 
   describe("Functions", () => {
+
+    describe("activateBadge()", async () => {
+
+      it("activateBadge for redeemer account via InsigniaDAO verify()", async () => {
+        await instance1.addRedeemer(redeemer, {from:random})
+        const result = await instance.activateBadge(proof, templateId, tokenURI, {from:redeemer})
+        assert.isTrue(result, "activateBadge not working")
+      })
+
+    })
+
+    describe("claim()", async () => {
+
+      it("check redeemer account via MerkleProof verify()", async () => {
+        const result = await instance2.claim(proof, root, {from:redeemer})
+        assert.isTrue(result, "MerkleProof not working")
+      })
+
+    })
 
     // !Tested setting the mintWithTokenURI() function set to public with onlyTemplater access control (remember to remove "_" before function)
     // Check mintWithTokenURI() for success when a templater is trying to mint a new token
@@ -173,6 +200,7 @@ contract('BadgeFactory', function(accounts) {
         })
 
       })
+
 
    })
 
