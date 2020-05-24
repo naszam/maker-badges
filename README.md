@@ -14,8 +14,6 @@
 - Yannis Stamelakos, [@i-stam](https://github.com/i-stam)
 - Dror Tirosh (OpenGSN), [@drortirosh](https://github.com/drortirosh)
 
-[Demo](https://youtu.be/oZhXjtDnKBM)
-
 ## Sections
 * [Building Blocks](#building-blocks)
 * [Setup](#setup)
