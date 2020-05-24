@@ -66,15 +66,6 @@ contract('BadgeFactory', function(accounts) {
 
     })
 
-    describe("claim()", async () => {
-
-      it("check redeemer account via MerkleProof verify()", async () => {
-        const result = await instance2.claim(proof, root, {from:redeemer})
-        assert.isTrue(result, "MerkleProof not working")
-      })
-
-    })
-
     // !Tested setting the mintWithTokenURI() function set to public with onlyTemplater access control (remember to remove "_" before function)
     // Check mintWithTokenURI() for success when a templater is trying to mint a new token
     describe("mintWithTokenURI()", async () => {
