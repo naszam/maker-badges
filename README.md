@@ -4,6 +4,8 @@
 [![#solc 0.6.8](https://img.shields.io/badge/solc-v0.6.8-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.8)
 [![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)]()
 
+[![#ETHGlobal HackMoney](https://img.shields.io/badge/ETHGlobal-HackMoney-blueviolet?style=for-the-badge&logo=atom&labelColor=5fc5a6)](https://hackathon.money/)
+
 # InsigniaDAO
 
 > Non-transferable Badges for Maker Ecosystem Activity, [issue #537](https://github.com/makerdao/community/issues/537)
