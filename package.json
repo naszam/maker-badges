@@ -1,6 +1,6 @@
 {
   "name": "insigniadao",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Non-transferable Badges for Maker Ecosystem Activity, issue #537",
   "main": "truffle-config.js",
   "directories": {
@@ -25,7 +25,7 @@
     "url": "git+https://github.com/naszam/insigniadao.git"
   },
   "author": "Nazzareno Massari, Scott Herren",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/naszam/insigniadao/issues"
   },
