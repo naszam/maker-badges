@@ -1,6 +1,5 @@
-const { keccak256, keccakFromString, bufferToHex } = require('ethereumjs-util');
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
-const MerkleTree = require('./merkleTree.js').MerkleTree
+const  MerkleTree = require('./merkleTree.js').MerkleTree
 var BadgeFactory = artifacts.require('./BadgeFactory')
 var InsigniaDAO = artifacts.require('./InsigniaDAO')
 
@@ -14,11 +13,8 @@ contract('BadgeFactory', function(accounts) {
   const merkleTree = new MerkleTree(addresses);
   const root = merkleTree.getHexRoot();
   //console.log(root)
-  const proof = merkleTree.getHexProof(addresses[2]);
+  const proof = merkleTree.getHexProof(redeemer);
   //console.log(proof)
-
-  const leaf = bufferToHex(keccakFromString(addresses[2]));
-  //console.log(leaf)
 
   const DEFAULT_ADMIN_ROLE = "0x00"
   const name = "Beginner"
@@ -30,7 +26,6 @@ contract('BadgeFactory', function(accounts) {
   const nameNFT = "InsigniaBadges"
   const symbolNFT = "BADGES"
   const baseURI = "https://badges.makerdao.com/token/"
-  const tokenURI = "ipfs.json"
 
 
 
@@ -38,7 +33,7 @@ contract('BadgeFactory', function(accounts) {
 
   // Before Each
   beforeEach(async () => {
-    instance1 = await InsigniaDAO.new()
+    insignia = await InsigniaDAO.new()
     instance = await BadgeFactory.new(InsigniaDAO.address)
   })
 
@@ -61,19 +56,17 @@ contract('BadgeFactory', function(accounts) {
 
   describe("Functions", () => {
 
+    // Check activateBadge() for success when a redeemer checked off-chain (Merkle Tree) is trying to activate a new Badge
     describe("activateBadge()", async () => {
 
-      it("activateBadge for redeemer account via InsigniaDAO verify()", async () => {
+      it("activateBadge should allow redeemer to activate Badge", async () => {
         await instance.createTemplate(name, description, image, {from:owner})
-        await instance1.setRootHashes([root], {from:owner})
-        //const result = await instance1.roots(templateId, {from: random})
-        //assert.equal(result, root, "something wrong")
-        const result = await instance.activateBadge(proof, leaf, templateId, tokenURI, {from:random})
-        assert.isTrue(result, "activateBadge not working")
+        await insignia.setRootHashes([root], {from:owner})
+        const result = await instance.activateBadge(proof, templateId, "ipfs.json", {from:redeemer})
       })
 
     })
-
+/*
     // !Tested setting the mintWithTokenURI() function set to public with onlyTemplater access control (remember to remove "_" before function)
     // Check mintWithTokenURI() for success when a templater is trying to mint a new token
     describe("mintWithTokenURI()", async () => {
@@ -199,7 +192,7 @@ contract('BadgeFactory', function(accounts) {
         })
 
       })
-
+*/
 
    })
 
