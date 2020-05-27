@@ -66,7 +66,7 @@ contract('BadgeFactory', function(accounts) {
       })
 
     })
-/*
+
     // !Tested setting the mintWithTokenURI() function set to public with onlyTemplater access control (remember to remove "_" before function)
     // Check mintWithTokenURI() for success when a templater is trying to mint a new token
     describe("mintWithTokenURI()", async () => {
@@ -192,7 +192,7 @@ contract('BadgeFactory', function(accounts) {
         })
 
       })
-*/
+
 
    })
 
