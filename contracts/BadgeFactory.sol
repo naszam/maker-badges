@@ -16,7 +16,7 @@ import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
 interface InsigniaDAO {
 
-    function verify(address guy) external view returns (bool);
+    function verify(uint256 templateId, address guy) external view returns (bool);
     function roots(uint256 templateId) external view returns (bytes32);
 
 }
@@ -152,15 +152,15 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param templateId Template Id
   /// @param tokenURI Token URI
   /// @return _tokenId Token Id of the new Badge
-  function activateBadge(bytes32[] memory proof, bytes32 leaf, uint256 templateId, string memory tokenURI) public whenNotPaused returns (bool) {
+  function activateBadge(bytes32[] memory proof, uint256 templateId, string memory tokenURI) public whenNotPaused returns (bool) {
     require(templates.length > templateId, "No template with that id");
-    require(insignia.verify(msg.sender) || proof.verify(insignia.roots(templateId), leaf), "Caller is not a redeemer");
+    require(insignia.verify(templateId, msg.sender) || proof.verify(insignia.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
 
     // Increase the quantities
     _tokenTemplates[_tokenIdTracker.current()] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
 
-    require(_mintWithTokenURI(msg.sender, tokenURI), "Token not minted");
+    require(_mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
 
     emit BadgeActivated(msg.sender, templateId, tokenURI);
     return true;
