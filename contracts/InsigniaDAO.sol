@@ -154,10 +154,7 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
   /// @param guy Address to verify
   /// @return True if guy is a redeemer
   function verify(uint256 templateId, address guy) public view whenNotPaused returns (bool) {
-    if (redeemers[templateId].contains(address(uint160(uint256(keccak256(abi.encodePacked(guy))))))){
-      return true;
-    }
-    return false;
+    return redeemers[templateId].contains(address(uint160(uint256(keccak256(abi.encodePacked(guy))))));
   }
 
   /// @notice Pause all the functions
