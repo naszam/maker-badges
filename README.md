@@ -166,6 +166,7 @@ About
 - [POAP](https://www.poap.xyz/)
 - [MakerDAO](https://makerdao.com/en/)
 - [Chai](https://chai.money/about.html)
+- [aztec-airdrop](https://github.com/nanexcool/aztec-airdrop)
 
 ## Authors
 
