@@ -59,10 +59,10 @@ contract('BadgeFactory', function(accounts) {
     // Check activateBadge() for success when a redeemer checked off-chain (Merkle Tree) is trying to activate a new Badge
     describe("activateBadge()", async () => {
 
-      it("activateBadge should allow redeemer to activate Badge", async () => {
+      it("activateBadge should allow redeemer checked offchain to activate Badge", async () => {
         await instance.createTemplate(name, description, image, {from:owner})
         await insignia.setRootHashes([root], {from:owner})
-        const result = await instance.activateBadge(proof, templateId, "ipfs.json", {from:redeemer})
+        await instance.activateBadge(proof, templateId, "ipfs.json", {from:redeemer})
       })
 
     })
