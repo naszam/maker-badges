@@ -26,6 +26,8 @@
 
 ## Building Blocks
 
+![Smart Contracts with OpenGSN Flow-Chart](InsigniaDAO_opengsn.png)
+
 ### [InsigniaDAO](./contracts/InsigniaDAO.sol)
 > InsigniaDAO to check for activities on MakerDAO ecosystem and keep track of redeemers
 
