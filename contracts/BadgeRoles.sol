@@ -24,7 +24,7 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
 
         _setupRole(TEMPLATER_ROLE, owner());
         _setupRole(PAUSER_ROLE, owner());
-        
+
   }
 
   /// Modifiers
@@ -49,10 +49,16 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
   }
 
   function addTemplater(address guy) public onlyAdmin returns (bool) {
+    require(!isTemplater(guy), "guy is already a templater");
     grantRole(TEMPLATER_ROLE, guy);
     return true;
   }
 
+  function removeTemplater(address guy) public onlyAdmin returns (bool) {
+    require(isTemplater(guy), "guy is not a templater");
+    revokeRole(TEMPLATER_ROLE, guy);
+    return true;
+  }
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function pause() public {
