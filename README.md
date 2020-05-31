@@ -172,5 +172,5 @@ About
 
 ## Authors
 
-Project created by [Nazzareno Massari](https://nazzarenomassari.com), Scott Herren in collaboration with Bryan Flynn.  
+Project created by [Nazzareno Massari](https://nazzarenomassari.com), Scott Herren in collaboration with Brian Flynn.  
 Team MetaBadges from HackMoney ETHGlobal Virtual Hackathon.
