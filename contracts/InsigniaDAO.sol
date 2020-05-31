@@ -113,10 +113,10 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
     wad = rmul(slice, chi);
   }
 
-  /// @notice Pot Challange
+  /// @notice Pot Challenge
   /// @dev Keep track of the hash of the caller if successful
   /// @return True if the caller successfully checked for activity on Pot
-  function potChallange(uint256 templateId) public whenNotPaused returns (bool) {
+  function potChallenge(uint256 templateId) public whenNotPaused returns (bool) {
     require(_dai(msg.sender) >= 1 ether, "Caller has not accrued 1 or more Dai interest on Pot");
     if (!redeemers[templateId].contains(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))))) {
     redeemers[templateId].add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
@@ -125,10 +125,10 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
     return true;
   }
 
-  /// @notice DSChief Challange
+  /// @notice DSChief Challenge
   /// @dev Keep track of the hash of the caller if successful
   /// @return True if the caller successfully checked for activity on DSChief
-  function chiefChallange(uint256 templateId) public whenNotPaused returns (bool) {
+  function chiefChallenge(uint256 templateId) public whenNotPaused returns (bool) {
     require(chief.votes(msg.sender) != 0x00, "Caller is not voting in a Governance Poll");
     if (!redeemers[templateId].contains(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))))) {
     redeemers[templateId].add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
@@ -137,10 +137,10 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
     return true;
   }
 
-  /// @notice Flipper Challange
+  /// @notice Flipper Challenge
   /// @dev Keep track of the hash of the caller if successful
   /// @return True if the caller successfully checked for activity on Flipper
-  function flipperChallange(uint256 templateId, uint256 bidId) public whenNotPaused returns (bool) {
+  function flipperChallenge(uint256 templateId, uint256 bidId) public whenNotPaused returns (bool) {
     require(flipper.bids(bidId).guy == msg.sender, "Caller is not the high bidder in the current Bid in Collateral Auctions");
     if (!redeemers[templateId].contains(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))))) {
     redeemers[templateId].add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
