@@ -64,7 +64,7 @@ contract('BadgeFactory', function(accounts) {
         //await insignia.addRedeemer(templateId, random, {from:owner})
         //await insignia.verify(templateId, random, {from: random})
         await insignia.setRootHashes([root], {from:owner})
-        await instance.activateBadge(proof, templateId, "ipfs.json", {from:random})
+        await instance.activateBadge(proof, templateId, "ipfs.json", {from:redeemer})
       })
 
     })
