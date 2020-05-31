@@ -61,8 +61,10 @@ contract('BadgeFactory', function(accounts) {
 
       it("activateBadge should allow redeemer checked offchain to activate Badge", async () => {
         await instance.createTemplate(name, description, image, {from:owner})
+        //await insignia.addRedeemer(templateId, random, {from:owner})
+        //await insignia.verify(templateId, random, {from: random})
         await insignia.setRootHashes([root], {from:owner})
-        await instance.activateBadge(proof, templateId, "ipfs.json", {from:redeemer})
+        await instance.activateBadge(proof, templateId, "ipfs.json", {from:random})
       })
 
     })
