@@ -8,8 +8,9 @@
 
 # InsigniaDAO
 
-> Non-transferable Badges for Maker Ecosystem Activity, [issue #537](https://github.com/makerdao/community/issues/537)
+> Non-transferable Badges for Maker Ecosystem Activity, [CDIP 18](https://github.com/makerdao/community/issues/537)
 
+An incentivization protocol to enhance activity on MakerDAO Ecosystem  
 
 ## Mentors
 - Mariano Conti, [@nanexcool](https://github.com/nanexcool)
@@ -17,7 +18,8 @@
 - Yannis Stamelakos, [@i-stam](https://github.com/i-stam)
 - Dror Tirosh (OpenGSN), [@drortirosh](https://github.com/drortirosh)
 
-[Demo](https://youtu.be/oZhXjtDnKBM)
+[Demo](https://youtu.be/oZhXjtDnKBM)  
+[HackMoney](https://hack.ethglobal.co/showcase/metabadges)  
 
 ## Sections
 * [Building Blocks](#building-blocks)
@@ -28,19 +30,22 @@
 
 ## Building Blocks
 
-![Smart Contracts Flow-Chart](InsigniaDAO.png)
+![Smart Contracts Flow-Chart](InsigniaDAO_v0.2.1.png)
 
 ### [InsigniaDAO](./contracts/InsigniaDAO.sol)
 > InsigniaDAO to check for activities on MakerDAO ecosystem and keep track of redeemers
 
-To enable InsigniaDAO to check on-chain for activities on MakerDAO ecosystem we are using three interface to map the functions that we'll use:
-- **Pot**: to check if a user has accrued 1 or more Dai from DSR, via **pie(address guy)**, **chi()**, **rho()** and **drip()** used in the internal function **_dai(address guy)** to return the **wad** or the current accrued Dai interest in DSR.
-- **DSChief**: to check if a user is voting on a Governance Poll via **votes(address)** a getter function to check who is currently voting.
-- **Flipper**: to check for high bidder in the current Bid in Collateral Auctions via **bids(id)** a getter function of current Bid on Flipper to check for **bids(id).guy** the high bidder.
+To enable InsigniaDAO to check on-chain for activities on MakerDAO ecosystem we're using three interface to map the functions that we'll use:
+- **Pot**: to check if a user has accrued 1 or more Dai from DSR, via **pie(address guy)**, **chi()**, **rho()** and **drip()** used in the internal function **_dai(address guy)** to return the **wad** or the current accrued Dai interest in DSR.  
+To check redeemer activities on Pot it uses **potChallenge(uint templateId)** function.    
+- **DSChief**: to check if a user is voting on a Governance Poll via **votes(address)** a getter function to check who is currently voting.  
+To check redeemer activities on DSChief it uses **chiefChallenge(uint templateId)** function.    
+- **Flipper**: to check for high bidder in the current Bid in Collateral Auctions via **bids(id)** a getter function of current Bid on Flipper to check for **bids(id).guy** the high bidder.   
+To check redeemer activities on Flipper it uses **flipperChallenge(uint templateId, uint bidId)** function.  
 
-The function **checkRedeemer(uint id)** will check on-chain for the previous activities on MakerDAO and will store the hash of the caller address, casted in address type, into the OpenZeppelin EnumerableSet.AddressSet **redeemers** that will be verified in BadgeFactory via **verify(address guy)** function linked to it, to allow a redeemer to activate a Non-transferable Badge.
+The functions to check on-chain for activities on Maker Ecosystem will keep track of the caller address into the OpenZeppelin EnumerableSet.AddressSet **redeemers** by templateId that will be verified in BadgeFactory via **verify(uint templateId, address guy)** function linked to it, to allow a redeemer to activate a Non-transferable Badge.
 
-InsigniaDAO, let the owner to set (via **setRootHashes(bytes[]) memory rootHashes**) an array of root hashes, called **roots**, ordered by template Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to activate Badge.
+InsigniaDAO, let the owner to set (via **setRootHashes(bytes32[]) memory rootHashes**) an array of root hashes, called **roots**, ordered by template Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to activate Badge.
 The getter function **roots(uint templateId)** is then linked to BadgeFactory and checked via OpenZeppelin MerkleProof.sol **verify()** function.
 
 The contract also inherits OpenZeppelic AccessControl.sol to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
@@ -48,11 +53,11 @@ The contract also inherits OpenZeppelic AccessControl.sol to set the Pauser role
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
 > BadgeRoles Access Management for Default Admin, Templater and Pauser Role
 
-BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater and to add a Templater via **addTemplater(address guy)**.
+BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater to add a Templater via **addTemplater(address guy)** and remove a Templater via **removeTemplater(address guy)** functions.  
 
 ### [BadgeFactory](./contracts/BadgeFactory.sol)
 > BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
- 
+
 To enable BadgeFactory to verify redeemers checked on-chain/off-chain for activities on MakerDAO ecosystem, when they try to redeem their Badge, we're using the interface InsigniaDAO to map the function we'll use.  
 
 In particular, we'll use:
@@ -116,7 +121,7 @@ Clone this GitHub repository.
      $ mythx analyze
      ```
 ## MythX CLI Report
-Contract | Line | SWC Title | Severity | Short Description 
+Contract | Line | SWC Title | Severity | Short Description
 --- | --- | --- | --- | ---
 InsigniaDAO.sol | 80 | Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
 
@@ -149,8 +154,8 @@ Deploy
    ```
 
 ## Project deployed on Kovan
-[InsigniaDAO.sol](https://kovan.etherscan.io/address/0xa2Ea4980274375725C5c3D29f011b264aD6095e9)  
-[BadgeFactory.sol](https://kovan.etherscan.io/address/0x6c945C50C8a625e59A674F6c20875592C986AeEd)
+[InsigniaDAO.sol](https://kovan.etherscan.io/address/0x07857c2aA3804965CC2951E6c2EB5945dCE6C513)  
+[BadgeFactory.sol](https://kovan.etherscan.io/address/0x14D0DBd853923b856c000E4070631e4828E99DaE)
 
 
 Front-end
@@ -172,5 +177,5 @@ About
 
 ## Authors
 
-Project created by [Nazzareno Massari](https://nazzarenomassari.com), Scott Herren in collaboration with Bryan Flynn.  
+Project created by [Nazzareno Massari](https://nazzarenomassari.com), Scott Herren in collaboration with Brian Flynn.  
 Team MetaBadges from HackMoney ETHGlobal Virtual Hackathon.

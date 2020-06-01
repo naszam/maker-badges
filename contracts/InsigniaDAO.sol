@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
-/// @author Nazzareno Massari, Scott Herren
+/// @author Nazzareno Massari
 /// @notice InsigniaDAO to check for activities on maker ecosystem and keep track of redeemers
 /// @dev see https://github.com/makerdao/community/issues/537
 /// @dev All function calls are currently implemented without side effecs through TDD approach
@@ -53,7 +53,7 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
 
   bytes32[] public roots;
 
-  EnumerableSet.AddressSet private redeemers;
+  mapping (uint256 => EnumerableSet.AddressSet) private redeemers;
 
   /// Events
   event PotChecked(address guy);
@@ -113,29 +113,39 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
     wad = rmul(slice, chi);
   }
 
-  /// @notice Check Redeemer
+  /// @notice Pot Challenge
   /// @dev Keep track of the hash of the caller if successful
-  /// @return True/False if the caller successfully checked for activities on MakerDAO or not
-  function checkRedeemer(uint256 id) public whenNotPaused returns (bool) {
-
-    if (_dai(msg.sender) >= 1 ether) {
-      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))))) {
-      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
-      }
-      emit PotChecked(msg.sender);
-    }else if(chief.votes(msg.sender) != 0x00) {
-      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))))) {
-      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
-      }
-      emit DSChiefChecked(msg.sender);
-    }else if(flipper.bids(id).guy == msg.sender) {
-      if (!redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))))) {
-      redeemers.add(address(uint160(uint256(keccak256(abi.encodePacked(msg.sender))))));
-      }
-      emit FlipperChecked(msg.sender);
-    }else {
-      return false;
+  /// @return True if the caller successfully checked for activity on Pot
+  function potChallenge(uint256 templateId) public whenNotPaused returns (bool) {
+    require(_dai(msg.sender) >= 1 ether, "Caller has not accrued 1 or more Dai interest on Pot");
+    if (!redeemers[templateId].contains(msg.sender)) {
+    redeemers[templateId].add(msg.sender);
     }
+    emit PotChecked(msg.sender);
+    return true;
+  }
+
+  /// @notice DSChief Challenge
+  /// @dev Keep track of the hash of the caller if successful
+  /// @return True if the caller successfully checked for activity on DSChief
+  function chiefChallenge(uint256 templateId) public whenNotPaused returns (bool) {
+    require(chief.votes(msg.sender) != 0x00, "Caller is not voting in a Governance Poll");
+    if (!redeemers[templateId].contains(msg.sender)) {
+    redeemers[templateId].add(msg.sender);
+    }
+    emit DSChiefChecked(msg.sender);
+    return true;
+  }
+
+  /// @notice Flipper Challenge
+  /// @dev Keep track of the hash of the caller if successful
+  /// @return True if the caller successfully checked for activity on Flipper
+  function flipperChallenge(uint256 templateId, uint256 bidId) public whenNotPaused returns (bool) {
+    require(flipper.bids(bidId).guy == msg.sender, "Caller is not the high bidder in the current Bid in Collateral Auctions");
+    if (!redeemers[templateId].contains(msg.sender)) {
+    redeemers[templateId].add(msg.sender);
+    }
+    emit FlipperChecked(msg.sender);
     return true;
   }
 
@@ -143,11 +153,8 @@ contract InsigniaDAO is Ownable, AccessControl, Pausable {
   /// @dev Verify if the hash of guy address exists
   /// @param guy Address to verify
   /// @return True if guy is a redeemer
-  function verify(address guy) public view whenNotPaused returns (bool) {
-    if (redeemers.contains(address(uint160(uint256(keccak256(abi.encodePacked(guy))))))){
-      return true;
-    }
-    return false;
+  function verify(uint256 templateId, address guy) public view whenNotPaused returns (bool) {
+    return redeemers[templateId].contains(guy);
   }
 
   /// @notice Pause all the functions
