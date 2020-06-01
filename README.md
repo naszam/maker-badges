@@ -148,8 +148,8 @@ Deploy
    ```
 
 ## Project deployed on Kovan
-[InsigniaDAO.sol](https://kovan.etherscan.io/address/0xa2Ea4980274375725C5c3D29f011b264aD6095e9)  
-[BadgeFactory.sol](https://kovan.etherscan.io/address/0x6c945C50C8a625e59A674F6c20875592C986AeEd)
+[InsigniaDAO.sol](https://kovan.etherscan.io/address/0x07857c2aA3804965CC2951E6c2EB5945dCE6C513)  
+[BadgeFactory.sol](https://kovan.etherscan.io/address/0x14D0DBd853923b856c000E4070631e4828E99DaE)
 
 
 Front-end
