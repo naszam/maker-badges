@@ -8,7 +8,7 @@
 
 # InsigniaDAO
 
-> Non-transferable Badges for Maker Ecosystem Activity, [CDIP 18](https://github.com/makerdao/community/issues/537) [HackMoney](https://hack.ethglobal.co/showcase/metabadges)  
+> Non-transferable Badges for Maker Ecosystem Activity, [(CDIP 18)](https://github.com/makerdao/community/issues/537)  
 
 
 ## Mentors
@@ -18,6 +18,7 @@
 - Dror Tirosh (OpenGSN), [@drortirosh](https://github.com/drortirosh)
 
 [Demo](https://youtu.be/oZhXjtDnKBM)
+[HackMoney](https://hack.ethglobal.co/showcase/metabadges)  
 
 ## Sections
 * [Building Blocks](#building-blocks)
