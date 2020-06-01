@@ -29,7 +29,7 @@
 
 ## Building Blocks
 
-![Smart Contracts Flow-Chart](InsigniaDAO_v0.2.0.png)
+![Smart Contracts Flow-Chart](InsigniaDAO_v0.2.1.png)
 
 ### [InsigniaDAO](./contracts/InsigniaDAO.sol)
 > InsigniaDAO to check for activities on MakerDAO ecosystem and keep track of redeemers
