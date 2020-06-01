@@ -151,7 +151,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param proof Merkle Proof
   /// @param templateId Template Id
   /// @param tokenURI Token URI
-  /// @return _tokenId Token Id of the new Badge
+  /// @return True If the new Badge is Activated
   function activateBadge(bytes32[] memory proof, uint256 templateId, string memory tokenURI) public whenNotPaused returns (bool) {
     require(templates.length > templateId, "No template with that id");
     require(insignia.verify(templateId, msg.sender) || proof.verify(insignia.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
