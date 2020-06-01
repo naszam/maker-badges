@@ -10,10 +10,11 @@ contract('BadgeFactory', function(accounts) {
   const redeemer = accounts[2]
   const addresses = [owner, random, redeemer]
 
-  const merkleTree = new MerkleTree(addresses);
-  const root = merkleTree.getHexRoot();
+  const merkleTree = new MerkleTree(addresses)
+  const root = merkleTree.getHexRoot()
   //console.log(root)
-  const proof = merkleTree.getHexProof(redeemer);
+  const rootHashes = [root]
+  const proof = merkleTree.getHexProof(redeemer)
   //console.log(proof)
 
   const DEFAULT_ADMIN_ROLE = "0x00"
@@ -63,7 +64,7 @@ contract('BadgeFactory', function(accounts) {
         await instance.createTemplate(name, description, image, {from:owner})
         //await insignia.addRedeemer(templateId, random, {from:owner})
         //await insignia.verify(templateId, random, {from: random})
-        await insignia.setRootHashes([root], {from:owner})
+        await insignia.setRootHashes(rootHashes, {from:owner})
         await instance.activateBadge(proof, templateId, "ipfs.json", {from:redeemer})
       })
 
