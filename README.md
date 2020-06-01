@@ -40,7 +40,7 @@ To enable InsigniaDAO to check on-chain for activities on MakerDAO ecosystem we'
 To check redeemer activities on Pot it uses **potChallenge(uint templateId)** function.    
 - **DSChief**: to check if a user is voting on a Governance Poll via **votes(address)** a getter function to check who is currently voting.  
 To check redeemer activities on DSChief it uses **chiefChallenge(uint templateId)** function.    
-- **Flipper**: to check for high bidder in the current Bid in Collateral Auctions via **bids(id)** a getter function of current Bid on Flipper to check for **bids(id).guy** the high bidder. 
+- **Flipper**: to check for high bidder in the current Bid in Collateral Auctions via **bids(id)** a getter function of current Bid on Flipper to check for **bids(id).guy** the high bidder.   
 To check redeemer activities on Flipper it uses **flipperChallenge(uint templateId, uint bidId)** function.  
 
 The functions to check on-chain for activities on Maker Ecosystem will keep track of the caller address into the OpenZeppelin EnumerableSet.AddressSet **redeemers** by templateId that will be verified in BadgeFactory via **verify(uint templateId, address guy)** function linked to it, to allow a redeemer to activate a Non-transferable Badge.
