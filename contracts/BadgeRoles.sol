@@ -2,7 +2,7 @@
 pragma solidity 0.6.8;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
-/// @author Nazzareno Massari, Scott Herren
+/// @author Nazzareno Massari
 /// @notice BadgeRoles Access Management for Default Admin, Templater and Pauser Role
 /// @dev see https://github.com/makerdao/community/issues/537
 /// @dev All function calls are currently implemented without side effecs through TDD approach

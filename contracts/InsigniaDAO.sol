@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
-/// @author Nazzareno Massari, Scott Herren
+/// @author Nazzareno Massari
 /// @notice InsigniaDAO to check for activities on maker ecosystem and keep track of redeemers
 /// @dev see https://github.com/makerdao/community/issues/537
 /// @dev All function calls are currently implemented without side effecs through TDD approach
