@@ -17,6 +17,9 @@
 - Yannis Stamelakos, [@i-stam](https://github.com/i-stam)
 - Dror Tirosh (OpenGSN), [@drortirosh](https://github.com/drortirosh)
 
+
+[HackMoney](https://hack.ethglobal.co/showcase/metabadges)  
+
 ## Sections
 * [Building Blocks](#building-blocks)
 * [Setup](#setup)
