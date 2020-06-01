@@ -10,6 +10,7 @@
 
 > Non-transferable Badges for Maker Ecosystem Activity, [CDIP 18](https://github.com/makerdao/community/issues/537)
 
+An incentivization mechanism to enhance activity on MakerDAO Ecosystem  
 
 ## Mentors
 - Mariano Conti, [@nanexcool](https://github.com/nanexcool)
