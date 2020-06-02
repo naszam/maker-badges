@@ -162,6 +162,7 @@ Front-end
 ============
 
 - [DApp](https://github.com/scottrepreneur/meta-badges)
+- [Merkle Service](https://github.com/scottrepreneur/mb-merkle-service)
 
 About
 ============
