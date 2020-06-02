@@ -19,7 +19,7 @@ An incentivization protocol to enhance activity on MakerDAO Ecosystem
 - Dror Tirosh (OpenGSN), [@drortirosh](https://github.com/drortirosh)
 
 [Demo](https://youtu.be/oZhXjtDnKBM)  
-[HackMoney](https://hack.ethglobal.co/showcase/metabadges)  
+[HackMoney](https://hack.ethglobal.co/showcase/metabadges-recJS9yRU2zu4rksZ)  
 
 ## Sections
 * [Building Blocks](#building-blocks)
