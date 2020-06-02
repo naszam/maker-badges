@@ -123,7 +123,7 @@ Clone this GitHub repository.
 ## MythX CLI Report
 Contract | Line | SWC Title | Severity | Short Description
 --- | --- | --- | --- | ---
-InsigniaDAO.sol | 80 | Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
+InsigniaDAO.sol | 112| Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
 
 Deploy
 ============
