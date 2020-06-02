@@ -158,10 +158,10 @@ Deploy
 [BadgeFactory.sol](https://kovan.etherscan.io/address/0x14D0DBd853923b856c000E4070631e4828E99DaE)
 
 
-Front-end
+Front-end 
 ============
 
-https://github.com/scottrepreneur/meta-badges
+- [DApp](https://github.com/scottrepreneur/meta-badges)
 
 About
 ============
