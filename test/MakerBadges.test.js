@@ -1,7 +1,7 @@
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
-var InsigniaDAO = artifacts.require('./InsigniaDAO')
+var MakerBadges = artifacts.require('./MakerBadges')
 
-contract('InsigniaDAO', function(accounts) {
+contract('MakerBadges', function(accounts) {
 
   const owner = accounts[0]
   const random = accounts[1]
@@ -15,7 +15,7 @@ contract('InsigniaDAO', function(accounts) {
 
   // Before Each
   beforeEach(async () => {
-    instance = await InsigniaDAO.new()
+    instance = await MakerBadges.new()
   })
 
   // Check that the owner is set as the deploying address

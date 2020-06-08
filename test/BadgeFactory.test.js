@@ -1,7 +1,7 @@
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
 const  MerkleTree = require('./merkleTree.js').MerkleTree
 var BadgeFactory = artifacts.require('./BadgeFactory')
-var InsigniaDAO = artifacts.require('./InsigniaDAO')
+var MakerBadges = artifacts.require('./MakerBadges')
 
 contract('BadgeFactory', function(accounts) {
 
@@ -24,8 +24,8 @@ contract('BadgeFactory', function(accounts) {
   const templateId = "0"
   const index1 = "0"
   const index2 = "1"
-  const nameNFT = "InsigniaBadges"
-  const symbolNFT = "BADGES"
+  const nameNFT = "MakerBadges"
+  const symbolNFT = "MAKER"
   const baseURI = "https://badges.makerdao.com/token/"
 
 
@@ -34,8 +34,8 @@ contract('BadgeFactory', function(accounts) {
 
   // Before Each
   beforeEach(async () => {
-    insignia = await InsigniaDAO.new()
-    instance = await BadgeFactory.new(InsigniaDAO.address)
+    maker = await MakerBadges.new()
+    instance = await BadgeFactory.new(MakerBadges.address)
   })
 
   // Check that the owner is set as the deploying address
@@ -62,9 +62,9 @@ contract('BadgeFactory', function(accounts) {
 
       it("activateBadge should allow redeemer checked offchain to activate Badge", async () => {
         await instance.createTemplate(name, description, image, {from:owner})
-        //await insignia.addRedeemer(templateId, random, {from:owner})
-        //await insignia.verify(templateId, random, {from: random})
-        await insignia.setRootHashes(rootHashes, {from:owner})
+        //await maker.addRedeemer(templateId, random, {from:owner})
+        //await maker.verify(templateId, random, {from: random})
+        await maker.setRootHashes(rootHashes, {from:owner})
         await instance.activateBadge(proof, templateId, "ipfs.json", {from:redeemer})
       })
 
