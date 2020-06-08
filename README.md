@@ -32,10 +32,10 @@ An incentivization protocol to enhance activity on MakerDAO Ecosystem
 
 ![Smart Contracts Flow-Chart](InsigniaDAO_v0.2.1.png)
 
-### [InsigniaDAO](./contracts/InsigniaDAO.sol)
-> InsigniaDAO to check for activities on MakerDAO ecosystem and keep track of redeemers
+### [MakerBadges](./contracts/MakerBadges.sol)
+> MakerBadges to check for activities on MakerDAO ecosystem and keep track of redeemers
 
-To enable InsigniaDAO to check on-chain for activities on MakerDAO ecosystem we're using three interface to map the functions that we'll use:
+To enable MakerBadges to check on-chain for activities on MakerDAO ecosystem we're using three interface to map the functions that we'll use:
 - **Pot**: to check if a user has accrued 1 or more Dai from DSR, via **pie(address guy)**, **chi()**, **rho()** and **drip()** used in the internal function **_dai(address guy)** to return the **wad** or the current accrued Dai interest in DSR.  
 To check redeemer activities on Pot it uses **potChallenge(uint templateId)** function.    
 - **DSChief**: to check if a user is voting on a Governance Poll via **votes(address)** a getter function to check who is currently voting.  
@@ -45,7 +45,7 @@ To check redeemer activities on Flipper it uses **flipperChallenge(uint template
 
 The functions to check on-chain for activities on Maker Ecosystem will keep track of the caller address into the OpenZeppelin EnumerableSet.AddressSet **redeemers** by templateId that will be verified in BadgeFactory via **verify(uint templateId, address guy)** function linked to it, to allow a redeemer to activate a Non-transferable Badge.
 
-InsigniaDAO, let the owner to set (via **setRootHashes(bytes32[]) memory rootHashes**) an array of root hashes, called **roots**, ordered by template Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to activate Badge.
+MakerBadges, let the owner to set (via **setRootHashes(bytes32[]) memory rootHashes**) an array of root hashes, called **roots**, ordered by template Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to activate Badge.
 The getter function **roots(uint templateId)** is then linked to BadgeFactory and checked via OpenZeppelin MerkleProof.sol **verify()** function.
 
 The contract also inherits OpenZeppelic AccessControl.sol to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
@@ -64,7 +64,7 @@ In particular, we'll use:
 - **verify(address guy)** to verify redeemers checked on-chain.
 - **roots(uint templateId)** a getter function to return root by templated Id to be verified via MerkleProof.sol **verify()** function, allowing redeemers checked off-chain and stored into a Merkle Tree to be able to redeem Badges.  
 
-A Merkle Tree is generated for every Template and the root hash is updated by owner of InsigniaDAO daily to allow batches of redeemers to be checked and to redeem Badges.  
+A Merkle Tree is generated for every Template and the root hash is updated by owner of MakerBadges daily to allow batches of redeemers to be checked and to redeem Badges.  
 
 BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template via **createTemplate()** specifying name, description and image.  
 
@@ -72,8 +72,8 @@ It also inherits ERC721Burnable, where the **_transfer()** has been overridden t
 The owner of the Badge can then burn it eventually via **burnBadge(uint tokenId)** specifying the token Id of the Badge.  
 
 During deployment the contract sets the following ERC721 metadata:
-- name: "InsigniaBadges"
-- symbol: "BADGES"
+- name: "MakerBadges"
+- symbol: "MAKER"
 - baseURI: "https://badges.makerdao.com/token/"  
 
 Setup
@@ -178,5 +178,5 @@ About
 
 ## Authors
 
-Project created by [Nazzareno Massari](https://nazzarenomassari.com), Scott Herren in collaboration with Brian Flynn.  
+Project created by [Nazzareno Massari](https://nazzarenomassari.com) and Scott Herren.  
 Team MetaBadges from HackMoney ETHGlobal Virtual Hackathon.
