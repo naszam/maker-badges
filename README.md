@@ -123,7 +123,7 @@ Clone this GitHub repository.
 ## MythX CLI Report
 Contract | Line | SWC Title | Severity | Short Description
 --- | --- | --- | --- | ---
-InsigniaDAO.sol | [112](https://github.com/naszam/insigniadao/blob/master/contracts/InsigniaDAO.sol#L112)| Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
+MakerBadges.sol | [112](https://github.com/naszam/insigniadao/blob/master/contracts/InsigniaDAO.sol#L112)| Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
 
 Deploy
 ============
