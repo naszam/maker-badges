@@ -1,5 +1,5 @@
 {
-  "name": "insigniadao",
+  "name": "maker-badges",
   "version": "0.1.0",
   "description": "Non-transferable Badges for Maker Ecosystem Activity, issue #537",
   "main": "truffle-config.js",

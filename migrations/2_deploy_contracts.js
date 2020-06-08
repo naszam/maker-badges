@@ -1,8 +1,8 @@
-var InsigniaDAO = artifacts.require("InsigniaDAO");
+var MakerBadges = artifacts.require("MakerBadges");
 var BadgeFactory = artifacts.require("BadgeFactory");
 
 module.exports = function(deployer) { 
-	deployer.deploy(InsigniaDAO).then(function() {
-		return deployer.deploy(BadgeFactory, InsigniaDAO.address);
+	deployer.deploy(MakerBadges).then(function() {
+		return deployer.deploy(BadgeFactory, MakerBadges.address);
 	});
 };

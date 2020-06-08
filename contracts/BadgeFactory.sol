@@ -14,7 +14,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
 
-interface InsigniaDAO {
+interface MakerBadges {
 
     function verify(uint256 templateId, address guy) external view returns (bool);
     function roots(uint256 templateId) external view returns (bytes32);
@@ -30,7 +30,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   Counters.Counter private _tokenIdTracker;
 
-  InsigniaDAO internal insignia;
+  MakerBadges internal maker;
 
   /// Events
   event NewTemplate(uint256 templateId, string name, string description, string image);
@@ -49,12 +49,12 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   mapping(uint256 => uint256) private _templateQuantities;
   mapping(uint256 => uint256) private _tokenTemplates;
 
-  constructor(address insignia_)
-    ERC721("InsigniaBadges", "BADGES")
+  constructor(address maker_)
+    ERC721("MakerBadges", "MAKER")
     public
   {
     _setBaseURI("https://badges.makerdao.com/token/");
-    insignia = InsigniaDAO(insignia_);
+    maker = MakerBadges(maker_);
 
   }
 
@@ -154,7 +154,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @return True If the new Badge is Activated
   function activateBadge(bytes32[] memory proof, uint256 templateId, string memory tokenURI) public whenNotPaused returns (bool) {
     require(templates.length > templateId, "No template with that id");
-    require(insignia.verify(templateId, msg.sender) || proof.verify(insignia.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
+    require(maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
 
     // Increase the quantities
     _tokenTemplates[_tokenIdTracker.current()] = templateId;

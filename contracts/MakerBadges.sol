@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari
-/// @notice InsigniaDAO to check for activities on maker ecosystem and keep track of redeemers
+/// @notice MakerBadges to check for activities on maker ecosystem and keep track of redeemers
 /// @dev see https://github.com/makerdao/community/issues/537
 /// @dev All function calls are currently implemented without side effecs through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
@@ -43,7 +43,7 @@ interface  FlipperLike {
   function bids(uint256) external view returns (Bid memory);
 }
 
-contract InsigniaDAO is Ownable, AccessControl, Pausable {
+contract MakerBadges is Ownable, AccessControl, Pausable {
 
   /// Libraries
   using SafeMath for uint256;
