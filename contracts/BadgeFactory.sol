@@ -79,7 +79,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param to owner of the new token
   /// @param tokenURI an <ipfs-hash>.json filename
   /// @return True if the new token is minted
-  function mintWithTokenURI(address to, string memory tokenURI) public returns (bool) {
+  function _mintWithTokenURI(address to, string memory tokenURI) internal returns (bool) {
     _mint(to, _tokenIdTracker.current());
     _setTokenURI(_tokenIdTracker.current(), tokenURI);
     _tokenIdTracker.increment();
@@ -160,7 +160,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     _tokenTemplates[_tokenIdTracker.current()] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
 
-    require(mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
+    require(_mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
 
     emit BadgeActivated(msg.sender, templateId, tokenURI);
     return true;
