@@ -121,9 +121,9 @@ Clone this GitHub repository.
      $ truffle test
      ```
    - Analyze the smart contracts using Slither with the following command (optional):
-   ```
-   $ slither .
-   ```
+      ```
+      $ slither .
+      ```
    - Analyze the smart contracts using MythX CLI with the following command (optional):
      ```sh
      $ mythx analyze
