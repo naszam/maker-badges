@@ -93,6 +93,10 @@ Clone this GitHub repository.
     $ npm i
     ```
   - Global dependencies:
+    - Slither (optional): 
+    ```
+    pip3 install slither-analyzer
+    ```
     - MythX CLI (optional):
     ```sh
     $ git clone git://github.com/dmuhs/mythx-cli
@@ -116,6 +120,10 @@ Clone this GitHub repository.
      ```sh
      $ truffle test
      ```
+   - Analyze the smart contracts using Slither with the following command (optional):
+   ```
+   $ slither .
+   ```
    - Analyze the smart contracts using MythX CLI with the following command (optional):
      ```sh
      $ mythx analyze
