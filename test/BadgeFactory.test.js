@@ -57,6 +57,7 @@ contract('BadgeFactory', function(accounts) {
 
   describe("Functions", () => {
 
+    // !Tested setting the mintWithTokenURI() function to public (remember to remove "_" before function)
     // Check activateBadge() for success when a redeemer checked off-chain (Merkle Tree) is trying to activate a new Badge
     describe("activateBadge()", async () => {
 
@@ -70,12 +71,12 @@ contract('BadgeFactory', function(accounts) {
 
     })
 
-    // !Tested setting the mintWithTokenURI() function set to public with onlyTemplater access control (remember to remove "_" before function)
+    // !Tested setting the mintWithTokenURI() function to public (remember to remove "_" before function)
     // Check mintWithTokenURI() for success when a templater is trying to mint a new token
     describe("mintWithTokenURI()", async () => {
       beforeEach(async function () {
-        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
-        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
+        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:redeemer})
+        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:redeemer})
       });
 
       it("check tokenId via tokenOfOwnerByIndex", async () => {
