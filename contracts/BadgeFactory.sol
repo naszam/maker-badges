@@ -14,7 +14,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
 
-interface MakerBadges {
+interface MakerBadgesLike {
 
     function verify(uint256 templateId, address guy) external view returns (bool);
     function roots(uint256 templateId) external view returns (bytes32);
@@ -30,7 +30,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   Counters.Counter private _tokenIdTracker;
 
-  MakerBadges internal maker;
+  MakerBadgesLike internal maker;
 
   /// Events
   event NewTemplate(uint256 templateId, string name, string description, string image);
@@ -54,7 +54,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     public
   {
     _setBaseURI("https://badges.makerdao.com/token/");
-    maker = MakerBadges(maker_);
+    maker = MakerBadgesLike(maker_);
 
   }
 
@@ -68,7 +68,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @dev Update the baseURI specified in the constructor
   /// @param baseURI New baseURI
   /// @return True if the new baseURI is set
-  function setBaseURI(string memory baseURI) public onlyOwner returns (bool) {
+  function setBaseURI(string calldata baseURI) external onlyOwner returns (bool) {
     _setBaseURI(baseURI);
     return true;
   }
@@ -79,7 +79,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param to owner of the new token
   /// @param tokenURI an <ipfs-hash>.json filename
   /// @return True if the new token is minted
-  function _mintWithTokenURI(address to, string memory tokenURI) internal returns (bool) {
+  function mintWithTokenURI(address to, string memory tokenURI) public returns (bool) {
     _mint(to, _tokenIdTracker.current());
     _setTokenURI(_tokenIdTracker.current(), tokenURI);
     _tokenIdTracker.increment();
@@ -90,7 +90,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @dev Check if templateId exists
   /// @param templateId Template Id of the template to return
   /// @return name description image Of the specified templateId
-  function getTemplate(uint256 templateId) public view whenNotPaused returns (string memory name, string memory description, string memory image) {
+  function getTemplate(uint256 templateId) external view whenNotPaused returns (string memory name, string memory description, string memory image) {
     require(templates.length > templateId, "No template with that id");
     BadgeTemplate memory template = templates[templateId];
     return (template.name, template.description, template.image);
@@ -102,7 +102,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @notice Getter function for templates count
   /// @dev Return lenght of template array
   /// @return count The current number of templates
-  function getTemplatesCount() public view whenNotPaused returns (uint256 count) {
+  function getTemplatesCount() external view whenNotPaused returns (uint256 count) {
     return templates.length;
   }
 
@@ -112,7 +112,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param description A description of the new template
   /// @param image A filename of the new template
   /// @return _templateId The template Id
-  function createTemplate(string memory name, string memory description, string memory image) public onlyTemplater whenNotPaused returns (uint256 _templateId) {
+  function createTemplate(string calldata name, string calldata description, string calldata image) external onlyTemplater whenNotPaused returns (uint256 _templateId) {
 
     BadgeTemplate memory _newTemplate = BadgeTemplate({
        name: name,
@@ -141,7 +141,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @dev Check if the template Id exists
   /// @param templateId Template Id
   /// @return Quantity of Badges associated with templateId
-  function getBadgeTemplateQuantity(uint256 templateId) public view whenNotPaused returns (uint256) {
+  function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {
     require(templates.length > templateId, "No template with that id");
     return _templateQuantities[templateId];
   }
@@ -152,7 +152,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param templateId Template Id
   /// @param tokenURI Token URI
   /// @return True If the new Badge is Activated
-  function activateBadge(bytes32[] memory proof, uint256 templateId, string memory tokenURI) public whenNotPaused returns (bool) {
+  function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI) external whenNotPaused returns (bool) {
     require(templates.length > templateId, "No template with that id");
     require(maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
 
@@ -160,7 +160,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     _tokenTemplates[_tokenIdTracker.current()] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
 
-    require(_mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
+    require(mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
 
     emit BadgeActivated(msg.sender, templateId, tokenURI);
     return true;
@@ -170,7 +170,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @dev burn() Check if the caller is approved or owner of the Badge
   /// @param tokenId Token Id of the Badge to burn
   /// @return True if the Badge has been burned
-  function burnBadge(uint256 tokenId) public whenNotPaused returns (bool){
+  function burnBadge(uint256 tokenId) external whenNotPaused returns (bool){
     uint256 templateId = getBadgeTemplate(tokenId);
     _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
     burn(tokenId);
@@ -181,7 +181,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @dev _transfer() has been overriden
   /// @dev reverts on transferFrom() and safeTransferFrom()
   function _transfer(address from, address to, uint256 tokenId) internal override {
-    require(!true, "ERC721: token transfer disabled");
+    revert("ERC721: token transfer disabled");
     super._transfer(from, to, tokenId);
   }
 

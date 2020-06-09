@@ -48,27 +48,27 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
     return hasRole(TEMPLATER_ROLE, guy);
   }
 
-  function addTemplater(address guy) public onlyAdmin returns (bool) {
+  function addTemplater(address guy) external onlyAdmin returns (bool) {
     require(!isTemplater(guy), "guy is already a templater");
     grantRole(TEMPLATER_ROLE, guy);
     return true;
   }
 
-  function removeTemplater(address guy) public onlyAdmin returns (bool) {
+  function removeTemplater(address guy) external onlyAdmin returns (bool) {
     require(isTemplater(guy), "guy is not a templater");
     revokeRole(TEMPLATER_ROLE, guy);
     return true;
   }
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
-  function pause() public {
+  function pause() external {
     require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to pause");
     _pause();
   }
 
   /// @notice Unpause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
-  function unpause() public {
+  function unpause() external {
         require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to unpause");
         _unpause();
     }
