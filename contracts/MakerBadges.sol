@@ -33,8 +33,8 @@ interface  FlipperLike {
   struct Bid {
     uint256 bid;
     uint256 lot;
-    address guy;  // high bidder
-    uint48  tic;  // expiry time
+    address guy;  /// @dev high bidder
+    uint48  tic;  /// @dev expiry time
     uint48  end;
     address usr;
     address gal;
@@ -69,7 +69,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   uint256 constant RAY = 10 ** 27;
 
   function rmul(uint256 x, uint256 y) internal view whenNotPaused returns (uint256 z) {
-          // always rounds down
+          /// @dev always rounds down
           z = x.mul(y) / RAY;
   }
 
@@ -78,12 +78,12 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
 
         _setupRole(PAUSER_ROLE, owner());
 
-        /// MCD_POT Kovan Address https://kovan.etherscan.io/address/0xea190dbdc7adf265260ec4da6e9675fd4f5a78bb#code
+        /// @dev MCD_POT Kovan Address https://kovan.etherscan.io/address/0xea190dbdc7adf265260ec4da6e9675fd4f5a78bb#code
 			  pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
 
-        /// MCD_ADM Kovan Address https://kovan.etherscan.io/address/0xbBFFC76e94B34F72D96D054b31f6424249c1337d#code
+        /// @dev MCD_ADM Kovan Address https://kovan.etherscan.io/address/0xbBFFC76e94B34F72D96D054b31f6424249c1337d#code
         chief = DSChiefLike(0xbBFFC76e94B34F72D96D054b31f6424249c1337d);
-        /// MCD_FLIP_ETH_A Kovan Address https://kovan.etherscan.io/address/0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b#code
+        /// @dev MCD_FLIP_ETH_A Kovan Address https://kovan.etherscan.io/address/0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b#code
         flipper = FlipperLike(0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b);
 
   }

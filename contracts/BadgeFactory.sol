@@ -97,7 +97,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   }
 
 
-  /// Templates
+  /// @dev Templates
 
   /// @notice Getter function for templates count
   /// @dev Return lenght of template array
@@ -126,7 +126,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     return true;
   }
 
-  // Badges
+  /// @dev Badges
 
   /// @notice Getter function for templateId associated with the tokenId
   /// @dev Check if the tokenId exists
@@ -156,7 +156,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     require(templates.length > templateId, "No template with that id");
     require(maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
 
-    // Increase the quantities
+    /// @dev Increase the quantities
     _tokenTemplates[_tokenIdTracker.current()] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
 
