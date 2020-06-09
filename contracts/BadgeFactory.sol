@@ -79,7 +79,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param to owner of the new token
   /// @param tokenURI an <ipfs-hash>.json filename
   /// @return True if the new token is minted
-  function _mintWithTokenURI(address to, string memory tokenURI) internal returns (bool) {
+  function _mintWithTokenURI(address to, string calldata tokenURI) internal returns (bool) {
     _mint(to, _tokenIdTracker.current());
     _setTokenURI(_tokenIdTracker.current(), tokenURI);
     _tokenIdTracker.increment();
