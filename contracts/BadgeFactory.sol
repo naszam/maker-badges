@@ -111,8 +111,8 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @param name The name of the new template
   /// @param description A description of the new template
   /// @param image A filename of the new template
-  /// @return _templateId The template Id
-  function createTemplate(string calldata name, string calldata description, string calldata image) external onlyTemplater whenNotPaused returns (uint256 _templateId) {
+  /// @return True If the new Template is Created
+  function createTemplate(string calldata name, string calldata description, string calldata image) external onlyTemplater whenNotPaused returns (bool) {
 
     BadgeTemplate memory _newTemplate = BadgeTemplate({
        name: name,
@@ -121,9 +121,9 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
        image: image
     });
     templates.push(_newTemplate);
-    _templateId = templates.length.sub(1);
+    uint256 _templateId = templates.length.sub(1);
     emit NewTemplate(_templateId, name, description, image);
-    return _templateId;
+    return true;
   }
 
   // Badges
