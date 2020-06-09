@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.8;
+pragma solidity 0.6.9;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari
@@ -15,7 +15,7 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
 
 contract BadgeRoles is Ownable, AccessControl, Pausable {
 
-  /// Roles
+  /// @dev Roles
   bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
@@ -27,7 +27,7 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
 
   }
 
-  /// Modifiers
+  /// @dev Modifiers
   modifier onlyAdmin() {
       require(isAdmin(msg.sender), "Caller is not an admin");
       _;
@@ -38,7 +38,7 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
       _;
     }
 
-  /// Functions
+  /// @dev Functions
 
   function isAdmin(address guy) public view returns (bool) {
     return hasRole(DEFAULT_ADMIN_ROLE, guy);

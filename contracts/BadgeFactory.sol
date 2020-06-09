@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.8;
+pragma solidity 0.6.9;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari
@@ -23,7 +23,7 @@ interface MakerBadgesLike {
 
 contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
-  /// Libraries
+  /// @dev Libraries
   using SafeMath for uint256;
   using Counters for Counters.Counter;
   using MerkleProof for bytes32[];
@@ -32,7 +32,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   MakerBadgesLike internal maker;
 
-  /// Events
+  /// @dev Events
   event NewTemplate(uint256 templateId, string name, string description, string image);
   event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);
 
@@ -45,7 +45,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   BadgeTemplate[] private templates;
 
-  /// Supplies of each badge template
+  /// @dev Supplies of each badge template
   mapping(uint256 => uint256) private _templateQuantities;
   mapping(uint256 => uint256) private _tokenTemplates;
 

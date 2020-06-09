@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.8;
+pragma solidity 0.6.9;
 pragma experimental ABIEncoderV2;
 
 
@@ -45,7 +45,7 @@ interface  FlipperLike {
 
 contract MakerBadges is Ownable, AccessControl, Pausable {
 
-  /// Libraries
+  /// @dev Libraries
   using SafeMath for uint256;
   using EnumerableSet for EnumerableSet.AddressSet;
 
@@ -55,17 +55,17 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
 
   mapping (uint256 => EnumerableSet.AddressSet) private redeemers;
 
-  /// Events
+  /// @dev Events
   event PotChecked(address guy);
   event DSChiefChecked(address guy);
   event FlipperChecked(address guy);
 
-  /// Data
+  /// @dev Data
   PotLike  internal pot;
   DSChiefLike internal chief;
   FlipperLike internal flipper;
 
-  /// Math
+  /// @dev Math
   uint256 constant RAY = 10 ** 27;
 
   function rmul(uint256 x, uint256 y) internal view whenNotPaused returns (uint256 z) {
