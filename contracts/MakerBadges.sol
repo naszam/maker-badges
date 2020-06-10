@@ -114,7 +114,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   }
 
   /// @notice Pot Challenge
-  /// @dev Keep track of the hash of the caller if successful
+  /// @dev Keeps track of the address of the caller if successful
   /// @return True if the caller successfully checked for activity on Pot
   function potChallenge(uint256 templateId) external whenNotPaused returns (bool) {
     require(_dai(msg.sender) >= 1 ether, "Caller has not accrued 1 or more Dai interest on Pot");
@@ -126,7 +126,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   }
 
   /// @notice DSChief Challenge
-  /// @dev Keep track of the hash of the caller if successful
+  /// @dev Keeps track of the address of the caller if successful
   /// @return True if the caller successfully checked for activity on DSChief
   function chiefChallenge(uint256 templateId) external whenNotPaused returns (bool) {
     require(chief.votes(msg.sender) != 0x00, "Caller is not voting in a Governance Poll");
@@ -138,7 +138,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   }
 
   /// @notice Flipper Challenge
-  /// @dev Keep track of the hash of the caller if successful
+  /// @dev Keeps track of the address of the caller if successful
   /// @return True if the caller successfully checked for activity on Flipper
   function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused returns (bool) {
     require(flipper.bids(bidId).guy == msg.sender, "Caller is not the high bidder in the current Bid in Collateral Auctions");
@@ -150,7 +150,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   }
 
   /// @notice Check if guy is a redeemer
-  /// @dev Verify if the hash of guy address exists
+  /// @dev Verify if the address of guy exists
   /// @param guy Address to verify
   /// @return True if guy is a redeemer
   function verify(uint256 templateId, address guy) external view whenNotPaused returns (bool) {
