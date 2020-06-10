@@ -40,20 +40,36 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
 
   /// @dev Functions
 
+  /// @notice Check if guy is an Admin
+  /// @dev Used in onlyAdmin() modifier
+  /// @param guy Address to check
+  /// @return True If the guy is an Admin
   function isAdmin(address guy) public view returns (bool) {
     return hasRole(DEFAULT_ADMIN_ROLE, guy);
   }
 
+  /// @notice Check if guy is a Templater
+  /// @dev Used in onlyTemplater() modifier
+  /// @param guy Address to check
+  /// @return True If the guy is a Templater
   function isTemplater(address guy) public view returns (bool) {
     return hasRole(TEMPLATER_ROLE, guy);
   }
 
+  /// @notice Add a new Templater
+  /// @dev Access restricted only for Admins
+  /// @param guy Address of the new Templater
+  /// @return True if the guy address is added as Templater
   function addTemplater(address guy) external onlyAdmin returns (bool) {
     require(!isTemplater(guy), "guy is already a templater");
     grantRole(TEMPLATER_ROLE, guy);
     return true;
   }
 
+  /// @notice Remove a Templater
+  /// @dev Access restricted only for Admins
+  /// @param guy Address of the Templater
+  /// @return True if the guy address is removed as Templater
   function removeTemplater(address guy) external onlyAdmin returns (bool) {
     require(isTemplater(guy), "guy is not a templater");
     revokeRole(TEMPLATER_ROLE, guy);
