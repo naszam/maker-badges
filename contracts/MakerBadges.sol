@@ -7,7 +7,7 @@ pragma experimental ABIEncoderV2;
 /// @author Nazzareno Massari
 /// @notice MakerBadges to check for activities on maker ecosystem and keep track of redeemers
 /// @dev see https://github.com/makerdao/community/issues/537
-/// @dev All function calls are currently implemented without side effecs through TDD approach
+/// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
 
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -160,14 +160,14 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function pause() external {
-    require(hasRole(PAUSER_ROLE, msg.sender), "InsigniaDAO: must have pauser role to pause");
+    require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to pause");
     _pause();
   }
 
   /// @notice Unpause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function unpause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "InsigniaDAO: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to unpause");
         _unpause();
     }
 

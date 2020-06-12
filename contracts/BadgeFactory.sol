@@ -5,7 +5,7 @@ pragma solidity 0.6.9;
 /// @author Nazzareno Massari
 /// @notice BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
 /// @dev see https://github.com/makerdao/community/issues/537
-/// @dev All function calls are currently implemented without side effecs through TDD approach
+/// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
 
 import "./BadgeRoles.sol";
