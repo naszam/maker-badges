@@ -177,7 +177,7 @@ About
 ## Inspiration & References
 
 - [open-proofs](https://github.com/rrecuero/open-proofs)
-- [EIP issue #1238](https://github.com/ethereum/EIPs/issues/1238)
+- [ERC1238](https://github.com/ethereum/EIPs/issues/1238)
 - [ERC721](https://eips.ethereum.org/EIPS/eip-721)
 - [POAP](https://www.poap.xyz/)
 - [MakerDAO](https://makerdao.com/en/)
