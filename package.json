@@ -7,7 +7,7 @@
     "test": "test"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^3.0.1",
+    "@openzeppelin/contracts": "^3.0.2",
     "@truffle/hdwallet-provider": "^1.0.35",
     "ethereumjs-util": "^7.0.2",
     "ganache-cli": "^6.9.1",
