@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.9;
+pragma solidity 0.6.10;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
 /// @author Nazzareno Massari
