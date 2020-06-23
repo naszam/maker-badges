@@ -33,8 +33,8 @@ interface  FlipperLike {
   struct Bid {
     uint256 bid;
     uint256 lot;
-    address guy;  /// @dev high bidder
-    uint48  tic;  /// @dev expiry time
+    address guy;
+    uint48  tic;
     uint48  end;
     address usr;
     address gal;
@@ -139,6 +139,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
 
   /// @notice Flipper Challenge
   /// @dev Keeps track of the address of the caller if successful
+  /// @dev guy, high bidder
   /// @return True if the caller successfully checked for activity on Flipper
   function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused returns (bool) {
     require(flipper.bids(bidId).guy == msg.sender, "Caller is not the high bidder in the current Bid in Collateral Auctions");
