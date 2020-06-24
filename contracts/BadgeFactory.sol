@@ -32,7 +32,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   MakerBadgesLike internal maker;
 
-  mapping (uint256 => mapping (address => bool)) public redeemed;
+  mapping (uint256 => mapping (address => uint256)) public redeemed;
 
   /// @dev Events
   event NewTemplate(uint256 templateId, string name, string description, string image);
@@ -156,13 +156,13 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
   /// @return True If the new Badge is Activated
   function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI) external whenNotPaused returns (bool) {
     require(templates.length > templateId, "No template with that id");
-    require(redeemed[templateId][msg.sender] = false, "Badge already activated!");
+    require(redeemed[templateId][msg.sender] == 0, "Badge already activated!");
     require(maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
 
     /// @dev Increase the quantities
     _tokenTemplates[_tokenIdTracker.current()] = templateId;
     _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-    redeemed[templateId][msg.sender] = true;
+    redeemed[templateId][msg.sender] = 1;
 
     require(_mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
 
