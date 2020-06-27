@@ -83,6 +83,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
 
         /// @dev MCD_ADM Kovan Address https://kovan.etherscan.io/address/0xbBFFC76e94B34F72D96D054b31f6424249c1337d#code
         chief = DSChiefLike(0xbBFFC76e94B34F72D96D054b31f6424249c1337d);
+
         /// @dev MCD_FLIP_ETH_A Kovan Address https://kovan.etherscan.io/address/0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b#code
         flipper = FlipperLike(0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b);
 
