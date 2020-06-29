@@ -61,9 +61,9 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   event FlipperChecked(address guy);
 
   /// @dev Data
-  PotLike  internal pot;
-  DSChiefLike internal chief;
-  FlipperLike internal flipper;
+  PotLike  internal immutable pot;
+  DSChiefLike internal immutable chief;
+  FlipperLike internal immutable flipper;
 
   /// @dev Math
   uint256 constant RAY = 10 ** 27;
