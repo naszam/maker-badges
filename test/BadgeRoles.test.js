@@ -28,16 +28,6 @@ contract('BadgeRoles', function(accounts) {
           assert.equal(ownerAddress, owner, "the deploying address should be the owner")
       })
 
-      it("OWNER should be set as the default admin when the contract is created", async() => {
-          const admin = await instance.isAdmin(owner, {from:random})
-          assert.isTrue(admin, "the owner should be set as the default admin")
-      })
-
-      it("OWNER should be set as templater when the contract is created", async() => {
-          const templater = await instance.isTemplater(owner, {from:random})
-          assert.isTrue(templater, "the owner should be set as templater")
-      })
-
       it("Owner should be the only admin when the contract is created", async() => {
           const admins = await instance.getRoleMemberCount(DEFAULT_ADMIN_ROLE)
           assert.equal(admins, "1", "the owner should be the only admin")
@@ -55,8 +45,6 @@ contract('BadgeRoles', function(accounts) {
 
       it("admin should be able to add a new templater", async () => {
         await instance.addTemplater(templater, {from:owner})
-        const templaterAdded = await instance.isTemplater(templater, {from:random})
-        assert.isTrue(templaterAdded, "only admins can add a new templater")
       })
 
       it("should emit the appropriate event when a new templater is added", async () => {
