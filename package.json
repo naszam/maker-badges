@@ -7,13 +7,12 @@
     "test": "test"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^3.0.2",
-    "@truffle/hdwallet-provider": "^1.0.35",
+    "@openzeppelin/contracts": "^3.1.0",
+    "@truffle/hdwallet-provider": "^1.0.36",
     "ethereumjs-util": "^7.0.2",
     "ganache-cli": "^6.9.1",
     "gsn": "^0.0.1",
-    "sol-merger": "^3.0.1",
-    "truffle": "^5.1.30",
+    "truffle": "^5.1.32",
     "truffle-flattener": "^1.4.4"
   },
   "devDependencies": {},
