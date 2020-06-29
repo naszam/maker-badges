@@ -3,10 +3,10 @@ pragma solidity 0.6.10;
 pragma experimental ABIEncoderV2;
 
 
-/// @title Non-transferable Badges for Maker Ecosystem Activity, issue #537
-/// @author Nazzareno Massari
+/// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18
+/// @author Nazzareno Massari @naszam
 /// @notice MakerBadges to check for activities on maker ecosystem and keep track of redeemers
-/// @dev see https://github.com/makerdao/community/issues/537
+/// @dev See https://github.com/makerdao/community/issues/537
 /// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin library is used for secure contract development
 
