@@ -30,7 +30,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
   Counters.Counter private _tokenIdTracker;
 
-  MakerBadgesLike internal maker;
+  MakerBadgesLike internal immutable maker;
 
   mapping (uint256 => mapping (address => uint256)) public redeemed;
 
