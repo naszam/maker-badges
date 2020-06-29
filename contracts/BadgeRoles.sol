@@ -29,39 +29,23 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
 
   /// @dev Modifiers
   modifier onlyAdmin() {
-      require(isAdmin(msg.sender), "Caller is not an admin");
+      require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin");
       _;
     }
 
   modifier onlyTemplater() {
-      require(isTemplater(msg.sender), "Caller is not a template owner");
+      require(hasRole(TEMPLATER_ROLE, msg.sender), "Caller is not a template owner");
       _;
     }
 
   /// @dev Functions
-
-  /// @notice Check if guy is an Admin
-  /// @dev Used in onlyAdmin() modifier
-  /// @param guy Address to check
-  /// @return True If the guy is an Admin
-  function isAdmin(address guy) public view returns (bool) {
-    return hasRole(DEFAULT_ADMIN_ROLE, guy);
-  }
-
-  /// @notice Check if guy is a Templater
-  /// @dev Used in onlyTemplater() modifier
-  /// @param guy Address to check
-  /// @return True If the guy is a Templater
-  function isTemplater(address guy) public view returns (bool) {
-    return hasRole(TEMPLATER_ROLE, guy);
-  }
 
   /// @notice Add a new Templater
   /// @dev Access restricted only for Admins
   /// @param guy Address of the new Templater
   /// @return True if the guy address is added as Templater
   function addTemplater(address guy) external onlyAdmin returns (bool) {
-    require(!isTemplater(guy), "guy is already a templater");
+    require(!hasRole(TEMPLATER_ROLE, guy), "guy is already a templater");
     grantRole(TEMPLATER_ROLE, guy);
     return true;
   }
@@ -71,7 +55,7 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
   /// @param guy Address of the Templater
   /// @return True if the guy address is removed as Templater
   function removeTemplater(address guy) external onlyAdmin returns (bool) {
-    require(isTemplater(guy), "guy is not a templater");
+    require(hasRole(TEMPLATER_ROLE, guy), "guy is not a templater");
     revokeRole(TEMPLATER_ROLE, guy);
     return true;
   }
