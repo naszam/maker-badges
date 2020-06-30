@@ -132,7 +132,7 @@ Clone this GitHub repository.
 ## MythX CLI Report
 Contract | Line | SWC Title | Severity | Short Description
 --- | --- | --- | --- | ---
-MakerBadges.sol | [112](https://github.com/naszam/maker-badges/blob/master/contracts/MakerBadges.sol#L112)| Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
+MakerBadges.sol | [113](https://github.com/naszam/maker-badges/blob/master/contracts/MakerBadges.sol#L113)| Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
 
 Deploy
 ============
