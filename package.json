@@ -7,11 +7,13 @@
     "test": "test"
   },
   "dependencies": {
+    "@babel/core": "^7.10.3",
     "@openzeppelin/contracts": "^3.1.0",
-    "@truffle/hdwallet-provider": "^1.0.36",
+    "@truffle/hdwallet-provider": "^1.0.37-next.1",
     "ethereumjs-util": "^7.0.2",
     "ganache-cli": "^6.9.1",
     "gsn": "^0.0.1",
+    "mkdirp": "^1.0.4",
     "truffle": "^5.1.32",
     "truffle-flattener": "^1.4.4"
   },
