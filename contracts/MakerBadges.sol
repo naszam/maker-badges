@@ -73,19 +73,19 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
           z = x.mul(y) / RAY;
   }
 
-  constructor() public {
+  constructor(address pot_, address chief_, address flipper_) public {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
         _setupRole(PAUSER_ROLE, owner());
 
-        /// @dev MCD_POT Kovan Address https://kovan.etherscan.io/address/0xea190dbdc7adf265260ec4da6e9675fd4f5a78bb#code
-	pot = PotLike(0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb);
+        /// @dev MCD_POT Address
+        pot = PotLike(pot_);
 
-        /// @dev MCD_ADM Kovan Address https://kovan.etherscan.io/address/0xbBFFC76e94B34F72D96D054b31f6424249c1337d#code
-        chief = DSChiefLike(0xbBFFC76e94B34F72D96D054b31f6424249c1337d);
+        /// @dev MCD_ADM Address
+        chief = DSChiefLike(chief_);
 
-        /// @dev MCD_FLIP_ETH_A Kovan Address https://kovan.etherscan.io/address/0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b#code
-        flipper = FlipperLike(0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b);
+        /// @dev MCD_FLIP_ETH_A Address
+        flipper = FlipperLike(flipper_);
 
   }
 
