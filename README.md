@@ -38,7 +38,7 @@ An incentivization protocol to enhance activity on MakerDAO Ecosystem
 To enable MakerBadges to check on-chain for activities on MakerDAO ecosystem we're using three interface to map the functions that we'll use:
 - **Pot**: to check if a user has accrued 1 or more Dai from DSR, via **pie(address guy)**, **chi()**, **rho()** and **drip()** used in the internal function **_dai(address guy)** to return the **wad** or the current accrued Dai interest in DSR.  
 To check redeemer activities on Pot it uses **potChallenge(uint templateId)** function.    
-- **DSChief**: to check if a user is voting on a Governance Poll via **votes(address)** a getter function to check who is currently voting.  
+- **DSChief**: to check if a user is voting in an Executive Spell via **votes(address)** a getter function to check who is currently voting.  
 To check redeemer activities on DSChief it uses **chiefChallenge(uint templateId)** function.    
 - **Flipper**: to check for high bidder in the current Bid in Collateral Auctions via **bids(id)** a getter function of current Bid on Flipper to check for **bids(id).guy** the high bidder.   
 To check redeemer activities on Flipper it uses **flipperChallenge(uint templateId, uint bidId)** function.  
