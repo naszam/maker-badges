@@ -130,7 +130,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   /// @dev Keeps track of the address of the caller if successful
   /// @return True if the caller successfully checked for activity on DSChief
   function chiefChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-    require(chief.votes(msg.sender) != 0x00, "Caller is not voting in a Governance Poll");
+    require(chief.votes(msg.sender) != 0x00, "Caller is not voting in an Executive Spell");
     if (!redeemers[templateId].contains(msg.sender)) {
     require(redeemers[templateId].add(msg.sender));
     }
