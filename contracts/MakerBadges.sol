@@ -49,6 +49,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   using SafeMath for uint256;
   using EnumerableSet for EnumerableSet.AddressSet;
 
+  bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
   bytes32[] public roots;
@@ -76,6 +77,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   constructor(address pot_, address chief_, address flipper_) public {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
+        _setupRole(ADMIN_ROLE, owner());
         _setupRole(PAUSER_ROLE, owner());
 
         /// @dev MCD_POT Address
@@ -95,11 +97,18 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     revert();
   }
 
+  /// @dev Modifiers
+  modifier onlyAdmin() {
+      require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
+      _;
+    }
+
+
   /// @notice Set Merkle Tree Root Hashes array
   /// @dev Called by owner to update roots for different address batches by templateId
   /// @param rootHashes Root hashes of the Merkle Trees by templateId
   /// @return True if successfully updated
-  function setRootHashes(bytes32[] calldata rootHashes) external onlyOwner whenNotPaused returns (bool) {
+  function setRootHashes(bytes32[] calldata rootHashes) external onlyAdmin whenNotPaused returns (bool) {
     roots = rootHashes;
     return true;
   }
