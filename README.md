@@ -28,7 +28,8 @@ An incentivization protocol to enhance activity on MakerDAO Ecosystem
 * [Front-end](#front-end)
 * [About](#about)
 
-## Building Blocks
+Building Blocks
+===============
 
 ![Smart Contracts Flow-Chart](MakerBadges.png)
 
