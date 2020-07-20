@@ -166,7 +166,7 @@ Deploy
    ```sh
    $ npm install @truffle/hdwallet-provider
    ```
- - Deploy the smart contract using Truffle & Infura with the following command:
+ - Deploy the smart contract using Truffle & Infura with the following command (global dependency):
    ```sh
    $ truffle migrate --network kovan
    ```
