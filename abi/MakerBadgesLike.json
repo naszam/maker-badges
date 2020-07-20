@@ -45,13 +45,13 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.10+commit.00c0fcaf\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"templateId\",\"type\":\"uint256\"}],\"name\":\"roots\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"templateId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"guy\",\"type\":\"address\"}],\"name\":\"verify\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/sencha/maker-badges/contracts/BadgeFactory.sol\":\"MakerBadgesLike\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/sencha/maker-badges/contracts/BadgeFactory.sol\":{\"keccak256\":\"0x53f01b2eb5cc09965b6599b2938afb1c7add3f9d985a53dbf06241a70815d9bf\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://449754b1f6832fa06a5cf54112b9461794d9a1d73bffaa88bc5b766189941055\",\"dweb:/ipfs/QmUKY6SKMZa4xwbxqgiE6HuX87GgNK4ED6sTMoMFvPChCy\"]},\"/home/sencha/maker-badges/contracts/BadgeRoles.sol\":{\"keccak256\":\"0x272f85f9cb8e8d0e3bcc5e0b7269a777cf52ae93dfa4ac531eee8a5c6d2ae689\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://19add032eba97289f23395efe5dd3178c9d98b23e44bbdd0706615e554cca0dd\",\"dweb:/ipfs/QmXSMr9Ur3wVbWcVEchsmiBTtRQwyx4jti8W5EbjuZ4pGc\"]},\"@openzeppelin/contracts/GSN/Context.sol\":{\"keccak256\":\"0xdb26cbf4d028490f49831a7865c2fe1b28db44b535ca8d343785a3b768aae183\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://840b14ce0315c47d49ba328f1f9fa7654ded1c9e1559e6c5e777a7b2dc28bf0a\",\"dweb:/ipfs/QmTLLabn4wcfGro9LEmUXUN2nwKqZSotXMvjDCLXEnLtZP\"]},\"@openzeppelin/contracts/access/AccessControl.sol\":{\"keccak256\":\"0x92f7900d382761c7faefeaced81c6b4f1aae909ed0551803bfe8f27101956360\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://407c0864143968542e5cf5aa7556916d2cf292b201e3dadb65662e9a3aa24187\",\"dweb:/ipfs/QmSnXzYAUaGLGr7uofRbgQraTJvatbjQLBPhyYiMd18oUJ\"]},\"@openzeppelin/contracts/access/Ownable.sol\":{\"keccak256\":\"0x4bd6402ca6b3419008c2b482aff54e66836e8cb4eba2680e42ac5884ae6424fc\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8f9f711fb8d0d92aeea1c327e3845d13ca1fa8f142e47f8723cd5b3106fb29a3\",\"dweb:/ipfs/QmVQUReDW9f4zGqhizwHnyU8EntMs95tbASdqkGncnikba\"]},\"@openzeppelin/contracts/cryptography/MerkleProof.sol\":{\"keccak256\":\"0x96a652802a06645a5908f74f104ec95ff0897e261e7028ee319bafc55582b597\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5afea8071316055c01a3d144da77523b8ae7ec8295e99559000cb07b23b98d30\",\"dweb:/ipfs/QmX14dHGgyErJb3R7wSNBSgxLdyX6EAVwJsZ6yK1xyG1Mo\"]},\"@openzeppelin/contracts/introspection/ERC165.sol\":{\"keccak256\":\"0xb046d18f9d09683ca1c0ed6d80c61da8a8a7d9b30bad70a17b898538683eff74\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4728713afa6ae36cc9e92c7107c796a313add3ec20f813be2cde76c814486b2a\",\"dweb:/ipfs/QmUJBTXvYaGDF5PVnd5pUvYerc9DRXvqANDzgCzAp3FkkA\"]},\"@openzeppelin/contracts/introspection/IERC165.sol\":{\"keccak256\":\"0xfa152b6e88a1dc50780e8f1580426dc23ad2e1e2c2f086a088adf206a202f453\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5127b264994adab88fae419b1c493efc5acd07134c19ee5c0397e50018291ebf\",\"dweb:/ipfs/QmWwJZVhvdmvUCdimbb6R2Jiu59zjPqm6XTMchM6LaEHAp\"]},\"@openzeppelin/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x9a9cf02622cd7a64261b10534fc3260449da25c98c9e96d1b4ae8110a20e5806\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2df142592d1dc267d9549049ee3317fa190d2f87eaa565f86ab05ec83f7ab8f5\",\"dweb:/ipfs/QmSkJtcfWo7c42KnL5hho6GFxK6HRNV91XABx1P7xDtfLV\"]},\"@openzeppelin/contracts/token/ERC721/ERC721.sol\":{\"keccak256\":\"0x1071a23188ba7f5bb16f51b0b01a67fd41fe56f862d8f83985788cf46f3b91bd\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c7082ca99b93f2e541cafaad00ed32675adf0752eab78eccabcf91dec9fd5d73\",\"dweb:/ipfs/QmdqooMmYBQVi7p6subDFM4e1944AuLjZUpHMjGtae7Lgd\"]},\"@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol\":{\"keccak256\":\"0x5181bc84ec1b054bffda75619dd01f2f760d101da24bdba6ca786f6966a35695\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://15323e3edc0407ab3859fc4aeca39d12d5e2e21c9ee36cb87a2d4c128ff8ab00\",\"dweb:/ipfs/QmRz9vQa4Xx8X8V38oABZ2H4ALaki39ueyaSaytw5SFj2M\"]},\"@openzeppelin/contracts/token/ERC721/IERC721.sol\":{\"keccak256\":\"0x227bafd3e165b13f5d98c42a44376e48d41f4a265db8803f2707faaeae9659aa\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c9aa7959a30871669ce46172cd117b084b607d602d9ce695ce79005582b0b69b\",\"dweb:/ipfs/QmXZUWeLXmArQinHL4RnacJLT22GvCExqREYM6pHLX7CX9\"]},\"@openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol\":{\"keccak256\":\"0x3636662804cd8f474536b2875a9038a4c3fb91879f1bbff48af5c3f140fcd2f0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9fab8521263fa581544000cb57335a3f2e6bcdfbb5579d3ceaa5acf741c67c4f\",\"dweb:/ipfs/QmZfXnMom7JSNtfyie5yGPN1SUC4SmHbz4ScVBH88URmA7\"]},\"@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol\":{\"keccak256\":\"0xe7f984cedc00a138dc27f263c73c32ba9a4b2fd23b6c34ac46f46c074b943538\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0f4acda12f076fe7584921241ddbb5b460ca7cad6cb8a42252ac7f2a9f539127\",\"dweb:/ipfs/QmQmfhkEv9GrhdWe67QtXnU19AMuoEmy31QnHPkucdYLjZ\"]},\"@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol\":{\"keccak256\":\"0x321ee37ef4925020aa818a03ec7fe48e057561f65ab009a84f6c20c86026ade7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://01f9d74a17a56024984251b97e428e24c9d3abffbae5bd290f0ec263c82e9694\",\"dweb:/ipfs/QmRryCuuXu2ukrDmatB8TqdEhPLiK6NBRt41RiPUaX1qKy\"]},\"@openzeppelin/contracts/utils/Address.sol\":{\"keccak256\":\"0xdfb4f812600ba4ce6738c35584ceb8c9433472583051b48ba5b1f66cb758a498\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://df02dffe1c1de089d9b4f6192f0dcf464526f2230f420b3deec4645e0cdd2bff\",\"dweb:/ipfs/QmcqXGAU3KJqwrgUVoGJ2W8osomhSJ4R5kdsRpbuW3fELS\"]},\"@openzeppelin/contracts/utils/Counters.sol\":{\"keccak256\":\"0x2d68b8e6425249cd05cc0a66ea50cb5b8d10cbdac59c6de834e1002232813faf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e3ce6b6ac17c67bba01e9c8c778f82f68fd4823bd083359cdd03040b70eeeba3\",\"dweb:/ipfs/QmX4t1jWwKaAkacvmQxEG5rBtLXg3EHw6pRjKhMZR8iw3n\"]},\"@openzeppelin/contracts/utils/EnumerableMap.sol\":{\"keccak256\":\"0x244e4b74b17716120cf28e58636f11c699b8c0c94628bd952a95cee038d7e32b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://198d566157120c526bd6b5086b32cae85a11389b8a538f533ba9f9447915da0e\",\"dweb:/ipfs/QmeE6d8KWERx7f1FVS5tMnitNJxBm2yWXRSEUBF7R6voLh\"]},\"@openzeppelin/contracts/utils/EnumerableSet.sol\":{\"keccak256\":\"0xb2a11b236f073662f5a196995863f51c11d006bf7c3de158b316dfa1506c4b79\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8651649cf0b9efa18c3b01c030276fa320d41adbdc286833417e7f36e357b2f3\",\"dweb:/ipfs/QmafhM2Nd1aP43QVB1eRRZaqRXQKswNfQcWi8U8xjrxCfN\"]},\"@openzeppelin/contracts/utils/Pausable.sol\":{\"keccak256\":\"0x5d1b1dcbc0396f44c1c8d554857f71e3187503bf1e54062bf9ec6782e21f3a08\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9aa7fa580393aab7ca3d9f606f5ab7434d51e1c0f3632a593fca82c80ef8cc4c\",\"dweb:/ipfs/QmRy84N7QfkwBM2AeR7UB5G1PPHdRLi6s1iyzAwCzevcHe\"]},\"@openzeppelin/contracts/utils/Strings.sol\":{\"keccak256\":\"0x79484115dbfa737054f73e041009a02eeb434dd81be5d684bf4255ad3b5ab558\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://12c119699463450c2544f5b9d8709b5e9e9164c62948a79c3ec53423a051d969\",\"dweb:/ipfs/QmPJduzSAaekq447QeFqAp3E7dc8CnNk5ajofckJ4ahA7Q\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.11+commit.5ef660b1\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"templateId\",\"type\":\"uint256\"}],\"name\":\"roots\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"templateId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"guy\",\"type\":\"address\"}],\"name\":\"verify\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/sencha/maker-badges/contracts/BadgeFactory.sol\":\"MakerBadgesLike\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/sencha/maker-badges/contracts/BadgeFactory.sol\":{\"keccak256\":\"0x341ad1a193f93e27815d76b2ef69e87b537a237e773c22f628a95e24306ae06c\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://286229c79088a1113e4d0547a8be8882e18dd23b8f4e7adb398ab3e6fff695ca\",\"dweb:/ipfs/QmNxGtXaYEk9LQr6JaTD82hZshaHhpRfcRhCxjFFZDCZJ5\"]},\"/home/sencha/maker-badges/contracts/BadgeRoles.sol\":{\"keccak256\":\"0x30fb9b91a1a0ab7ccbfac78cb481e3b316f804581cb73b973bc5eb5f4b1e1a86\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://5fb0a8b8b77684e4db3b4ae21b9c985fa2c38439f6e32b596fa40a2a2ad634e4\",\"dweb:/ipfs/QmZabUkMbDRunwLQGg7eWCW7wXM98xsERpakYsax718KQp\"]},\"@openzeppelin/contracts/GSN/Context.sol\":{\"keccak256\":\"0xdb26cbf4d028490f49831a7865c2fe1b28db44b535ca8d343785a3b768aae183\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://840b14ce0315c47d49ba328f1f9fa7654ded1c9e1559e6c5e777a7b2dc28bf0a\",\"dweb:/ipfs/QmTLLabn4wcfGro9LEmUXUN2nwKqZSotXMvjDCLXEnLtZP\"]},\"@openzeppelin/contracts/access/AccessControl.sol\":{\"keccak256\":\"0x92f7900d382761c7faefeaced81c6b4f1aae909ed0551803bfe8f27101956360\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://407c0864143968542e5cf5aa7556916d2cf292b201e3dadb65662e9a3aa24187\",\"dweb:/ipfs/QmSnXzYAUaGLGr7uofRbgQraTJvatbjQLBPhyYiMd18oUJ\"]},\"@openzeppelin/contracts/access/Ownable.sol\":{\"keccak256\":\"0x4bd6402ca6b3419008c2b482aff54e66836e8cb4eba2680e42ac5884ae6424fc\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8f9f711fb8d0d92aeea1c327e3845d13ca1fa8f142e47f8723cd5b3106fb29a3\",\"dweb:/ipfs/QmVQUReDW9f4zGqhizwHnyU8EntMs95tbASdqkGncnikba\"]},\"@openzeppelin/contracts/cryptography/MerkleProof.sol\":{\"keccak256\":\"0x96a652802a06645a5908f74f104ec95ff0897e261e7028ee319bafc55582b597\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5afea8071316055c01a3d144da77523b8ae7ec8295e99559000cb07b23b98d30\",\"dweb:/ipfs/QmX14dHGgyErJb3R7wSNBSgxLdyX6EAVwJsZ6yK1xyG1Mo\"]},\"@openzeppelin/contracts/introspection/ERC165.sol\":{\"keccak256\":\"0xb046d18f9d09683ca1c0ed6d80c61da8a8a7d9b30bad70a17b898538683eff74\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4728713afa6ae36cc9e92c7107c796a313add3ec20f813be2cde76c814486b2a\",\"dweb:/ipfs/QmUJBTXvYaGDF5PVnd5pUvYerc9DRXvqANDzgCzAp3FkkA\"]},\"@openzeppelin/contracts/introspection/IERC165.sol\":{\"keccak256\":\"0xfa152b6e88a1dc50780e8f1580426dc23ad2e1e2c2f086a088adf206a202f453\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5127b264994adab88fae419b1c493efc5acd07134c19ee5c0397e50018291ebf\",\"dweb:/ipfs/QmWwJZVhvdmvUCdimbb6R2Jiu59zjPqm6XTMchM6LaEHAp\"]},\"@openzeppelin/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x9a9cf02622cd7a64261b10534fc3260449da25c98c9e96d1b4ae8110a20e5806\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2df142592d1dc267d9549049ee3317fa190d2f87eaa565f86ab05ec83f7ab8f5\",\"dweb:/ipfs/QmSkJtcfWo7c42KnL5hho6GFxK6HRNV91XABx1P7xDtfLV\"]},\"@openzeppelin/contracts/token/ERC721/ERC721.sol\":{\"keccak256\":\"0x1071a23188ba7f5bb16f51b0b01a67fd41fe56f862d8f83985788cf46f3b91bd\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c7082ca99b93f2e541cafaad00ed32675adf0752eab78eccabcf91dec9fd5d73\",\"dweb:/ipfs/QmdqooMmYBQVi7p6subDFM4e1944AuLjZUpHMjGtae7Lgd\"]},\"@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol\":{\"keccak256\":\"0x5181bc84ec1b054bffda75619dd01f2f760d101da24bdba6ca786f6966a35695\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://15323e3edc0407ab3859fc4aeca39d12d5e2e21c9ee36cb87a2d4c128ff8ab00\",\"dweb:/ipfs/QmRz9vQa4Xx8X8V38oABZ2H4ALaki39ueyaSaytw5SFj2M\"]},\"@openzeppelin/contracts/token/ERC721/IERC721.sol\":{\"keccak256\":\"0x227bafd3e165b13f5d98c42a44376e48d41f4a265db8803f2707faaeae9659aa\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c9aa7959a30871669ce46172cd117b084b607d602d9ce695ce79005582b0b69b\",\"dweb:/ipfs/QmXZUWeLXmArQinHL4RnacJLT22GvCExqREYM6pHLX7CX9\"]},\"@openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol\":{\"keccak256\":\"0x3636662804cd8f474536b2875a9038a4c3fb91879f1bbff48af5c3f140fcd2f0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9fab8521263fa581544000cb57335a3f2e6bcdfbb5579d3ceaa5acf741c67c4f\",\"dweb:/ipfs/QmZfXnMom7JSNtfyie5yGPN1SUC4SmHbz4ScVBH88URmA7\"]},\"@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol\":{\"keccak256\":\"0xe7f984cedc00a138dc27f263c73c32ba9a4b2fd23b6c34ac46f46c074b943538\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0f4acda12f076fe7584921241ddbb5b460ca7cad6cb8a42252ac7f2a9f539127\",\"dweb:/ipfs/QmQmfhkEv9GrhdWe67QtXnU19AMuoEmy31QnHPkucdYLjZ\"]},\"@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol\":{\"keccak256\":\"0x321ee37ef4925020aa818a03ec7fe48e057561f65ab009a84f6c20c86026ade7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://01f9d74a17a56024984251b97e428e24c9d3abffbae5bd290f0ec263c82e9694\",\"dweb:/ipfs/QmRryCuuXu2ukrDmatB8TqdEhPLiK6NBRt41RiPUaX1qKy\"]},\"@openzeppelin/contracts/utils/Address.sol\":{\"keccak256\":\"0xdfb4f812600ba4ce6738c35584ceb8c9433472583051b48ba5b1f66cb758a498\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://df02dffe1c1de089d9b4f6192f0dcf464526f2230f420b3deec4645e0cdd2bff\",\"dweb:/ipfs/QmcqXGAU3KJqwrgUVoGJ2W8osomhSJ4R5kdsRpbuW3fELS\"]},\"@openzeppelin/contracts/utils/Counters.sol\":{\"keccak256\":\"0x2d68b8e6425249cd05cc0a66ea50cb5b8d10cbdac59c6de834e1002232813faf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e3ce6b6ac17c67bba01e9c8c778f82f68fd4823bd083359cdd03040b70eeeba3\",\"dweb:/ipfs/QmX4t1jWwKaAkacvmQxEG5rBtLXg3EHw6pRjKhMZR8iw3n\"]},\"@openzeppelin/contracts/utils/EnumerableMap.sol\":{\"keccak256\":\"0x244e4b74b17716120cf28e58636f11c699b8c0c94628bd952a95cee038d7e32b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://198d566157120c526bd6b5086b32cae85a11389b8a538f533ba9f9447915da0e\",\"dweb:/ipfs/QmeE6d8KWERx7f1FVS5tMnitNJxBm2yWXRSEUBF7R6voLh\"]},\"@openzeppelin/contracts/utils/EnumerableSet.sol\":{\"keccak256\":\"0xb2a11b236f073662f5a196995863f51c11d006bf7c3de158b316dfa1506c4b79\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8651649cf0b9efa18c3b01c030276fa320d41adbdc286833417e7f36e357b2f3\",\"dweb:/ipfs/QmafhM2Nd1aP43QVB1eRRZaqRXQKswNfQcWi8U8xjrxCfN\"]},\"@openzeppelin/contracts/utils/Pausable.sol\":{\"keccak256\":\"0x5d1b1dcbc0396f44c1c8d554857f71e3187503bf1e54062bf9ec6782e21f3a08\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9aa7fa580393aab7ca3d9f606f5ab7434d51e1c0f3632a593fca82c80ef8cc4c\",\"dweb:/ipfs/QmRy84N7QfkwBM2AeR7UB5G1PPHdRLi6s1iyzAwCzevcHe\"]},\"@openzeppelin/contracts/utils/Strings.sol\":{\"keccak256\":\"0x79484115dbfa737054f73e041009a02eeb434dd81be5d684bf4255ad3b5ab558\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://12c119699463450c2544f5b9d8709b5e9e9164c62948a79c3ec53423a051d969\",\"dweb:/ipfs/QmPJduzSAaekq447QeFqAp3E7dc8CnNk5ajofckJ4ahA7Q\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "/// SPDX-License-Identifier: GPL-3.0\npragma solidity 0.6.10;\n\n/// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18\n/// @author Nazzareno Massari @naszam\n/// @notice BadgeFactory to manage Templates and activate Non-transferable Badges by redeemers\n/// @dev See https://github.com/makerdao/community/issues/537\n/// @dev All function calls are currently implemented without side effects through TDD approach\n/// @dev OpenZeppelin library is used for secure contract development\n\nimport \"./BadgeRoles.sol\";\nimport \"@openzeppelin/contracts/utils/Counters.sol\";\nimport \"@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol\";\nimport \"@openzeppelin/contracts/cryptography/MerkleProof.sol\";\n\n\ninterface MakerBadgesLike {\n\n    function verify(uint256 templateId, address guy) external view returns (bool);\n    function roots(uint256 templateId) external view returns (bytes32);\n\n}\n\ncontract BadgeFactory is BadgeRoles, ERC721Burnable {\n\n  /// @dev Libraries\n  using SafeMath for uint256;\n  using Counters for Counters.Counter;\n  using MerkleProof for bytes32[];\n\n  Counters.Counter private _tokenIdTracker;\n\n  MakerBadgesLike internal immutable maker;\n\n  mapping (uint256 => mapping (address => uint256)) public redeemed;\n\n  /// @dev Events\n  event NewTemplate(uint256 templateId, string name, string description, string image);\n  event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);\n\n  struct BadgeTemplate {\n    string name;\n    string description;\n    string image;\n    address owner;\n  }\n\n  BadgeTemplate[] private templates;\n\n  /// @dev Supplies of each badge template\n  mapping(uint256 => uint256) private _templateQuantities;\n  mapping(uint256 => uint256) private _tokenTemplates;\n\n  constructor(address maker_)\n    ERC721(\"MakerBadges\", \"MAKER\")\n    public\n  {\n    _setBaseURI(\"https://badges.makerdao.com/token/\");\n    maker = MakerBadgesLike(maker_);\n\n  }\n\n  /// @notice Fallback function\n  /// @dev Added not payable to revert transactions not matching any other function which send value\n  fallback() external {\n    revert();\n  }\n\n  /// @notice Set the baseURI\n  /// @dev Update the baseURI specified in the constructor\n  /// @param baseURI New baseURI\n  /// @return True if the new baseURI is set\n  function setBaseURI(string calldata baseURI) external onlyOwner returns (bool) {\n    _setBaseURI(baseURI);\n    return true;\n  }\n\n  /// @notice Mint new token with tokenURI\n  /// @dev Use an auto-generated tokenId\n  /// @dev automatically concatenate baseURI with tokenURI via abi.encodePacked\n  /// @param to owner of the new token\n  /// @param tokenURI an <ipfs-hash>.json filename\n  /// @return True if the new token is minted\n  function _mintWithTokenURI(address to, string calldata tokenURI) private returns (bool) {\n    _mint(to, _tokenIdTracker.current());\n    _setTokenURI(_tokenIdTracker.current(), tokenURI);\n    _tokenIdTracker.increment();\n    return true;\n  }\n\n  /// @notice Getter function for templates\n  /// @dev Check if templateId exists\n  /// @param templateId Template Id of the template to return\n  /// @return name description image Of the specified templateId\n  function getTemplate(uint256 templateId) external view whenNotPaused returns (string memory name, string memory description, string memory image) {\n    require(templates.length > templateId, \"No template with that id\");\n    BadgeTemplate memory template = templates[templateId];\n    return (template.name, template.description, template.image);\n  }\n\n\n  /// @dev Templates\n\n  /// @notice Getter function for templates count\n  /// @dev Return lenght of template array\n  /// @return count The current number of templates\n  function getTemplatesCount() external view whenNotPaused returns (uint256 count) {\n    return templates.length;\n  }\n\n  /// @notice Create a new template\n  /// @dev Access restricted to only Templaters\n  /// @param name The name of the new template\n  /// @param description A description of the new template\n  /// @param image A filename of the new template\n  /// @return True If the new Template is Created\n  function createTemplate(string calldata name, string calldata description, string calldata image) external onlyTemplater whenNotPaused returns (bool) {\n\n    BadgeTemplate memory _newTemplate = BadgeTemplate({\n       name: name,\n       owner: msg.sender,\n       description: description,\n       image: image\n    });\n    templates.push(_newTemplate);\n    uint256 _templateId = templates.length.sub(1);\n    emit NewTemplate(_templateId, name, description, image);\n    return true;\n  }\n\n  /// @dev Badges\n\n  /// @notice Getter function for templateId associated with the tokenId\n  /// @dev Check if the tokenId exists\n  /// @param tokenId Token Id of the Badge\n  /// @return Template Id associated with the tokenId\n  function getBadgeTemplate(uint256 tokenId) public view whenNotPaused returns (uint256) {\n    require(_exists(tokenId), \"ERC721: No token with that id\");\n    return _tokenTemplates[tokenId];\n  }\n\n  /// @notice Getter function for number of badges associated with templateId\n  /// @dev Check if the template Id exists\n  /// @param templateId Template Id\n  /// @return Quantity of Badges associated with templateId\n  function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {\n    require(templates.length > templateId, \"No template with that id\");\n    return _templateQuantities[templateId];\n  }\n\n  /// @notice Activate Badge by redeemers\n  /// @dev Verify if the caller is a redeemer\n  /// @param proof Merkle Proof\n  /// @param templateId Template Id\n  /// @param tokenURI Token URI\n  /// @return True If the new Badge is Activated\n  function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI) external whenNotPaused returns (bool) {\n    require(templates.length > templateId, \"No template with that id\");\n    require(redeemed[templateId][msg.sender] == 0, \"Badge already activated!\");\n    require(maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))), \"Caller is not a redeemer\");\n\n    /// @dev Increase the quantities\n    _tokenTemplates[_tokenIdTracker.current()] = templateId;\n    _templateQuantities[templateId] = _templateQuantities[templateId].add(1);\n    redeemed[templateId][msg.sender] = 1;\n\n    require(_mintWithTokenURI(msg.sender, tokenURI), \"ERC721: Token not minted\");\n\n    emit BadgeActivated(msg.sender, templateId, tokenURI);\n    return true;\n  }\n\n  /// @notice Burn Badge\n  /// @dev burn() Check if the caller is approved or owner of the Badge\n  /// @param tokenId Token Id of the Badge to burn\n  /// @return True if the Badge has been burned\n  function burnBadge(uint256 tokenId) external whenNotPaused returns (bool){\n    uint256 templateId = getBadgeTemplate(tokenId);\n    _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);\n    burn(tokenId);\n    return true;\n  }\n\n  /// @notice ERC721 _transfer() Disabled\n  /// @dev _transfer() has been overriden\n  /// @dev reverts on transferFrom() and safeTransferFrom()\n  function _transfer(address from, address to, uint256 tokenId) internal override {\n    require(false, \"ERC721: token transfer disabled\");\n    super._transfer(from, to, tokenId);\n  }\n\n}\n",
+  "source": "/// SPDX-License-Identifier: GPL-3.0\npragma solidity 0.6.11;\n\n/// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18\n/// @author Nazzareno Massari @naszam\n/// @notice BadgeFactory to manage Templates and activate Non-transferable Badges by redeemers\n/// @dev See https://github.com/makerdao/community/issues/537\n/// @dev All function calls are currently implemented without side effects through TDD approach\n/// @dev OpenZeppelin library is used for secure contract development\n\nimport \"./BadgeRoles.sol\";\nimport \"@openzeppelin/contracts/utils/Counters.sol\";\nimport \"@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol\";\nimport \"@openzeppelin/contracts/cryptography/MerkleProof.sol\";\n\n\ninterface MakerBadgesLike {\n\n    function verify(uint256 templateId, address guy) external view returns (bool);\n    function roots(uint256 templateId) external view returns (bytes32);\n\n}\n\ncontract BadgeFactory is BadgeRoles, ERC721Burnable {\n\n  /// @dev Libraries\n  using SafeMath for uint256;\n  using Counters for Counters.Counter;\n  using MerkleProof for bytes32[];\n\n  Counters.Counter private _tokenIdTracker;\n\n  MakerBadgesLike internal immutable maker;\n\n  mapping (uint256 => mapping (address => uint256)) public redeemed;\n\n  /// @dev Events\n  event NewTemplate(uint256 templateId, string name, string description, string image);\n  event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);\n\n  struct BadgeTemplate {\n    string name;\n    string description;\n    string image;\n    address owner;\n  }\n\n  BadgeTemplate[] private templates;\n\n  /// @dev Supplies of each badge template\n  mapping(uint256 => uint256) private _templateQuantities;\n  mapping(uint256 => uint256) private _tokenTemplates;\n\n  constructor(address maker_)\n    ERC721(\"MakerBadges\", \"MAKER\")\n    public\n  {\n    _setBaseURI(\"https://badges.makerdao.com/token/\");\n    maker = MakerBadgesLike(maker_);\n\n  }\n\n  /// @notice Fallback function\n  /// @dev Added not payable to revert transactions not matching any other function which send value\n  fallback() external {\n    revert();\n  }\n\n  /// @notice Set the baseURI\n  /// @dev Update the baseURI specified in the constructor\n  /// @param baseURI New baseURI\n  /// @return True if the new baseURI is set\n  function setBaseURI(string calldata baseURI) external onlyOwner returns (bool) {\n    _setBaseURI(baseURI);\n    return true;\n  }\n\n  /// @notice Mint new token with tokenURI\n  /// @dev Use an auto-generated tokenId\n  /// @dev automatically concatenate baseURI with tokenURI via abi.encodePacked\n  /// @param to owner of the new token\n  /// @param tokenURI an <ipfs-hash>.json filename\n  /// @return True if the new token is minted\n  function _mintWithTokenURI(address to, string calldata tokenURI) private returns (bool) {\n    _mint(to, _tokenIdTracker.current());\n    _setTokenURI(_tokenIdTracker.current(), tokenURI);\n    _tokenIdTracker.increment();\n    return true;\n  }\n\n  /// @notice Getter function for templates\n  /// @dev Check if templateId exists\n  /// @param templateId Template Id of the template to return\n  /// @return name description image Of the specified templateId\n  function getTemplate(uint256 templateId) external view whenNotPaused returns (string memory name, string memory description, string memory image) {\n    require(templates.length > templateId, \"No template with that id\");\n    BadgeTemplate memory template = templates[templateId];\n    return (template.name, template.description, template.image);\n  }\n\n\n  /// @dev Templates\n\n  /// @notice Getter function for templates count\n  /// @dev Return lenght of template array\n  /// @return count The current number of templates\n  function getTemplatesCount() external view whenNotPaused returns (uint256 count) {\n    return templates.length;\n  }\n\n  /// @notice Create a new template\n  /// @dev Access restricted to only Templaters\n  /// @param name The name of the new template\n  /// @param description A description of the new template\n  /// @param image A filename of the new template\n  /// @return True If the new Template is Created\n  function createTemplate(string calldata name, string calldata description, string calldata image) external onlyTemplater whenNotPaused returns (bool) {\n\n    BadgeTemplate memory _newTemplate = BadgeTemplate({\n       name: name,\n       owner: msg.sender,\n       description: description,\n       image: image\n    });\n    templates.push(_newTemplate);\n    uint256 _templateId = templates.length.sub(1);\n    emit NewTemplate(_templateId, name, description, image);\n    return true;\n  }\n\n  /// @dev Badges\n\n  /// @notice Getter function for templateId associated with the tokenId\n  /// @dev Check if the tokenId exists\n  /// @param tokenId Token Id of the Badge\n  /// @return Template Id associated with the tokenId\n  function getBadgeTemplate(uint256 tokenId) public view whenNotPaused returns (uint256) {\n    require(_exists(tokenId), \"ERC721: No token with that id\");\n    return _tokenTemplates[tokenId];\n  }\n\n  /// @notice Getter function for number of badges associated with templateId\n  /// @dev Check if the template Id exists\n  /// @param templateId Template Id\n  /// @return Quantity of Badges associated with templateId\n  function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {\n    require(templates.length > templateId, \"No template with that id\");\n    return _templateQuantities[templateId];\n  }\n\n  /// @notice Activate Badge by redeemers\n  /// @dev Verify if the caller is a redeemer\n  /// @param proof Merkle Proof\n  /// @param templateId Template Id\n  /// @param tokenURI Token URI\n  /// @return True If the new Badge is Activated\n  function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI) external whenNotPaused returns (bool) {\n    require(templates.length > templateId, \"No template with that id\");\n    require(redeemed[templateId][msg.sender] == 0, \"Badge already activated!\");\n    require(maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))), \"Caller is not a redeemer\");\n\n    /// @dev Increase the quantities\n    _tokenTemplates[_tokenIdTracker.current()] = templateId;\n    _templateQuantities[templateId] = _templateQuantities[templateId].add(1);\n    redeemed[templateId][msg.sender] = 1;\n\n    require(_mintWithTokenURI(msg.sender, tokenURI), \"ERC721: Token not minted\");\n\n    emit BadgeActivated(msg.sender, templateId, tokenURI);\n    return true;\n  }\n\n  /// @notice Burn Badge\n  /// @dev burn() Check if the caller is approved or owner of the Badge\n  /// @param tokenId Token Id of the Badge to burn\n  /// @return True if the Badge has been burned\n  function burnBadge(uint256 tokenId) external whenNotPaused returns (bool){\n    uint256 templateId = getBadgeTemplate(tokenId);\n    _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);\n    burn(tokenId);\n    return true;\n  }\n\n  /// @notice ERC721 _transfer() Disabled\n  /// @dev _transfer() has been overriden\n  /// @dev reverts on transferFrom() and safeTransferFrom()\n  function _transfer(address from, address to, uint256 tokenId) internal override {\n    require(false, \"ERC721: token transfer disabled\");\n    super._transfer(from, to, tokenId);\n  }\n\n}\n",
   "sourcePath": "/home/sencha/maker-badges/contracts/BadgeFactory.sol",
   "ast": {
     "absolutePath": "/home/sencha/maker-badges/contracts/BadgeFactory.sol",
@@ -72,7 +72,7 @@
         "literals": [
           "solidity",
           "0.6",
-          ".10"
+          ".11"
         ],
         "nodeType": "PragmaDirective",
         "src": "37:23:0"
@@ -94,7 +94,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 475,
-        "sourceUnit": 3271,
+        "sourceUnit": 3302,
         "src": "524:52:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -105,7 +105,7 @@
         "id": 4,
         "nodeType": "ImportDirective",
         "scope": 475,
-        "sourceUnit": 2825,
+        "sourceUnit": 2856,
         "src": "577:65:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -116,7 +116,7 @@
         "id": 5,
         "nodeType": "ImportDirective",
         "scope": 475,
-        "sourceUnit": 1599,
+        "sourceUnit": 1630,
         "src": "643:62:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -370,10 +370,10 @@
               "id": 25,
               "name": "ERC721Burnable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2824,
+              "referencedDeclaration": 2855,
               "src": "933:14:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ERC721Burnable_$2824",
+                "typeIdentifier": "t_contract$_ERC721Burnable_$2855",
                 "typeString": "contract ERC721Burnable"
               }
             },
@@ -384,17 +384,17 @@
         ],
         "contractDependencies": [
           633,
-          1135,
-          1418,
-          1527,
-          1655,
-          1667,
-          2794,
-          2824,
-          2940,
+          1166,
+          1449,
+          1558,
+          1686,
+          1698,
+          2825,
+          2855,
           2971,
-          2998,
-          4210
+          3002,
+          3029,
+          4241
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -402,18 +402,18 @@
         "id": 474,
         "linearizedBaseContracts": [
           474,
-          2824,
-          2794,
+          2855,
+          2825,
+          3002,
+          3029,
           2971,
-          2998,
-          2940,
-          1655,
-          1667,
+          1686,
+          1698,
           633,
-          4210,
-          1418,
-          1527,
-          1135
+          4241,
+          1449,
+          1558,
+          1166
         ],
         "name": "BadgeFactory",
         "nodeType": "ContractDefinition",
@@ -425,10 +425,10 @@
               "id": 27,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1863,
+              "referencedDeclaration": 1894,
               "src": "980:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$1863",
+                "typeIdentifier": "t_contract$_SafeMath_$1894",
                 "typeString": "library SafeMath"
               }
             },
@@ -452,10 +452,10 @@
               "id": 30,
               "name": "Counters",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3270,
+              "referencedDeclaration": 3301,
               "src": "1010:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Counters_$3270",
+                "typeIdentifier": "t_contract$_Counters_$3301",
                 "typeString": "library Counters"
               }
             },
@@ -466,10 +466,10 @@
               "id": 31,
               "name": "Counters.Counter",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3230,
+              "referencedDeclaration": 3261,
               "src": "1023:16:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Counter_$3230_storage_ptr",
+                "typeIdentifier": "t_struct$_Counter_$3261_storage_ptr",
                 "typeString": "struct Counters.Counter"
               }
             }
@@ -481,10 +481,10 @@
               "id": 33,
               "name": "MerkleProof",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1598,
+              "referencedDeclaration": 1629,
               "src": "1049:11:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MerkleProof_$1598",
+                "typeIdentifier": "t_contract$_MerkleProof_$1629",
                 "typeString": "library MerkleProof"
               }
             },
@@ -523,7 +523,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_struct$_Counter_$3230_storage",
+              "typeIdentifier": "t_struct$_Counter_$3261_storage",
               "typeString": "struct Counters.Counter"
             },
             "typeName": {
@@ -531,10 +531,10 @@
               "id": 37,
               "name": "Counters.Counter",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3230,
+              "referencedDeclaration": 3261,
               "src": "1079:16:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Counter_$3230_storage_ptr",
+                "typeIdentifier": "t_struct$_Counter_$3261_storage_ptr",
                 "typeString": "struct Counters.Counter"
               }
             },
@@ -1181,7 +1181,7 @@
                       "name": "_setBaseURI",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2702,
+                      "referencedDeclaration": 2733,
                       "src": "1811:11:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_string_memory_ptr_$returns$__$",
@@ -1343,10 +1343,10 @@
                   "name": "ERC721",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 2794,
+                  "referencedDeclaration": 2825,
                   "src": "1761:6:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_ERC721_$2794_$",
+                    "typeIdentifier": "t_type$_t_contract$_ERC721_$2825_$",
                     "typeString": "type(contract ERC721)"
                   }
                 },
@@ -1518,7 +1518,7 @@
                       "name": "_setBaseURI",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2702,
+                      "referencedDeclaration": 2733,
                       "src": "2335:11:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_string_memory_ptr_$returns$__$",
@@ -1590,7 +1590,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1476,
+                  "referencedDeclaration": 1507,
                   "src": "2304:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -1717,7 +1717,7 @@
                             "referencedDeclaration": 38,
                             "src": "2785:15:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Counter_$3230_storage",
+                              "typeIdentifier": "t_struct$_Counter_$3261_storage",
                               "typeString": "struct Counters.Counter storage ref"
                             }
                           },
@@ -1728,10 +1728,10 @@
                           "lValueRequested": false,
                           "memberName": "current",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 3241,
+                          "referencedDeclaration": 3272,
                           "src": "2785:23:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3230_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3230_storage_ptr_$",
+                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3261_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3261_storage_ptr_$",
                             "typeString": "function (struct Counters.Counter storage pointer) view returns (uint256)"
                           }
                         },
@@ -1766,7 +1766,7 @@
                       "name": "_mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2530,
+                      "referencedDeclaration": 2561,
                       "src": "2775:5:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -1810,7 +1810,7 @@
                             "referencedDeclaration": 38,
                             "src": "2830:15:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Counter_$3230_storage",
+                              "typeIdentifier": "t_struct$_Counter_$3261_storage",
                               "typeString": "struct Counters.Counter storage ref"
                             }
                           },
@@ -1821,10 +1821,10 @@
                           "lValueRequested": false,
                           "memberName": "current",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 3241,
+                          "referencedDeclaration": 3272,
                           "src": "2830:23:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3230_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3230_storage_ptr_$",
+                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3261_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3261_storage_ptr_$",
                             "typeString": "function (struct Counters.Counter storage pointer) view returns (uint256)"
                           }
                         },
@@ -1872,7 +1872,7 @@
                       "name": "_setTokenURI",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2691,
+                      "referencedDeclaration": 2722,
                       "src": "2817:12:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_string_memory_ptr_$returns$__$",
@@ -1913,7 +1913,7 @@
                         "referencedDeclaration": 38,
                         "src": "2872:15:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Counter_$3230_storage",
+                          "typeIdentifier": "t_struct$_Counter_$3261_storage",
                           "typeString": "struct Counters.Counter storage ref"
                         }
                       },
@@ -1924,10 +1924,10 @@
                       "lValueRequested": false,
                       "memberName": "increment",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 3253,
+                      "referencedDeclaration": 3284,
                       "src": "2872:25:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Counter_$3230_storage_ptr_$returns$__$bound_to$_t_struct$_Counter_$3230_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Counter_$3261_storage_ptr_$returns$__$bound_to$_t_struct$_Counter_$3261_storage_ptr_$",
                         "typeString": "function (struct Counters.Counter storage pointer)"
                       }
                     },
@@ -2440,7 +2440,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "3189:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -2649,7 +2649,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "3697:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -3049,7 +3049,7 @@
                       "lValueRequested": false,
                       "memberName": "sub",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1713,
+                      "referencedDeclaration": 1744,
                       "src": "4438:20:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -3245,7 +3245,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "4184:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -3429,7 +3429,7 @@
                           "name": "_exists",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2387,
+                          "referencedDeclaration": 2418,
                           "src": "4877:7:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_uint256_$returns$_t_bool_$",
@@ -3582,7 +3582,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "4831:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -3874,7 +3874,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "5258:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -4621,7 +4621,7 @@
                             "lValueRequested": false,
                             "memberName": "verify",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 1597,
+                            "referencedDeclaration": 1628,
                             "src": "5991:12:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_pure$_t_array$_t_bytes32_$dyn_memory_ptr_$_t_bytes32_$_t_bytes32_$returns$_t_bool_$bound_to$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -4750,7 +4750,7 @@
                             "referencedDeclaration": 38,
                             "src": "6158:15:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Counter_$3230_storage",
+                              "typeIdentifier": "t_struct$_Counter_$3261_storage",
                               "typeString": "struct Counters.Counter storage ref"
                             }
                           },
@@ -4761,10 +4761,10 @@
                           "lValueRequested": false,
                           "memberName": "current",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 3241,
+                          "referencedDeclaration": 3272,
                           "src": "6158:23:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3230_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3230_storage_ptr_$",
+                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3261_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3261_storage_ptr_$",
                             "typeString": "function (struct Counters.Counter storage pointer) view returns (uint256)"
                           }
                         },
@@ -4945,7 +4945,7 @@
                         "lValueRequested": false,
                         "memberName": "add",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1696,
+                        "referencedDeclaration": 1727,
                         "src": "6237:35:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -5399,7 +5399,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "5756:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -5775,7 +5775,7 @@
                         "lValueRequested": false,
                         "memberName": "sub",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1713,
+                        "referencedDeclaration": 1744,
                         "src": "6847:35:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -5836,7 +5836,7 @@
                       "name": "burn",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2823,
+                      "referencedDeclaration": 2854,
                       "src": "6891:4:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$returns$__$",
@@ -5908,7 +5908,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "6727:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -6000,7 +6000,7 @@
           },
           {
             "baseFunctions": [
-              2669
+              2700
             ],
             "body": {
               "id": 472,
@@ -6171,7 +6171,7 @@
                       "lValueRequested": false,
                       "memberName": "_transfer",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2669,
+                      "referencedDeclaration": 2700,
                       "src": "7215:15:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -6348,7 +6348,7 @@
         "literals": [
           "solidity",
           "0.6",
-          ".10"
+          ".11"
         ],
         "nodeType": "PragmaDirective",
         "src": "37:23:0"
@@ -6370,7 +6370,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 475,
-        "sourceUnit": 3271,
+        "sourceUnit": 3302,
         "src": "524:52:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -6381,7 +6381,7 @@
         "id": 4,
         "nodeType": "ImportDirective",
         "scope": 475,
-        "sourceUnit": 2825,
+        "sourceUnit": 2856,
         "src": "577:65:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -6392,7 +6392,7 @@
         "id": 5,
         "nodeType": "ImportDirective",
         "scope": 475,
-        "sourceUnit": 1599,
+        "sourceUnit": 1630,
         "src": "643:62:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -6646,10 +6646,10 @@
               "id": 25,
               "name": "ERC721Burnable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2824,
+              "referencedDeclaration": 2855,
               "src": "933:14:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ERC721Burnable_$2824",
+                "typeIdentifier": "t_contract$_ERC721Burnable_$2855",
                 "typeString": "contract ERC721Burnable"
               }
             },
@@ -6660,17 +6660,17 @@
         ],
         "contractDependencies": [
           633,
-          1135,
-          1418,
-          1527,
-          1655,
-          1667,
-          2794,
-          2824,
-          2940,
+          1166,
+          1449,
+          1558,
+          1686,
+          1698,
+          2825,
+          2855,
           2971,
-          2998,
-          4210
+          3002,
+          3029,
+          4241
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -6678,18 +6678,18 @@
         "id": 474,
         "linearizedBaseContracts": [
           474,
-          2824,
-          2794,
+          2855,
+          2825,
+          3002,
+          3029,
           2971,
-          2998,
-          2940,
-          1655,
-          1667,
+          1686,
+          1698,
           633,
-          4210,
-          1418,
-          1527,
-          1135
+          4241,
+          1449,
+          1558,
+          1166
         ],
         "name": "BadgeFactory",
         "nodeType": "ContractDefinition",
@@ -6701,10 +6701,10 @@
               "id": 27,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1863,
+              "referencedDeclaration": 1894,
               "src": "980:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$1863",
+                "typeIdentifier": "t_contract$_SafeMath_$1894",
                 "typeString": "library SafeMath"
               }
             },
@@ -6728,10 +6728,10 @@
               "id": 30,
               "name": "Counters",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3270,
+              "referencedDeclaration": 3301,
               "src": "1010:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Counters_$3270",
+                "typeIdentifier": "t_contract$_Counters_$3301",
                 "typeString": "library Counters"
               }
             },
@@ -6742,10 +6742,10 @@
               "id": 31,
               "name": "Counters.Counter",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3230,
+              "referencedDeclaration": 3261,
               "src": "1023:16:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Counter_$3230_storage_ptr",
+                "typeIdentifier": "t_struct$_Counter_$3261_storage_ptr",
                 "typeString": "struct Counters.Counter"
               }
             }
@@ -6757,10 +6757,10 @@
               "id": 33,
               "name": "MerkleProof",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1598,
+              "referencedDeclaration": 1629,
               "src": "1049:11:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MerkleProof_$1598",
+                "typeIdentifier": "t_contract$_MerkleProof_$1629",
                 "typeString": "library MerkleProof"
               }
             },
@@ -6799,7 +6799,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_struct$_Counter_$3230_storage",
+              "typeIdentifier": "t_struct$_Counter_$3261_storage",
               "typeString": "struct Counters.Counter"
             },
             "typeName": {
@@ -6807,10 +6807,10 @@
               "id": 37,
               "name": "Counters.Counter",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3230,
+              "referencedDeclaration": 3261,
               "src": "1079:16:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Counter_$3230_storage_ptr",
+                "typeIdentifier": "t_struct$_Counter_$3261_storage_ptr",
                 "typeString": "struct Counters.Counter"
               }
             },
@@ -7457,7 +7457,7 @@
                       "name": "_setBaseURI",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2702,
+                      "referencedDeclaration": 2733,
                       "src": "1811:11:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_string_memory_ptr_$returns$__$",
@@ -7619,10 +7619,10 @@
                   "name": "ERC721",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 2794,
+                  "referencedDeclaration": 2825,
                   "src": "1761:6:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_ERC721_$2794_$",
+                    "typeIdentifier": "t_type$_t_contract$_ERC721_$2825_$",
                     "typeString": "type(contract ERC721)"
                   }
                 },
@@ -7794,7 +7794,7 @@
                       "name": "_setBaseURI",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2702,
+                      "referencedDeclaration": 2733,
                       "src": "2335:11:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_string_memory_ptr_$returns$__$",
@@ -7866,7 +7866,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1476,
+                  "referencedDeclaration": 1507,
                   "src": "2304:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -7993,7 +7993,7 @@
                             "referencedDeclaration": 38,
                             "src": "2785:15:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Counter_$3230_storage",
+                              "typeIdentifier": "t_struct$_Counter_$3261_storage",
                               "typeString": "struct Counters.Counter storage ref"
                             }
                           },
@@ -8004,10 +8004,10 @@
                           "lValueRequested": false,
                           "memberName": "current",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 3241,
+                          "referencedDeclaration": 3272,
                           "src": "2785:23:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3230_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3230_storage_ptr_$",
+                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3261_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3261_storage_ptr_$",
                             "typeString": "function (struct Counters.Counter storage pointer) view returns (uint256)"
                           }
                         },
@@ -8042,7 +8042,7 @@
                       "name": "_mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2530,
+                      "referencedDeclaration": 2561,
                       "src": "2775:5:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -8086,7 +8086,7 @@
                             "referencedDeclaration": 38,
                             "src": "2830:15:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Counter_$3230_storage",
+                              "typeIdentifier": "t_struct$_Counter_$3261_storage",
                               "typeString": "struct Counters.Counter storage ref"
                             }
                           },
@@ -8097,10 +8097,10 @@
                           "lValueRequested": false,
                           "memberName": "current",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 3241,
+                          "referencedDeclaration": 3272,
                           "src": "2830:23:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3230_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3230_storage_ptr_$",
+                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3261_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3261_storage_ptr_$",
                             "typeString": "function (struct Counters.Counter storage pointer) view returns (uint256)"
                           }
                         },
@@ -8148,7 +8148,7 @@
                       "name": "_setTokenURI",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2691,
+                      "referencedDeclaration": 2722,
                       "src": "2817:12:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_string_memory_ptr_$returns$__$",
@@ -8189,7 +8189,7 @@
                         "referencedDeclaration": 38,
                         "src": "2872:15:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Counter_$3230_storage",
+                          "typeIdentifier": "t_struct$_Counter_$3261_storage",
                           "typeString": "struct Counters.Counter storage ref"
                         }
                       },
@@ -8200,10 +8200,10 @@
                       "lValueRequested": false,
                       "memberName": "increment",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 3253,
+                      "referencedDeclaration": 3284,
                       "src": "2872:25:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Counter_$3230_storage_ptr_$returns$__$bound_to$_t_struct$_Counter_$3230_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Counter_$3261_storage_ptr_$returns$__$bound_to$_t_struct$_Counter_$3261_storage_ptr_$",
                         "typeString": "function (struct Counters.Counter storage pointer)"
                       }
                     },
@@ -8716,7 +8716,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "3189:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -8925,7 +8925,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "3697:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -9325,7 +9325,7 @@
                       "lValueRequested": false,
                       "memberName": "sub",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1713,
+                      "referencedDeclaration": 1744,
                       "src": "4438:20:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -9521,7 +9521,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "4184:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -9705,7 +9705,7 @@
                           "name": "_exists",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2387,
+                          "referencedDeclaration": 2418,
                           "src": "4877:7:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_uint256_$returns$_t_bool_$",
@@ -9858,7 +9858,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "4831:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -10150,7 +10150,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "5258:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -10897,7 +10897,7 @@
                             "lValueRequested": false,
                             "memberName": "verify",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 1597,
+                            "referencedDeclaration": 1628,
                             "src": "5991:12:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_pure$_t_array$_t_bytes32_$dyn_memory_ptr_$_t_bytes32_$_t_bytes32_$returns$_t_bool_$bound_to$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -11026,7 +11026,7 @@
                             "referencedDeclaration": 38,
                             "src": "6158:15:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Counter_$3230_storage",
+                              "typeIdentifier": "t_struct$_Counter_$3261_storage",
                               "typeString": "struct Counters.Counter storage ref"
                             }
                           },
@@ -11037,10 +11037,10 @@
                           "lValueRequested": false,
                           "memberName": "current",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 3241,
+                          "referencedDeclaration": 3272,
                           "src": "6158:23:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3230_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3230_storage_ptr_$",
+                            "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$3261_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$3261_storage_ptr_$",
                             "typeString": "function (struct Counters.Counter storage pointer) view returns (uint256)"
                           }
                         },
@@ -11221,7 +11221,7 @@
                         "lValueRequested": false,
                         "memberName": "add",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1696,
+                        "referencedDeclaration": 1727,
                         "src": "6237:35:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -11675,7 +11675,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "5756:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -12051,7 +12051,7 @@
                         "lValueRequested": false,
                         "memberName": "sub",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1713,
+                        "referencedDeclaration": 1744,
                         "src": "6847:35:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -12112,7 +12112,7 @@
                       "name": "burn",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2823,
+                      "referencedDeclaration": 2854,
                       "src": "6891:4:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$returns$__$",
@@ -12184,7 +12184,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4167,
+                  "referencedDeclaration": 4198,
                   "src": "6727:13:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -12276,7 +12276,7 @@
           },
           {
             "baseFunctions": [
-              2669
+              2700
             ],
             "body": {
               "id": 472,
@@ -12447,7 +12447,7 @@
                       "lValueRequested": false,
                       "memberName": "_transfer",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2669,
+                      "referencedDeclaration": 2700,
                       "src": "7215:15:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -12607,15 +12607,19 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.6.10+commit.00c0fcaf.Emscripten.clang"
+    "version": "0.6.11+commit.5ef660b1.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.1.0",
-  "updatedAt": "2020-06-29T16:16:05.879Z",
+  "schemaVersion": "3.2.2",
+  "updatedAt": "2020-07-20T16:55:08.573Z",
   "devdoc": {
-    "methods": {}
+    "kind": "dev",
+    "methods": {},
+    "version": 1
   },
   "userdoc": {
-    "methods": {}
+    "kind": "user",
+    "methods": {},
+    "version": 1
   }
 }
