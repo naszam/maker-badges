@@ -9,13 +9,16 @@ contract('MakerBadges', function(accounts) {
 
   const DEFAULT_ADMIN_ROLE = "0x00"
 
+  const pot = '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb'
+  const chief = '0xbBFFC76e94B34F72D96D054b31f6424249c1337d'
+  const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b'
 
 
   let instance
 
   // Before Each
   beforeEach(async () => {
-    instance = await MakerBadges.new()
+    instance = await MakerBadges.new(pot, chief, flipper)
   })
 
   // Check that the owner is set as the deploying address
@@ -35,7 +38,7 @@ contract('MakerBadges', function(accounts) {
 
   })
 
-  
+
 
 
 
