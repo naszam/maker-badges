@@ -95,6 +95,14 @@ Clone this GitHub repository.
     $ npm i
     ```
   - Global dependencies:
+    - Truffle (recommended):
+    ```
+    npm install -g truffle
+    ```
+    - Ganache CLI (recommended):
+    ```
+    npm install -g ganache-cli
+    ```
     - Slither (optional): 
     ```
     pip3 install slither-analyzer
