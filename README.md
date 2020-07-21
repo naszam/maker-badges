@@ -2,7 +2,7 @@
 [![#npm 13.13.0](https://img.shields.io/badge/npm-v13.13.0-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![#solc 0.6.11](https://img.shields.io/badge/solc-v0.6.11-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.11)
-[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)]()
+[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](#project-deployed-on-kovan)
 
 [![#ETHGlobal HackMoney](https://img.shields.io/badge/ETHGlobal-HackMoney-blueviolet?style=for-the-badge&logo=atom&labelColor=5fc5a6)](https://hackathon.money/)
 
@@ -114,7 +114,7 @@ Clone this GitHub repository.
     ```
 ## Running the project with local test network (ganache-cli)
 
-   - Start ganache-cli, in a separate terminal, with the following command:
+   - Start ganache-cli, in a separate terminal, with the following command (global dependency):
      ```sh
      $ ganache-cli
      ```
