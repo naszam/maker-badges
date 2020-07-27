@@ -168,6 +168,28 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     return redeemers[templateId].contains(guy);
   }
 
+  /// @notice Add a new Admin
+  /// @dev Access restricted only for Default Admin
+  /// @param account Address of the new Admin
+  /// @return True if the account address is added as Admin
+  function addAdmin(address account) external returns (bool) {
+    require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not the default admin");
+    require(!hasRole(ADMIN_ROLE, account), "Account is already an admin");
+    grantRole(ADMIN_ROLE, account);
+    return true;
+  }
+
+  /// @notice Remove an Admin
+  /// @dev Access restricted only for Default Admin
+  /// @param account Address of the Admin
+  /// @return True if the account address is removed as Admin
+  function removeAdmin(address account) external returns (bool) {
+    require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not the default admin");
+    require(hasRole(ADMIN_ROLE, account), "Account is not an admin");
+    revokeRole(ADMIN_ROLE, account);
+    return true;
+  }
+
   /// @notice Pause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
   function pause() external {
