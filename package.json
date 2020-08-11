@@ -14,6 +14,7 @@
     "ganache-cli": "^6.10.1",
     "gsn": "^0.0.1",
     "mkdirp": "^1.0.4",
+    "serialize-javascript": "^4.0.0",
     "truffle": "^5.1.39",
     "truffle-flattener": "^1.4.4"
   },
