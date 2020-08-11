@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.12;
+pragma solidity 0.7.0;
 pragma experimental ABIEncoderV2;
 
 
@@ -74,7 +74,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
           z = x.mul(y) / RAY;
   }
 
-  constructor(address pot_, address chief_, address flipper_) public {
+  constructor(address pot_, address chief_, address flipper_) {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
         _setupRole(ADMIN_ROLE, owner());
@@ -119,7 +119,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
   /// @return wad Accrued interest of guy
   function _dai(address guy) private view whenNotPaused returns (uint256 wad) {
     uint256 slice = pot.pie(guy);
-    uint256 chi = (now > pot.rho()) ? pot.drip() : pot.chi();
+    uint256 chi = (block.timestamp > pot.rho()) ? pot.drip() : pot.chi();
     wad = rmul(slice, chi);
   }
 
