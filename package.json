@@ -7,14 +7,14 @@
     "test": "test"
   },
   "dependencies": {
-    "@babel/core": "^7.10.5",
-    "@openzeppelin/contracts": "^3.1.0",
-    "@truffle/hdwallet-provider": "^1.0.40",
-    "ethereumjs-util": "^7.0.3",
-    "ganache-cli": "^6.9.1",
+    "@babel/core": "^7.11.1",
+    "@openzeppelin/contracts": "^3.1.0-solc-0.7",
+    "@truffle/hdwallet-provider": "^1.0.42",
+    "ethereumjs-util": "^7.0.4",
+    "ganache-cli": "^6.10.1",
     "gsn": "^0.0.1",
     "mkdirp": "^1.0.4",
-    "truffle": "^5.1.36",
+    "truffle": "^5.1.39",
     "truffle-flattener": "^1.4.4"
   },
   "devDependencies": {},
