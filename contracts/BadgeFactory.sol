@@ -80,7 +80,12 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     /// @param description A description of the new template
     /// @param image A filename of the new template
     /// @return True If the new Template is Created
-    function createTemplate(string calldata name, string calldata description, string calldata image) external onlyTemplater whenNotPaused returns (bool) {
+    function createTemplate(string calldata name, string calldata description, string calldata image)
+        external
+        onlyTemplater
+        whenNotPaused
+        returns (bool)
+   {
         BadgeTemplate memory _newTemplate = BadgeTemplate({
             name: name,
             owner: msg.sender,
