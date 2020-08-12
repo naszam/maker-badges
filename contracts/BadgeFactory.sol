@@ -15,177 +15,173 @@ import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
 
 interface MakerBadgesLike {
-
     function verify(uint256 templateId, address guy) external view returns (bool);
     function roots(uint256 templateId) external view returns (bytes32);
-
 }
+
 
 contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
-  /// @dev Libraries
-  using SafeMath for uint256;
-  using Counters for Counters.Counter;
-  using MerkleProof for bytes32[];
+    /// @dev Libraries
+    using SafeMath for uint256;
+    using Counters for Counters.Counter;
+    using MerkleProof for bytes32[];
 
-  Counters.Counter private _tokenIdTracker;
+    MakerBadgesLike internal immutable maker;
 
-  MakerBadgesLike internal immutable maker;
+    Counters.Counter private _tokenIdTracker;
 
-  mapping (uint256 => mapping (address => uint256)) public redeemed;
+    struct BadgeTemplate {
+        string name;
+        string description;
+        string image;
+        address owner;
+    }
 
-  /// @dev Events
-  event NewTemplate(uint256 templateId, string name, string description, string image);
-  event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);
+    BadgeTemplate[] private templates;
 
-  struct BadgeTemplate {
-    string name;
-    string description;
-    string image;
-    address owner;
-  }
+    /// @dev Supplies of each badge template
+    mapping(uint256 => uint256) private _templateQuantities;
+    mapping(uint256 => uint256) private _tokenTemplates;
 
-  BadgeTemplate[] private templates;
+    mapping(uint256 => mapping (address => uint256)) public redeemed;
 
-  /// @dev Supplies of each badge template
-  mapping(uint256 => uint256) private _templateQuantities;
-  mapping(uint256 => uint256) private _tokenTemplates;
+    /// @dev Events
+    event NewTemplate(uint256 templateId, string name, string description, string image);
+    event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);
 
-  constructor(address maker_)
-    ERC721("MakerBadges", "MAKER")
-  {
-    _setBaseURI("https://badges.makerdao.com/token/");
-    maker = MakerBadgesLike(maker_);
+    constructor(address maker_)
+        ERC721("MakerBadges", "MAKER")
+    {
+        _setBaseURI("https://badges.makerdao.com/token/");
+        maker = MakerBadgesLike(maker_);
+    }
 
-  }
+    /// @notice Fallback function
+    /// @dev Added not payable to revert transactions not matching any other function which send value
+    fallback() external {
+        revert();
+    }
 
-  /// @notice Fallback function
-  /// @dev Added not payable to revert transactions not matching any other function which send value
-  fallback() external {
-    revert();
-  }
+    /// @notice Set the baseURI
+    /// @dev Update the baseURI specified in the constructor
+    /// @param baseURI New baseURI
+    /// @return True if the new baseURI is set
+    function setBaseURI(string calldata baseURI) external onlyOwner returns (bool) {
+        _setBaseURI(baseURI);
+        return true;
+    }
 
-  /// @notice Set the baseURI
-  /// @dev Update the baseURI specified in the constructor
-  /// @param baseURI New baseURI
-  /// @return True if the new baseURI is set
-  function setBaseURI(string calldata baseURI) external onlyOwner returns (bool) {
-    _setBaseURI(baseURI);
-    return true;
-  }
+    /// @dev Templates
 
-  /// @notice Mint new token with tokenURI
-  /// @dev Use an auto-generated tokenId
-  /// @dev automatically concatenate baseURI with tokenURI via abi.encodePacked
-  /// @param to owner of the new token
-  /// @param tokenURI an <ipfs-hash>.json filename
-  /// @return True if the new token is minted
-  function _mintWithTokenURI(address to, string calldata tokenURI) private returns (bool) {
-    _mint(to, _tokenIdTracker.current());
-    _setTokenURI(_tokenIdTracker.current(), tokenURI);
-    _tokenIdTracker.increment();
-    return true;
-  }
+    /// @notice Create a new template
+    /// @dev Access restricted to only Templaters
+    /// @param name The name of the new template
+    /// @param description A description of the new template
+    /// @param image A filename of the new template
+    /// @return True If the new Template is Created
+    function createTemplate(string calldata name, string calldata description, string calldata image) external onlyTemplater whenNotPaused returns (bool) {
+        BadgeTemplate memory _newTemplate = BadgeTemplate({
+            name: name,
+            owner: msg.sender,
+            description: description,
+            image: image
+        });
+        templates.push(_newTemplate);
+        uint256 _templateId = templates.length.sub(1);
+        emit NewTemplate(_templateId, name, description, image);
+        return true;
+    }
 
-  /// @notice Getter function for templates
-  /// @dev Check if templateId exists
-  /// @param templateId Template Id of the template to return
-  /// @return name description image Of the specified templateId
-  function getTemplate(uint256 templateId) external view whenNotPaused returns (string memory name, string memory description, string memory image) {
-    require(templates.length > templateId, "No template with that id");
-    BadgeTemplate memory template = templates[templateId];
-    return (template.name, template.description, template.image);
-  }
+    /// @notice Getter function for templates
+    /// @dev Check if templateId exists
+    /// @param templateId Template Id of the template to return
+    /// @return name description image Of the specified templateId
+    function getTemplate(uint256 templateId) external view whenNotPaused returns (string memory name, string memory description, string memory image) {
+        require(templates.length > templateId, "No template with that id");
+        BadgeTemplate memory template = templates[templateId];
+        return (template.name, template.description, template.image);
+    }
 
+    /// @notice Getter function for templates count
+    /// @dev Return lenght of template array
+    /// @return count The current number of templates
+    function getTemplatesCount() external view whenNotPaused returns (uint256 count) {
+        return templates.length;
+    }
 
-  /// @dev Templates
+    /// @dev Badges
 
-  /// @notice Getter function for templates count
-  /// @dev Return lenght of template array
-  /// @return count The current number of templates
-  function getTemplatesCount() external view whenNotPaused returns (uint256 count) {
-    return templates.length;
-  }
+    /// @notice Activate Badge by redeemers
+    /// @dev Verify if the caller is a redeemer
+    /// @param proof Merkle Proof
+    /// @param templateId Template Id
+    /// @param tokenURI Token URI
+    /// @return True If the new Badge is Activated
+    function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI) external whenNotPaused returns (bool) {
+        require(templates.length > templateId, "No template with that id");
+        require(redeemed[templateId][msg.sender] == 0, "Badge already activated!");
+        require(maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
 
-  /// @notice Create a new template
-  /// @dev Access restricted to only Templaters
-  /// @param name The name of the new template
-  /// @param description A description of the new template
-  /// @param image A filename of the new template
-  /// @return True If the new Template is Created
-  function createTemplate(string calldata name, string calldata description, string calldata image) external onlyTemplater whenNotPaused returns (bool) {
+        /// @dev Increase the quantities
+        _tokenTemplates[_tokenIdTracker.current()] = templateId;
+        _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
+        redeemed[templateId][msg.sender] = 1;
 
-    BadgeTemplate memory _newTemplate = BadgeTemplate({
-       name: name,
-       owner: msg.sender,
-       description: description,
-       image: image
-    });
-    templates.push(_newTemplate);
-    uint256 _templateId = templates.length.sub(1);
-    emit NewTemplate(_templateId, name, description, image);
-    return true;
-  }
+        require(_mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
 
-  /// @dev Badges
+        emit BadgeActivated(msg.sender, templateId, tokenURI);
+        return true;
+    }
 
-  /// @notice Getter function for templateId associated with the tokenId
-  /// @dev Check if the tokenId exists
-  /// @param tokenId Token Id of the Badge
-  /// @return Template Id associated with the tokenId
-  function getBadgeTemplate(uint256 tokenId) public view whenNotPaused returns (uint256) {
-    require(_exists(tokenId), "ERC721: No token with that id");
-    return _tokenTemplates[tokenId];
-  }
+    /// @notice Burn Badge
+    /// @dev burn() Check if the caller is approved or owner of the Badge
+    /// @param tokenId Token Id of the Badge to burn
+    /// @return True if the Badge has been burned
+    function burnBadge(uint256 tokenId) external whenNotPaused returns (bool){
+        uint256 templateId = getBadgeTemplate(tokenId);
+        _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
 
-  /// @notice Getter function for number of badges associated with templateId
-  /// @dev Check if the template Id exists
-  /// @param templateId Template Id
-  /// @return Quantity of Badges associated with templateId
-  function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {
-    require(templates.length > templateId, "No template with that id");
-    return _templateQuantities[templateId];
-  }
+        burn(tokenId);
+        return true;
+    }
 
-  /// @notice Activate Badge by redeemers
-  /// @dev Verify if the caller is a redeemer
-  /// @param proof Merkle Proof
-  /// @param templateId Template Id
-  /// @param tokenURI Token URI
-  /// @return True If the new Badge is Activated
-  function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI) external whenNotPaused returns (bool) {
-    require(templates.length > templateId, "No template with that id");
-    require(redeemed[templateId][msg.sender] == 0, "Badge already activated!");
-    require(maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
+    /// @notice Getter function for templateId associated with the tokenId
+    /// @dev Check if the tokenId exists
+    /// @param tokenId Token Id of the Badge
+    /// @return Template Id associated with the tokenId
+    function getBadgeTemplate(uint256 tokenId) public view whenNotPaused returns (uint256) {
+        require(_exists(tokenId), "ERC721: No token with that id");
+        return _tokenTemplates[tokenId];
+    }
 
-    /// @dev Increase the quantities
-    _tokenTemplates[_tokenIdTracker.current()] = templateId;
-    _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-    redeemed[templateId][msg.sender] = 1;
+    /// @notice Getter function for number of badges associated with templateId
+    /// @dev Check if the template Id exists
+    /// @param templateId Template Id
+    /// @return Quantity of Badges associated with templateId
+    function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {
+        require(templates.length > templateId, "No template with that id");
+        return _templateQuantities[templateId];
+    }
 
-    require(_mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
+    /// @notice ERC721 _transfer() Disabled
+    /// @dev _transfer() has been overriden
+    /// @dev reverts on transferFrom() and safeTransferFrom()
+    function _transfer(address from, address to, uint256 tokenId) internal override {
+        require(false, "ERC721: token transfer disabled");
+        super._transfer(from, to, tokenId);
+    }
 
-    emit BadgeActivated(msg.sender, templateId, tokenURI);
-    return true;
-  }
-
-  /// @notice Burn Badge
-  /// @dev burn() Check if the caller is approved or owner of the Badge
-  /// @param tokenId Token Id of the Badge to burn
-  /// @return True if the Badge has been burned
-  function burnBadge(uint256 tokenId) external whenNotPaused returns (bool){
-    uint256 templateId = getBadgeTemplate(tokenId);
-    _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
-    burn(tokenId);
-    return true;
-  }
-
-  /// @notice ERC721 _transfer() Disabled
-  /// @dev _transfer() has been overriden
-  /// @dev reverts on transferFrom() and safeTransferFrom()
-  function _transfer(address from, address to, uint256 tokenId) internal override {
-    require(false, "ERC721: token transfer disabled");
-    super._transfer(from, to, tokenId);
-  }
-
+    /// @notice Mint new token with tokenURI
+    /// @dev Use an auto-generated tokenId
+    /// @dev automatically concatenate baseURI with tokenURI via abi.encodePacked
+    /// @param to owner of the new token
+    /// @param tokenURI an <ipfs-hash>.json filename
+    /// @return True if the new token is minted
+    function _mintWithTokenURI(address to, string calldata tokenURI) private returns (bool) {
+        _mint(to, _tokenIdTracker.current());
+        _setTokenURI(_tokenIdTracker.current(), tokenURI);
+        _tokenIdTracker.increment();
+        return true;
+    }
 }

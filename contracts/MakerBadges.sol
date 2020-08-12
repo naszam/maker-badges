@@ -17,191 +17,193 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 
 interface PotLike {
-
     function pie(address guy) external view returns (uint256);
     function chi() external view returns (uint256);
     function rho() external view returns (uint256);
     function drip() external view returns (uint256);
-
 }
+
 
 interface DSChiefLike {
-  function votes(address) external view returns (bytes32);
+    function votes(address) external view returns (bytes32);
 }
 
-interface  FlipperLike {
-  struct Bid {
-    uint256 bid;
-    uint256 lot;
-    address guy;
-    uint48  tic;
-    uint48  end;
-    address usr;
-    address gal;
-    uint256 tab;
+
+interface FlipperLike {
+    struct Bid {
+        uint256 bid;
+        uint256 lot;
+        address guy;
+        uint48  tic;
+        uint48  end;
+        address usr;
+        address gal;
+        uint256 tab;
+    }
+
+    function bids(uint256) external view returns (Bid memory);
 }
-  function bids(uint256) external view returns (Bid memory);
-}
+
 
 contract MakerBadges is Ownable, AccessControl, Pausable {
 
-  /// @dev Libraries
-  using SafeMath for uint256;
-  using EnumerableSet for EnumerableSet.AddressSet;
+    /// @dev Libraries
+    using SafeMath for uint256;
+    using EnumerableSet for EnumerableSet.AddressSet;
 
-  bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-  bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    /// @dev Data
+    PotLike  internal immutable pot;
+    DSChiefLike internal immutable chief;
+    FlipperLike internal immutable flipper;
 
-  bytes32[] public roots;
+    /// @dev Math
+    uint256 constant RAY = 10 ** 27;
 
-  mapping (uint256 => EnumerableSet.AddressSet) private redeemers;
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-  /// @dev Events
-  event PotChecked(address guy);
-  event DSChiefChecked(address guy);
-  event FlipperChecked(address guy);
+    bytes32[] public roots;
 
-  /// @dev Data
-  PotLike  internal immutable pot;
-  DSChiefLike internal immutable chief;
-  FlipperLike internal immutable flipper;
+    mapping(uint256 => EnumerableSet.AddressSet) private redeemers;
 
-  /// @dev Math
-  uint256 constant RAY = 10 ** 27;
+    /// @dev Events
+    event PotChecked(address guy);
+    event DSChiefChecked(address guy);
+    event FlipperChecked(address guy);
 
-  function rmul(uint256 x, uint256 y) internal view whenNotPaused returns (uint256 z) {
-          /// @dev always rounds down
-          z = x.mul(y) / RAY;
-  }
+    constructor(address pot_, address chief_, address flipper_) {
+          _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
-  constructor(address pot_, address chief_, address flipper_) {
-        _setupRole(DEFAULT_ADMIN_ROLE, owner());
+          _setupRole(ADMIN_ROLE, owner());
+          _setupRole(PAUSER_ROLE, owner());
 
-        _setupRole(ADMIN_ROLE, owner());
-        _setupRole(PAUSER_ROLE, owner());
+          /// @dev MCD_POT Address
+          pot = PotLike(pot_);
 
-        /// @dev MCD_POT Address
-        pot = PotLike(pot_);
+          /// @dev MCD_ADM Address
+          chief = DSChiefLike(chief_);
 
-        /// @dev MCD_ADM Address
-        chief = DSChiefLike(chief_);
+          /// @dev MCD_FLIP_ETH_A Address
+          flipper = FlipperLike(flipper_);
+    }
 
-        /// @dev MCD_FLIP_ETH_A Address
-        flipper = FlipperLike(flipper_);
+    /// @notice Fallback function
+    /// @dev Added not payable to revert transactions not matching any other function which send value
+    fallback() external {
+        revert();
+    }
 
-  }
-
-  /// @notice Fallback function
-  /// @dev Added not payable to revert transactions not matching any other function which send value
-  fallback() external {
-    revert();
-  }
-
-  /// @dev Modifiers
-  modifier onlyAdmin() {
-      require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
-      _;
+    /// @dev Modifiers
+    modifier onlyAdmin() {
+        require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
+        _;
     }
 
 
-  /// @notice Set Merkle Tree Root Hashes array
-  /// @dev Called by owner to update roots for different address batches by templateId
-  /// @param rootHashes Root hashes of the Merkle Trees by templateId
-  /// @return True if successfully updated
-  function setRootHashes(bytes32[] calldata rootHashes) external onlyAdmin whenNotPaused returns (bool) {
-    roots = rootHashes;
-    return true;
-  }
-
-  /// @notice Return the accrued interest of guy on Pot
-  /// @dev Based on Chai dai() function
-  /// @param guy Address to check
-  /// @return wad Accrued interest of guy
-  function _dai(address guy) private view whenNotPaused returns (uint256 wad) {
-    uint256 slice = pot.pie(guy);
-    uint256 chi = (block.timestamp > pot.rho()) ? pot.drip() : pot.chi();
-    wad = rmul(slice, chi);
-  }
-
-  /// @notice Pot Challenge
-  /// @dev Keeps track of the address of the caller if successful
-  /// @return True if the caller successfully checked for activity on Pot
-  function potChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-    require(_dai(msg.sender) >= 1 ether, "Caller has not accrued 1 or more Dai interest on Pot");
-    if (!redeemers[templateId].contains(msg.sender)) {
-    require(redeemers[templateId].add(msg.sender));
+    /// @notice Set Merkle Tree Root Hashes array
+    /// @dev Called by owner to update roots for different address batches by templateId
+    /// @param rootHashes Root hashes of the Merkle Trees by templateId
+    /// @return True if successfully updated
+    function setRootHashes(bytes32[] calldata rootHashes) external onlyAdmin whenNotPaused returns (bool) {
+        roots = rootHashes;
+        return true;
     }
-    emit PotChecked(msg.sender);
-    return true;
-  }
 
-  /// @notice DSChief Challenge
-  /// @dev Keeps track of the address of the caller if successful
-  /// @return True if the caller successfully checked for activity on DSChief
-  function chiefChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-    require(chief.votes(msg.sender) != 0x00, "Caller is not voting in an Executive Spell");
-    if (!redeemers[templateId].contains(msg.sender)) {
-    require(redeemers[templateId].add(msg.sender));
+    /// @notice Pot Challenge
+    /// @dev Keeps track of the address of the caller if successful
+    /// @return True if the caller successfully checked for activity on Pot
+    function potChallenge(uint256 templateId) external whenNotPaused returns (bool) {
+        require(_dai(msg.sender) >= 1 ether, "Caller has not accrued 1 or more Dai interest on Pot");
+        if (!redeemers[templateId].contains(msg.sender)) {
+            require(redeemers[templateId].add(msg.sender));
+        }
+        emit PotChecked(msg.sender);
+        return true;
     }
-    emit DSChiefChecked(msg.sender);
-    return true;
-  }
 
-  /// @notice Flipper Challenge
-  /// @dev Keeps track of the address of the caller if successful
-  /// @dev guy, high bidder
-  /// @return True if the caller successfully checked for activity on Flipper
-  function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused returns (bool) {
-    require(flipper.bids(bidId).guy == msg.sender, "Caller is not the high bidder in the current Bid in Collateral Auctions");
-    if (!redeemers[templateId].contains(msg.sender)) {
-    require(redeemers[templateId].add(msg.sender));
+    /// @notice DSChief Challenge
+    /// @dev Keeps track of the address of the caller if successful
+    /// @return True if the caller successfully checked for activity on DSChief
+    function chiefChallenge(uint256 templateId) external whenNotPaused returns (bool) {
+        require(chief.votes(msg.sender) != 0x00, "Caller is not voting in an Executive Spell");
+        if (!redeemers[templateId].contains(msg.sender)) {
+            require(redeemers[templateId].add(msg.sender));
+        }
+        emit DSChiefChecked(msg.sender);
+        return true;
     }
-    emit FlipperChecked(msg.sender);
-    return true;
-  }
 
-  /// @notice Check if guy is a redeemer
-  /// @dev Verify if the address of guy exists
-  /// @param guy Address to verify
-  /// @return True if guy is a redeemer
-  function verify(uint256 templateId, address guy) external view whenNotPaused returns (bool) {
-    return redeemers[templateId].contains(guy);
-  }
+    /// @notice Flipper Challenge
+    /// @dev Keeps track of the address of the caller if successful
+    /// @dev guy, high bidder
+    /// @return True if the caller successfully checked for activity on Flipper
+    function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused returns (bool) {
+        require(flipper.bids(bidId).guy == msg.sender, "Caller is not the high bidder in the current Bid in Collateral Auctions");
+        if (!redeemers[templateId].contains(msg.sender)) {
+            require(redeemers[templateId].add(msg.sender));
+        }
+        emit FlipperChecked(msg.sender);
+        return true;
+    }
 
-  /// @notice Add a new Admin
-  /// @dev Access restricted only for Default Admin
-  /// @param account Address of the new Admin
-  /// @return True if the account address is added as Admin
-  function addAdmin(address account) external returns (bool) {
-    require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not the default admin");
-    require(!hasRole(ADMIN_ROLE, account), "Account is already an admin");
-    grantRole(ADMIN_ROLE, account);
-    return true;
-  }
+    /// @notice Check if guy is a redeemer
+    /// @dev Verify if the address of guy exists
+    /// @param guy Address to verify
+    /// @return True if guy is a redeemer
+    function verify(uint256 templateId, address guy) external view whenNotPaused returns (bool) {
+        return redeemers[templateId].contains(guy);
+    }
 
-  /// @notice Remove an Admin
-  /// @dev Access restricted only for Default Admin
-  /// @param account Address of the Admin
-  /// @return True if the account address is removed as Admin
-  function removeAdmin(address account) external returns (bool) {
-    require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not the default admin");
-    require(hasRole(ADMIN_ROLE, account), "Account is not an admin");
-    revokeRole(ADMIN_ROLE, account);
-    return true;
-  }
+    /// @notice Add a new Admin
+    /// @dev Access restricted only for Default Admin
+    /// @param account Address of the new Admin
+    /// @return True if the account address is added as Admin
+    function addAdmin(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not the default admin");
+        require(!hasRole(ADMIN_ROLE, account), "Account is already an admin");
+        grantRole(ADMIN_ROLE, account);
+        return true;
+    }
 
-  /// @notice Pause all the functions
-  /// @dev the caller must have the 'PAUSER_ROLE'
-  function pause() external {
-    require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to pause");
-    _pause();
-  }
+    /// @notice Remove an Admin
+    /// @dev Access restricted only for Default Admin
+    /// @param account Address of the Admin
+    /// @return True if the account address is removed as Admin
+    function removeAdmin(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not the default admin");
+        require(hasRole(ADMIN_ROLE, account), "Account is not an admin");
+        revokeRole(ADMIN_ROLE, account);
+        return true;
+    }
 
-  /// @notice Unpause all the functions
-  /// @dev the caller must have the 'PAUSER_ROLE'
-  function unpause() external {
+    /// @notice Pause all the functions
+    /// @dev the caller must have the 'PAUSER_ROLE'
+    function pause() external {
+        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to pause");
+        _pause();
+    }
+
+    /// @notice Unpause all the functions
+    /// @dev The caller must have the 'PAUSER_ROLE'
+    function unpause() external {
         require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to unpause");
         _unpause();
     }
 
+    /// @notice Maker Math
+    /// @dev Used by _dai() function
+    function rmul(uint256 x, uint256 y) internal view whenNotPaused returns (uint256 z) {
+        /// @dev always rounds down
+        z = x.mul(y) / RAY;
+    }
+
+    /// @notice Return the accrued interest of guy on Pot
+    /// @dev Based on Chai dai() function
+    /// @param guy Address to check
+    /// @return wad Accrued interest of guy
+    function _dai(address guy) private view whenNotPaused returns (uint256 wad) {
+        uint256 slice = pot.pie(guy);
+        uint256 chi = (block.timestamp > pot.rho()) ? pot.drip() : pot.chi();
+        wad = rmul(slice, chi);
+    }
 }
