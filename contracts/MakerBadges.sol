@@ -72,19 +72,19 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     event FlipperChecked(address guy);
 
     constructor(address pot_, address chief_, address flipper_) {
-          _setupRole(DEFAULT_ADMIN_ROLE, owner());
+        _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
-          _setupRole(ADMIN_ROLE, owner());
-          _setupRole(PAUSER_ROLE, owner());
+        _setupRole(ADMIN_ROLE, owner());
+        _setupRole(PAUSER_ROLE, owner());
 
-          /// @dev MCD_POT Address
-          pot = PotLike(pot_);
+        /// @dev MCD_POT Address
+        pot = PotLike(pot_);
 
-          /// @dev MCD_ADM Address
-          chief = DSChiefLike(chief_);
+        /// @dev MCD_ADM Address
+        chief = DSChiefLike(chief_);
 
-          /// @dev MCD_FLIP_ETH_A Address
-          flipper = FlipperLike(flipper_);
+        /// @dev MCD_FLIP_ETH_A Address
+        flipper = FlipperLike(flipper_);
     }
 
     /// @notice Fallback function

@@ -97,7 +97,12 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     /// @dev Check if templateId exists
     /// @param templateId Template Id of the template to return
     /// @return name description image Of the specified templateId
-    function getTemplate(uint256 templateId) external view whenNotPaused returns (string memory name, string memory description, string memory image) {
+    function getTemplate(uint256 templateId)
+        external
+        view
+        whenNotPaused
+        returns (string memory name, string memory description, string memory image)
+    {
         require(templates.length > templateId, "No template with that id");
         BadgeTemplate memory template = templates[templateId];
         return (template.name, template.description, template.image);
@@ -118,10 +123,17 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
     /// @param templateId Template Id
     /// @param tokenURI Token URI
     /// @return True If the new Badge is Activated
-    function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI) external whenNotPaused returns (bool) {
+    function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI)
+        external
+        whenNotPaused
+        returns (bool)
+    {
         require(templates.length > templateId, "No template with that id");
         require(redeemed[templateId][msg.sender] == 0, "Badge already activated!");
-        require(maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))), "Caller is not a redeemer");
+        require(
+            maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))),
+            "Caller is not a redeemer"
+        );
 
         /// @dev Increase the quantities
         _tokenTemplates[_tokenIdTracker.current()] = templateId;
