@@ -1,3 +1,7 @@
+// BadgeFactory.test.js
+// Migrating to OpenZeppelin Test Environment
+
+/*
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
 const  MerkleTree = require('./merkleTree.js').MerkleTree
 var BadgeFactory = artifacts.require('./BadgeFactory')
@@ -202,3 +206,4 @@ contract('BadgeFactory', function(accounts) {
    })
 
 })
+*/

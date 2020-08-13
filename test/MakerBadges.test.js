@@ -1,3 +1,7 @@
+// MakerBadges.test.js
+// Migrating to OpenZeppelin Test Environment
+
+/*
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
 var MakerBadges = artifacts.require('./MakerBadges')
 
@@ -37,11 +41,5 @@ contract('MakerBadges', function(accounts) {
       })
 
   })
-
-
-
-
-
-
-
 })
+*/
