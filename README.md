@@ -200,4 +200,4 @@ About
 
 Project created by [Nazzareno Massari](https://nazzarenomassari.com) and Scott Herren.  
 Team MetaBadges from HackMoney ETHGlobal Virtual Hackathon.  
-Badge Designs by [Richard Rosa](https://www.artstation.com/artwork/oAJeVq)
+MakerDAO Badge Illustrations by [Richard Rosa](https://www.artstation.com/artwork/oAJeVq)
