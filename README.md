@@ -36,7 +36,7 @@ Building Blocks
 ![Smart Contracts Flow-Chart](flow-chart.png)
 
 ### [MakerBadges](./contracts/MakerBadges.sol)
-> MakerBadges to check for activities on MakerDAO ecosystem and keep track of redeemers
+> MakerBadges to check for activities on MakerDAO ecosystem and keep track of redeemershttps://www.artstation.com/artwork/oAJeVq
 
 To enable MakerBadges to check on-chain for activities on MakerDAO ecosystem we're using three interface to map the functions that we'll use:
 - **Pot**: to check if a user has accrued 1 or more Dai from DSR, via **pie(address guy)**, **chi()**, **rho()** and **drip()** used in the internal function **_dai(address guy)** to return the **wad** or the current accrued Dai interest in DSR.  
@@ -200,3 +200,4 @@ About
 
 Project created by [Nazzareno Massari](https://nazzarenomassari.com) and Scott Herren.  
 Team MetaBadges from HackMoney ETHGlobal Virtual Hackathon.
+Badge Designs by [Richard Rosa](https://www.artstation.com/artwork/oAJeVq)
