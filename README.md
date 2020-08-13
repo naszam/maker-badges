@@ -98,15 +98,15 @@ Clone this GitHub repository.
     ```
   - Global dependencies:
     - Truffle (recommended):
-    ```
+    ```sh
     npm install -g truffle
     ```
     - Ganache CLI (recommended):
-    ```
+    ```sh
     npm install -g ganache-cli
     ```
     - Slither (optional): 
-    ```
+    ```sh
     pip3 install slither-analyzer
     ```
     - MythX CLI (optional):
@@ -125,15 +125,15 @@ Clone this GitHub repository.
      $ truffle compile
      ```
    - Deploy the smart contracts using Truffle & Ganache with the following command (global dependency):
-     ```sh
+     ```s
      $ truffle migrate
      ```
-   - Test the smart contracts using Truffle & Ganache with the following command (global dependency):
+   - Test the smart contracts using Mocha & OpenZeppelin Test Environment with the following command (global dependency):
      ```sh
-     $ truffle test
+     $ npm test
      ```
    - Analyze the smart contracts using Slither with the following command (optional):
-      ```
+      ```sh
       $ slither .
       ```
    - Analyze the smart contracts using MythX CLI with the following command (optional):
