@@ -1,64 +1,74 @@
 // BadgeFactory.test.js
-// Migrating to OpenZeppelin Test Environment
 
-/*
-let catchRevert = require("./exceptionsHelpers.js").catchRevert
-const  MerkleTree = require('./merkleTree.js').MerkleTree
-var BadgeFactory = artifacts.require('./BadgeFactory')
-var MakerBadges = artifacts.require('./MakerBadges')
+const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-contract('BadgeFactory', function(accounts) {
+const { expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 
-  const owner = accounts[0]
-  const random = accounts[1]
-  const redeemer = accounts[2]
-  const addresses = [owner, random, redeemer]
+const { expect } = require('chai');
 
-  const merkleTree = new MerkleTree(addresses)
-  const root = merkleTree.getHexRoot()
-  //console.log(root)
-  const rootHashes = [root]
-  const proof = merkleTree.getHexProof(redeemer)
-  //console.log(proof)
+const  { MerkleTree } = require('./merkleTree.js');
 
-  const DEFAULT_ADMIN_ROLE = "0x00"
-  const name = "Beginner"
-  const description = "Beginner Template"
-  const image = "badge.png"
-  const templateId = "0"
-  const index1 = "0"
-  const index2 = "1"
-  const nameNFT = "MakerBadges"
-  const symbolNFT = "MAKER"
-  const baseURI = "https://badges.makerdao.com/token/"
-  const pot = '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb'
-  const chief = '0xbBFFC76e94B34F72D96D054b31f6424249c1337d'
-  const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b'
+const BadgeFactory = contract.fromArtifact('BadgeFactory');
+const MakerBadges = contract.fromArtifact('MakerBadges');
 
-  let instance
+let factory;
+let maker;
 
-  // Before Each
-  beforeEach(async () => {
-    maker = await MakerBadges.new(pot, chief, flipper)
-    instance = await BadgeFactory.new(MakerBadges.address)
-  })
+describe('BadgeFactory', function () {
+const [ owner, templater, redeemer, random ] = accounts;
+const addresses = [ owner, random, redeemer];
+
+const merkleTree = new MerkleTree(addresses);
+const root = merkleTree.getHexRoot();
+//console.log(root)
+const rootHashes = [root];
+const proof = merkleTree.getHexProof(redeemer);
+//console.log(proof)
+
+const template_name = 'Beginner'
+const template_description = 'Beginner Template'
+const template_image = 'badge.png'
+const templateId = '0'
+const index1 = '0'
+const index2 = '1'
+const name = 'MakerBadges'
+const symbol = 'MAKER'
+const baseURI = 'https://badges.makerdao.com/token/'
+const pot = '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb'
+const chief = '0xbBFFC76e94B34F72D96D054b31f6424249c1337d'
+const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b'
+
+
+
+const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
+const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
+
+  beforeEach(async function () {
+    maker = await MakerBadges.new(pot, chief, flipper, { from: owner });
+    factory = await BadgeFactory.new(maker.address, { from: owner });
+  });
 
   // Check that the owner is set as the deploying address
-  // Check that the owner is set as admin when the contract is deployed
-  // Check that the owner is the only admin when the contract is deployed
-  describe("Setup", async() => {
+  // Check that the owner is set as the only admin when the contract is deployed
+  // Check that the owner is set as the only pauser when the contract is deployed
+  describe('Setup', async function () {
 
-      it("OWNER should be set to the deploying address", async() => {
-          const ownerAddress = await instance.owner()
-          assert.equal(ownerAddress, owner, "the deploying address should be the owner")
-      })
+      it('the deployer is the owner', async function () {
+          expect(await factory.owner()).to.equal(owner);
+      });
 
-      it("Owner should be the only admin when the contract is created", async() => {
-          const admins = await instance.getRoleMemberCount(DEFAULT_ADMIN_ROLE)
-          assert.equal(admins, "1", "the owner should be the only admin")
-      })
+      it('owner has the default admin role', async function () {
+        expect(await factory.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
+        expect(await factory.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
+      });
 
-  })
+      it('owner has the pauser role', async function () {
+        expect(await factory.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
+        expect(await factory.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
+      });
+  });
+});
+/*
 
   describe("Functions", () => {
 
