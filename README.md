@@ -27,7 +27,8 @@ An incentivization protocol to enhance activity on MakerDAO Ecosystem
 * [Building Blocks](#building-blocks)
 * [Setup](#setup)
 * [Deploy](#deploy)
-* [Front-end](#front-end)
+* [Interface](#interface)
+* [Backend](#backend)
 * [About](#about)
 
 Building Blocks
@@ -178,10 +179,13 @@ Deploy
 [BadgeFactory.sol](https://kovan.etherscan.io/address/0x6C31CbF214422Ac810573BEe5F20c445200068dD)
 
 
-Front-end 
+Interface 
 ============
 
-- [DApp](https://github.com/scottrepreneur/meta-badges)
+- [Meta-Badges](https://github.com/scottrepreneur/meta-badges)
+
+Backend
+=======
 - [Merkle Service](https://github.com/scottrepreneur/mb-merkle-service)
 
 About
