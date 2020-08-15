@@ -63,7 +63,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
       });
 
       it('random address should not be able to add a new templater', async function () {
-        await expectRevert(roles.addTemplater(templater, { from: random }), 'Caller is not an admin')
+        await expectRevert(roles.addTemplater(templater, { from: random }), 'Caller is not an admin');
       });
   });
 
