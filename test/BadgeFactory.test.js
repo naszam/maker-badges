@@ -16,8 +16,9 @@ let maker;
 
 describe('BadgeFactory', function () {
 const [ owner, templater, redeemer, random ] = accounts;
-const addresses = [ owner, random, redeemer];
 
+
+const addresses = [ owner, random, redeemer];
 const merkleTree = new MerkleTree(addresses);
 const root = merkleTree.getHexRoot();
 //console.log(root)
@@ -31,18 +32,20 @@ const template_image = 'badge.png'
 const templateId = '0'
 const index1 = '0'
 const index2 = '1'
-const name = 'MakerBadges'
-const symbol = 'MAKER'
-const baseURI = 'https://badges.makerdao.com/token/'
-const pot = '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb'
-const chief = '0xbBFFC76e94B34F72D96D054b31f6424249c1337d'
-const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b'
-
-
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const TEMPLATER_ROLE = web3.utils.soliditySha3('TEMPLATER_ROLE');
 const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
+
+const name = 'MakerBadges';
+const symbol = 'MAKER';
+const baseURI = 'https://badges.makerdao.com/token/';
+const tokenURI = 'ipfs.js';
+const token = 'https://badges.makerdao.com/token/ipfs.js';
+
+const pot = '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb';
+const chief = '0xbBFFC76e94B34F72D96D054b31f6424249c1337d';
+const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b';
 
   beforeEach(async function () {
     maker = await MakerBadges.new(pot, chief, flipper, { from: owner });
@@ -74,13 +77,54 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
         expect(await factory.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
       });
   });
+
+  // Check ERC721 metadata
+  describe('ERC721 metadata', async function () {
+
+      it('has a name', async function () {
+        expect(await factory.name({from:random})).equal(name);
+      });
+
+      it('has a symbol', async function () {
+        expect(await factory.symbol({from:random})).equal(symbol);
+      });
+
+      it('has a baseURI', async function () {
+        expect(await factory.baseURI({from:random})).equal(baseURI);
+      });
+
+      it('return a baseURI + tokenURI for tokenId', async function () {
+        await factory.createTemplate(template_name, template_description, template_image, { from: owner });
+        await maker.setRootHashes(rootHashes, { from: owner });
+        await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
+        expect(await factory.tokenURI("0", { from: random })).equal(baseURI + tokenURI);
+      });
+
+      it('reverts when querying metadata for non existent tokenId', async function () {
+        await expectRevert(factory.tokenURI('0', { from: random }), 'ERC721Metadata: URI query for nonexistent token');
+      });
+  });
 });
+
 /*
 
   describe("Functions", () => {
 
+  it('return a baseURI + tokenURI for tokenId', async function (done) {
+    await factory.createTemplate(template_name, template_description, template_image, { from: owner });
+    await maker.setRootHashes(rootHashes, { from: owner });
+    await factory.activateBadge(proof, templateId, { from: reedemer });
+    expect(await factory.tokenURI("0", { from: random })).equal(baseURI + tokenURI);
+    done();
+  });
+
+
     // !Tested setting the mintWithTokenURI() function to public (remember to remove "_" before function)
     // Check activateBadge() for success when a redeemer checked off-chain (Merkle Tree) is trying to activate a new Badge
+
+
+
+
     describe("activateBadge()", async () => {
 
       it("activateBadge should allow redeemer checked offchain to activate Badge", async () => {
