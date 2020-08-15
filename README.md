@@ -182,7 +182,7 @@ Deploy
 Interface 
 ============
 
-- [Meta-Badges](https://github.com/scottrepreneur/meta-badges)
+- [Frontend](https://github.com/scottrepreneur/meta-fronted)
 
 Backend
 =======
