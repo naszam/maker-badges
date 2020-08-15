@@ -182,7 +182,7 @@ Deploy
 Interface 
 ============
 
-- [Frontend](https://github.com/scottrepreneur/meta-fronted)
+- [Frontend](https://github.com/scottrepreneur/mb-fronted)
 
 Backend
 =======
