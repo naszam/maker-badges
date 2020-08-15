@@ -2,7 +2,8 @@
 
 const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-const { expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
+const { expectEvent, expectRevert, constants } = require('@openzeppelin/test-helpers');
+const { ZERO_ADDRESS } = constants;
 
 const { expect } = require('chai');
 
@@ -17,7 +18,6 @@ let maker;
 describe('BadgeFactory', function () {
 const [ owner, templater, redeemer, random ] = accounts;
 
-
 const addresses = [ owner, random, redeemer];
 const merkleTree = new MerkleTree(addresses);
 const root = merkleTree.getHexRoot();
@@ -26,12 +26,12 @@ const rootHashes = [root];
 const proof = merkleTree.getHexProof(redeemer);
 //console.log(proof)
 
-const template_name = 'Beginner'
-const template_description = 'Beginner Template'
-const template_image = 'badge.png'
-const templateId = '0'
-const index1 = '0'
-const index2 = '1'
+const template_name = 'Beginner';
+const template_description = 'Beginner Template';
+const template_image = 'badge.png';
+const templateId = '0';
+const index1 = '0';
+const index2 = '1';
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const TEMPLATER_ROLE = web3.utils.soliditySha3('TEMPLATER_ROLE');
@@ -40,8 +40,8 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 const name = 'MakerBadges';
 const symbol = 'MAKER';
 const baseURI = 'https://badges.makerdao.com/token/';
+const baseURI2 = 'https://badegs.com/token/';
 const tokenURI = 'ipfs.js';
-const token = 'https://badges.makerdao.com/token/ipfs.js';
 
 const pot = '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb';
 const chief = '0xbBFFC76e94B34F72D96D054b31f6424249c1337d';
@@ -100,171 +100,124 @@ const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b';
         expect(await factory.tokenURI("0", { from: random })).equal(baseURI + tokenURI);
       });
 
+      it('return an updated baseURI', async function () {
+        await factory.setBaseURI(baseURI2, { from: owner });
+        expect(await factory.baseURI({from:random})).equal(baseURI2);
+      });
+
       it('reverts when querying metadata for non existent tokenId', async function () {
         await expectRevert(factory.tokenURI('0', { from: random }), 'ERC721Metadata: URI query for nonexistent token');
       });
   });
-});
 
-/*
 
-  describe("Functions", () => {
+  // Check createTemplate() for success when a templater is trying to create a new template
+  // Check createTemplate() for sucessfully emit event when the template is created
+  // Check createTemplate() for failure when a random address try to create a new template
+  describe('createTemplate()', async function () {
 
-  it('return a baseURI + tokenURI for tokenId', async function (done) {
-    await factory.createTemplate(template_name, template_description, template_image, { from: owner });
-    await maker.setRootHashes(rootHashes, { from: owner });
-    await factory.activateBadge(proof, templateId, { from: reedemer });
-    expect(await factory.tokenURI("0", { from: random })).equal(baseURI + tokenURI);
-    done();
+      it('templater should be able to create a template', async function () {
+        await factory.createTemplate(template_name, template_description, template_image, { from: owner });
+        const receipt = await factory.getTemplate(templateId, { from: random });
+        expect(receipt[0]).equal(template_name);
+        expect(receipt[1]).equal(template_description);
+        expect(receipt[2]).equal(template_image);
+        expect(await factory.getTemplatesCount({ from: random })).to.be.bignumber.equal('1');
+      })
+
+      it('should emit the appropriate event when a template is created', async function () {
+        const receipt = await factory.createTemplate(template_name, template_description, template_image, { from: owner });
+        expectEvent(receipt, 'NewTemplate', { templateId: templateId, name: template_name, description: template_description, image: template_image });
+      });
+
+      it("random address should not be able to create a new template", async () => {
+        await expectRevert(factory.createTemplate(template_name, template_description, template_image, { from: random }), 'Caller is not a template owner');
+      });
   });
 
+  // Check activateBadge() for success when a redeemer checked offchain activate a badge
+  // Check activateBadge() for sucessfully emit event when the badge is activated
+  // Check activateBadge() for failure when a random address try to activate a badge
+  describe('activateBadge()', async function () {
 
-    // !Tested setting the mintWithTokenURI() function to public (remember to remove "_" before function)
-    // Check activateBadge() for success when a redeemer checked off-chain (Merkle Tree) is trying to activate a new Badge
+    beforeEach(async function () {
+      await factory.createTemplate(template_name, template_description, template_image, { from: owner });
+      await maker.setRootHashes(rootHashes, { from: owner });
+    });
 
-
-
-
-    describe("activateBadge()", async () => {
-
-      it("activateBadge should allow redeemer checked offchain to activate Badge", async () => {
-        await instance.createTemplate(name, description, image, {from:owner})
-        //await maker.addRedeemer(templateId, random, {from:owner})
-        //await maker.verify(templateId, random, {from: random})
-        await maker.setRootHashes(rootHashes, {from:owner})
-        await instance.activateBadge(proof, templateId, "ipfs.json", {from:redeemer})
+      it('should allow redeemers checked offchain to activate a badge', async function () {
+        await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
+        const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
+        expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
+        expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       })
 
-    })
-
-    // !Tested setting the mintWithTokenURI() function to public (remember to remove "_" before function)
-    // Check mintWithTokenURI() for success when a templater is trying to mint a new token
-    describe("mintWithTokenURI()", async () => {
-      beforeEach(async function () {
-        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:redeemer})
-        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:redeemer})
+      it('should emit the appropriate event when a badge is activated', async function () {
+        const receipt = await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
+        expectEvent(receipt, 'BadgeActivated', { redeemer: redeemer, templateId: templateId, tokenURI: tokenURI });
       });
 
-      it("check tokenId via tokenOfOwnerByIndex", async () => {
-        const firstTokenId = await instance.tokenOfOwnerByIndex(redeemer, index1, {from:random})
-        assert.equal(firstTokenId, "0", "the tokenId does not match the expected value")
-        const secondTokenId = await instance.tokenOfOwnerByIndex(redeemer, index2, {from:random})
-        assert.equal(secondTokenId, "1", "the tokenId does not match the expected value")
-      })
-
-      it("check tokenId via tokenByIndex()", async () => {
-        const firstTokenIdByIndex = await instance.tokenByIndex(index1, {from:random})
-        assert.equal(firstTokenIdByIndex, "0", "the tokenId does not match the expected value")
-        const secondTokenIdByIndex = await instance.tokenByIndex(index2, {from:random})
-        assert.equal(secondTokenIdByIndex, "1", "the tokenId does not match the expected value")
-      })
-
-    })
-
-    // Check burn() for success when redeemer is trying to burn its own token
-    describe("burn()", async () => {
-      beforeEach(async function () {
-        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
-        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
-        const tokenId = await instance.tokenOfOwnerByIndex(redeemer, index1, {from:random})
-        await instance.burn(tokenId, {from:redeemer})
+      it("should revert when templeteId does not exist", async () => {
+        await expectRevert(factory.activateBadge(proof, templateId+1, tokenURI, { from: redeemer }), 'No template with that id');
       });
 
-      it("removes that token from the token list of the owner", async () => {
-        const tokenId = await instance.tokenOfOwnerByIndex(redeemer, index1, {from:random})
-        assert.equal(tokenId, "1", "tokenId does not match the expected value" )
-      })
-
-      it("adjusts all tokens list", async () => {
-        const tokenId = await instance.tokenByIndex(index1, {from:random})
-        assert.equal(tokenId, "1", "tokenId does not match expected value")
-      })
-
-      it("burns all tokens", async () => {
-        await instance.burn("1", {from:redeemer})
-        const totSupply = await instance.totalSupply({from:random})
-        assert.equal(totSupply, "0", "totSupply does not match expected value")
-        await catchRevert(instance.tokenByIndex(index1, {from:random}))
-      })
-
-    })
-
-    // Check ERC721 metadata
-    describe("ERC721 metadata", async () => {
-
-      it("has a name", async () => {
-        const result = await instance.name({from:random})
-        assert.equal(result, nameNFT, "name does not match the expected value" )
-      })
-
-      it("has a symbol", async () => {
-        const result = await instance.symbol({from:random})
-        assert.equal(result, symbolNFT, "symbol does not match expected value")
-      })
-
-      it("has a baseURI", async () => {
-        const result = await instance.baseURI({from:random})
-        assert.equal(result, baseURI, "baseURI does not match expected value")
-      })
-
-      it("return a baseURI + tokenURI for tokenId", async () => {
-        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
-        const result = await instance.tokenURI("0", {from:random})
-        assert.equal(result, "https://badges.makerdao.com/token/ipfs.json", "tokenURI does not match expected value")
-      })
-
-      it("reverts when querying metadata for non existent tokenId", async () => {
-        await catchRevert(instance.tokenURI("0",{from:random}))
-      })
-
-    })
-
-    // Check override _tranfer() function
-    describe("ERC721 override _transfer()", async () => {
-      beforeEach(async function () {
-        await instance.mintWithTokenURI(redeemer, "ipfs.json", {from:owner})
+      it("random address should not be able to activate a new badge", async () => {
+        await expectRevert(factory.activateBadge(proof, templateId, tokenURI, { from: random }), 'Caller is not a redeemer');
       });
 
-      it("check transferFrom() for revert", async () => {
-        await catchRevert(instance.transferFrom(redeemer, random, "0", {from:random}))
-      })
+      it("redeemer should not be able to activate the same badge twice", async () => {
+        await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
+        await expectRevert(factory.activateBadge(proof, templateId, tokenURI, { from: redeemer}), 'Badge already activated!');
+      });
+  });
 
-      it("check safeTransferFrom() for revert", async () => {
-        await catchRevert(instance.safeTransferFrom(redeemer, random, "0", {from:random}))
-      })
+  // Check burnBadge() for success when a badge owner try to burn the badge
+  // Check burnBadge() for sucessfully emit event when the badge is burned
+  // Check burnBadge() for failure when a random address try to burn a badge
+  describe('burnBadge()', async function () {
 
-    })
+      beforeEach(async function () {
+        await factory.createTemplate(template_name, template_description, template_image, { from: owner });
+        await maker.setRootHashes(rootHashes, { from: owner });
+        await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
+      });
 
+      it('badge owners should be able to burn a badge', async function () {
+        const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
+        await factory.burnBadge(tokenId, { from: redeemer });
+        expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('0');
+        expect(await factory.totalSupply({ from: random })).to.be.bignumber.equal('0');
+      });
 
+      it('should emit the appropriate event when a badge is burned', async function () {
+        const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
+        const receipt = await factory.burnBadge(tokenId, { from: redeemer });
+        expectEvent(receipt, 'Transfer', { from: redeemer, to: ZERO_ADDRESS, tokenId: tokenId });
+      });
 
-      // Check createTemplate() for success when a templater is trying to create a new template
-      // Check createTemplate() for sucessfully emit event when the template is created
-      // Check createTemplate() for failure when a random address try to create a new template
-      describe("createTemplate()", async () => {
+      it('random address should not be able to burn a badge', async function () {
+        const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
+        await expectRevert(factory.burnBadge(tokenId, { from: random }), 'ERC721Burnable: caller is not owner nor approved');
+      });
+  });
 
-        it("templaters should be able to create a template", async () => {
-          await instance.createTemplate(name, description, image, {from:owner})
-          const result = await instance.getTemplate(templateId, {from:random})
-          assert.equal(result[0], name, "the name of the created template does not match the expected value")
-          assert.equal(result[1], description, "the description of the created template does not match the expected value")
-          assert.equal(result[2], image, "the image of the created template does not match the expected value")
-          const templatesCount = await instance.getTemplatesCount({from:random})
-          assert.equal(templatesCount, 1, "the number of templates does not match the expected value")
-        })
+  // Check override _tranfer() function
+  describe('ERC721 override _transfer()', async function () {
+      beforeEach(async function () {
+        await factory.createTemplate(template_name, template_description, template_image, { from: owner });
+        await maker.setRootHashes(rootHashes, { from: owner });
+        await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
+      });
 
-        it("should emit the appropriate event when a template is created", async () => {
-          const result = await instance.createTemplate(name, description, image, {from:owner})
-          assert.equal(result.logs[0].event, "NewTemplate", "NewTemplate event not emitted, check createTemplate method")
-        })
+      it('check transferFrom() for revert', async function () {
+        const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
+        await expectRevert(factory.transferFrom(redeemer, random, tokenId, {from:redeemer}), 'ERC721: token transfer disabled');
+      });
 
-        it("random address should not be able to create a new template", async () => {
-          await catchRevert(instance.createTemplate(name, description, image, {from:random}))
-        })
+      it('check safeTransferFrom() for revert', async function () {
+        const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
+        await expectRevert(factory.safeTransferFrom(redeemer, random, tokenId, {from:redeemer}), 'ERC721: token transfer disabled');
+      });
+  });
 
-      })
-
-
-   })
-
-})
-*/
+});
