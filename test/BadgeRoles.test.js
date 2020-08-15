@@ -14,25 +14,37 @@ describe('BadgeRoles', function () {
 const [ owner, templater, random ] = accounts;
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
-const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 const TEMPLATER_ROLE = web3.utils.soliditySha3('TEMPLATER_ROLE');
+const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 
+  // Check that the owner is set as the deploying address
+  // Check that the owner is set as the only admin when the contract is deployed
+  // Check that the owner is set as the only templater when the contract is deployed
+  // Check that the owner is set as the only pauser when the contract is deployed
   beforeEach(async function () {
     roles = await BadgeRoles.new({ from: owner });
   });
 
-  it('the deployer is the owner', async function () {
-    expect(await roles.owner()).to.equal(owner);
-  });
+  describe('Setup', async function () {
 
-  it('owner has the default admin role', async function () {
-    expect(await roles.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
-    expect(await roles.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
-  });
+      it('the deployer is the owner', async function () {
+        expect(await roles.owner()).to.equal(owner);
+      });
 
-  it('owner has the pauser role', async function () {
-    expect(await roles.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
-    expect(await roles.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
+      it('owner has the default admin role', async function () {
+        expect(await roles.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
+        expect(await roles.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
+      });
+
+      it('owner has the templater role', async function () {
+        expect(await roles.getRoleMemberCount(TEMPLATER_ROLE)).to.be.bignumber.equal('1');
+        expect(await roles.getRoleMember(TEMPLATER_ROLE, 0)).to.equal(owner);
+      });
+
+      it('owner has the pauser role', async function () {
+        expect(await roles.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
+        expect(await roles.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
+      });
   });
 
   // Check addTemplater() for success when an admin is adding a new templater
