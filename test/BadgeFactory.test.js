@@ -41,6 +41,7 @@ const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b'
 
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
+const TEMPLATER_ROLE = web3.utils.soliditySha3('TEMPLATER_ROLE');
 const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 
   beforeEach(async function () {
@@ -50,6 +51,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 
   // Check that the owner is set as the deploying address
   // Check that the owner is set as the only admin when the contract is deployed
+  // Check that the owner is set as the only templater when the contract is deployed
   // Check that the owner is set as the only pauser when the contract is deployed
   describe('Setup', async function () {
 
@@ -60,6 +62,11 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
       it('owner has the default admin role', async function () {
         expect(await factory.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
         expect(await factory.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
+      });
+
+      it('owner has the templater role', async function () {
+        expect(await factory.getRoleMemberCount(TEMPLATER_ROLE)).to.be.bignumber.equal('1');
+        expect(await factory.getRoleMember(TEMPLATER_ROLE, 0)).to.equal(owner);
       });
 
       it('owner has the pauser role', async function () {
