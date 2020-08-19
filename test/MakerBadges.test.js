@@ -1,45 +1,54 @@
-// MakerBadges.test.js
-// Migrating to OpenZeppelin Test Environment
+// test/MakerBadges.test.js
 
-/*
-let catchRevert = require("./exceptionsHelpers.js").catchRevert
-var MakerBadges = artifacts.require('./MakerBadges')
+const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-contract('MakerBadges', function(accounts) {
+const { expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 
-  const owner = accounts[0]
-  const random = accounts[1]
-  const redeemer = accounts[2]
+const { expect } = require('chai');
 
-  const DEFAULT_ADMIN_ROLE = "0x00"
+const MakerBadges = contract.fromArtifact('MakerBadges');
 
-  const pot = '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb'
-  const chief = '0xbBFFC76e94B34F72D96D054b31f6424249c1337d'
-  const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b'
+let maker;
 
+describe('MakerBadges', function () {
+const [ owner, admin, redeemer, random ] = accounts;
 
-  let instance
+const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
+const ADMIN_ROLE = web3.utils.soliditySha3('ADMIN_ROLE');
+const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 
-  // Before Each
-  beforeEach(async () => {
-    instance = await MakerBadges.new(pot, chief, flipper)
-  })
+const pot = '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb'
+const chief = '0xbBFFC76e94B34F72D96D054b31f6424249c1337d'
+const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b'
+
 
   // Check that the owner is set as the deploying address
-  // Check that the owner is set as admin when the contract is deployed
-  // Check that the owner is the only admin when the contract is deployed
-  describe("Setup", async() => {
+  // Check that the owner is set as the only admin when the contract is deployed
+  // Check that the owner is set as the only templater when the contract is deployed
+  // Check that the owner is set as the only pauser when the contract is deployed
+  beforeEach(async function () {
+    maker = await MakerBadges.new(pot, chief, flipper, { from: owner });
+  });
 
-      it("OWNER should be set to the deploying address", async() => {
-          const ownerAddress = await instance.owner()
-          assert.equal(ownerAddress, owner, "the deploying address should be the owner")
-      })
+  describe('Setup', async function () {
 
-      it("Owner should be the only admin when the contract is created", async() => {
-          const admins = await instance.getRoleMemberCount(DEFAULT_ADMIN_ROLE)
-          assert.equal(admins, "1", "the owner should be the only admin")
-      })
+      it('the deployer is the owner', async function () {
+        expect(await maker.owner()).to.equal(owner);
+      });
 
-  })
-})
-*/
+      it('owner has the default admin role', async function () {
+        expect(await maker.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
+        expect(await maker.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
+      });
+
+      it('owner has the admin role', async function () {
+        expect(await maker.getRoleMemberCount(ADMIN_ROLE)).to.be.bignumber.equal('1');
+        expect(await maker.getRoleMember(ADMIN_ROLE, 0)).to.equal(owner);
+      });
+
+      it('owner has the pauser role', async function () {
+        expect(await maker.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
+        expect(await maker.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
+      });
+  });
+});
