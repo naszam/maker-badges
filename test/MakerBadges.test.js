@@ -17,9 +17,10 @@ const DEFAULT_ADMIN_ROLE = '0x00000000000000000000000000000000000000000000000000
 const ADMIN_ROLE = web3.utils.soliditySha3('ADMIN_ROLE');
 const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 
-const pot = '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb'
-const chief = '0xbBFFC76e94B34F72D96D054b31f6424249c1337d'
-const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b'
+// https://changelog.makerdao.com/releases/mainnet/1.0.9/contracts.json
+const pot = '0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7'
+const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5'
+const flipper = '0x0F398a2DaAa134621e4b687FCcfeE4CE47599Cc1'
 
 
   // Check that the owner is set as the deploying address
