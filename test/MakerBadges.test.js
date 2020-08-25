@@ -22,6 +22,9 @@ const pot = '0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7';
 const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5';
 const flipper = '0x0F398a2DaAa134621e4b687FCcfeE4CE47599Cc1';
 
+const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
+
+const templateId = 1;
 
   // Check that the owner is set as the deploying address
   // Check that the owner is set as the only admin when the contract is deployed
@@ -50,6 +53,26 @@ const flipper = '0x0F398a2DaAa134621e4b687FCcfeE4CE47599Cc1';
       it('owner has the pauser role', async function () {
         expect(await maker.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
         expect(await maker.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
+      });
+  });
+
+  // Check chiefChallenge() for success when a caller is voting in an executive spell
+  // Check chiefChallenge() for sucessfully emit event when the caller is checked for chief
+  // Check chiefChallenge() for failure when a random address is not voting in an executive spell
+  describe('chiefChallenge()', async function () {
+
+      it('caller is voting in an executive spell', async function () {
+        await maker.chiefChallenge(templateId, { from: exec });
+        expect(await maker.verify(templateId, exec, {from: random})).to.equal(true);
+      });
+
+      it('should emit the appropriate event when the caller is checked for chief', async function () {
+        const receipt = await maker.chiefChallenge(templateId, { from: exec });
+        expectEvent(receipt, 'DSChiefChecked', { guy: exec });
+      });
+
+      it('random address should not be able to pass the challenge', async function () {
+        await expectRevert(maker.chiefChallenge(templateId, { from: random }), 'Caller is not voting in an Executive Spell');
       });
   });
 
