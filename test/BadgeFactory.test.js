@@ -43,9 +43,12 @@ const baseURI = 'https://badges.makerdao.com/token/';
 const baseURI2 = 'https://badegs.com/token/';
 const tokenURI = 'ipfs.js';
 
-const pot = '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb';
-const chief = '0xbBFFC76e94B34F72D96D054b31f6424249c1337d';
-const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b';
+// https://changelog.makerdao.com/releases/mainnet/1.0.9/contracts.json
+const pot = '0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7';
+const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5';
+const flipper = '0x0F398a2DaAa134621e4b687FCcfeE4CE47599Cc1';
+
+const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
 
   beforeEach(async function () {
     maker = await MakerBadges.new(pot, chief, flipper, { from: owner });
@@ -144,6 +147,14 @@ const flipper = '0xB40139Ea36D35d0C9F6a2e62601B616F1FfbBD1b';
       await factory.createTemplate(template_name, template_description, template_image, { from: owner });
       await maker.setRootHashes(rootHashes, { from: owner });
     });
+
+      it('should allow redeemers checked onchain for chief to activate a badge', async function () {
+        await maker.chiefChallenge(templateId, { from: exec });
+        await factory.activateBadge(proof, templateId, tokenURI, { from: exec });
+        const tokenId = await factory.tokenOfOwnerByIndex(exec, index1, { from: random });
+        expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
+        expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
+      })
 
       it('should allow redeemers checked offchain to activate a badge', async function () {
         await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
