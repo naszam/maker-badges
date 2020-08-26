@@ -23,8 +23,11 @@ const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5';
 const flipper = '0x0F398a2DaAa134621e4b687FCcfeE4CE47599Cc1';
 
 const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
+const flip = '0xF4ba847fa7AB857917C9e714EE723Bed7E915A38';
+
 
 const templateId = 1;
+const bidId = 54;
 
   // Check that the owner is set as the deploying address
   // Check that the owner is set as the only admin when the contract is deployed
@@ -73,6 +76,26 @@ const templateId = 1;
 
       it('random address should not be able to pass the challenge', async function () {
         await expectRevert(maker.chiefChallenge(templateId, { from: random }), 'Caller is not voting in an Executive Spell');
+      });
+  });
+
+  // Check flipperChallenge() for success when a caller is the high bidder in the current bid in eth collateral auctions
+  // Check flipperChallenge() for sucessfully emit event when the caller is checked for flipper
+  // Check flipperChallenge() for failure when a random address is not the high bidder in the current bid in eth collateral auctions
+  describe('flipperChallenge()', async function () {
+
+      it('caller is the high bidder in the current bid in eth collateral auctions', async function () {
+        await maker.flipperChallenge(templateId, bidId, { from: flip });
+        expect(await maker.verify(templateId, flip, {from: random})).to.equal(true);
+      });
+
+      it('should emit the appropriate event when flipper is checked', async function () {
+        const receipt = await maker.flipperChallenge(templateId, bidId, { from: flip });
+        expectEvent(receipt, 'FlipperChecked', { guy: flip });
+      });
+
+      it('random address should not be able to pass the challenge', async function () {
+        await expectRevert(maker.flipperChallenge(templateId, bidId, { from: random }), 'Caller is not the high bidder in the current Bid in Collateral Auctions');
       });
   });
 
