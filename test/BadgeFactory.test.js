@@ -49,6 +49,10 @@ const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5';
 const flipper = '0x0F398a2DaAa134621e4b687FCcfeE4CE47599Cc1';
 
 const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
+const flip = '0xF4ba847fa7AB857917C9e714EE723Bed7E915A38';
+
+const bidId = 54;
+
 
   beforeEach(async function () {
     maker = await MakerBadges.new(pot, chief, flipper, { from: owner });
@@ -147,6 +151,14 @@ const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
       await factory.createTemplate(template_name, template_description, template_image, { from: owner });
       await maker.setRootHashes(rootHashes, { from: owner });
     });
+
+      it('should allow redeemers checked onchain for flipper to activate a badge', async function () {
+        await maker.flipperChallenge(templateId, bidId, { from: flip });
+        await factory.activateBadge(proof, templateId, tokenURI, { from: flip });
+        const tokenId = await factory.tokenOfOwnerByIndex(flip, index1, { from: random });
+        expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
+        expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
+      })
 
       it('should allow redeemers checked onchain for chief to activate a badge', async function () {
         await maker.chiefChallenge(templateId, { from: exec });
