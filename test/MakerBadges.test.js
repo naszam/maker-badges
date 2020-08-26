@@ -58,7 +58,24 @@ const bidId = 54;
         expect(await maker.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
       });
   });
+/*
+  describe('potChallenge()', async function () {
 
+      it('caller has accrued one or more dai on pot', async function () {
+        await maker.potChallenge(templateId, { from: chai });
+        expect(await maker.verify(templateId, chai, {from: random})).to.equal(true);
+      });
+
+      it('should emit the appropriate event when pot is checked', async function () {
+        const receipt = await maker.potChallenge(templateId, { from: chai });
+        expectEvent(receipt, 'PotChecked', { guy: chai });
+      });
+
+      it('random address should not be able to pass the challenge', async function () {
+        await expectRevert(maker.potChallenge(templateId, { from: random }), 'Caller has not accrued 1 or more Dai interest on Pot');
+      });
+  });
+*/
   // Check chiefChallenge() for success when a caller is voting in an executive spell
   // Check chiefChallenge() for sucessfully emit event when the caller is checked for chief
   // Check chiefChallenge() for failure when a random address is not voting in an executive spell
@@ -95,7 +112,7 @@ const bidId = 54;
       });
 
       it('random address should not be able to pass the challenge', async function () {
-        await expectRevert(maker.flipperChallenge(templateId, bidId, { from: random }), 'Caller is not the high bidder in the current Bid in Collateral Auctions');
+        await expectRevert(maker.flipperChallenge(templateId, bidId, { from: random }), 'Caller is not the high bidder in the current Bid in ETH Collateral Auctions');
       });
   });
 

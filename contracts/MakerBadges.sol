@@ -140,7 +140,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused returns (bool) {
         require(
             flipper.bids(bidId).guy == msg.sender,
-            "Caller is not the high bidder in the current Bid in Collateral Auctions"
+            "Caller is not the high bidder in the current Bid in ETH Collateral Auctions"
         );
         if (!redeemers[templateId].contains(msg.sender)) {
             require(redeemers[templateId].add(msg.sender));
