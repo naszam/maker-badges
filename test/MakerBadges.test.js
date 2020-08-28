@@ -2,7 +2,7 @@
 
 const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-const { expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
+const { expectEvent, expectRevert, send } = require('@openzeppelin/test-helpers');
 
 const { expect } = require('chai');
 
@@ -58,6 +58,15 @@ const bidId = 54;
         expect(await maker.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
       });
   });
+
+  // Check Fallback function
+  describe('fallback()', async function () {
+
+      it('should revert when sending ether to contract address', async function () {
+        await expectRevert.unspecified(send.ether(owner, maker.address, 1));
+      });
+  });
+
 /*
   describe('potChallenge()', async function () {
 

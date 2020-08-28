@@ -2,7 +2,7 @@
 
 const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-const { expectEvent, expectRevert, constants } = require('@openzeppelin/test-helpers');
+const { expectEvent, expectRevert, constants, send } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
 const { expect } = require('chai');
@@ -53,7 +53,6 @@ const flip = '0xF4ba847fa7AB857917C9e714EE723Bed7E915A38';
 
 const bidId = 54;
 
-
   beforeEach(async function () {
     maker = await MakerBadges.new(pot, chief, flipper, { from: owner });
     factory = await BadgeFactory.new(maker.address, { from: owner });
@@ -82,6 +81,14 @@ const bidId = 54;
       it('owner has the pauser role', async function () {
         expect(await factory.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
         expect(await factory.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
+      });
+  });
+
+  // Check Fallback function
+  describe('fallback()', async function () {
+
+      it('should revert when sending ether to contract address', async function () {
+        await expectRevert.unspecified(send.ether(owner, factory.address, 1));
       });
   });
 
