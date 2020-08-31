@@ -16,13 +16,9 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 
-interface PotLike {
-    function pie(address guy) external view returns (uint256);
-    function chi() external view returns (uint256);
-    function rho() external view returns (uint256);
-    function drip() external view returns (uint256);
+interface ChaiLike {
+    function dai(address usr) external returns (uint256);
 }
-
 
 interface DSChiefLike {
     function votes(address) external view returns (bytes32);
@@ -52,7 +48,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     using EnumerableSet for EnumerableSet.AddressSet;
 
     /// @dev Data
-    PotLike  internal immutable pot;
+    ChaiLike  internal immutable chai;
     DSChiefLike internal immutable chief;
     FlipperLike internal immutable flipper;
 
@@ -67,18 +63,18 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     mapping(uint256 => EnumerableSet.AddressSet) private redeemers;
 
     /// @dev Events
-    event PotChecked(address guy);
+    event ChaiChecked(address usr);
     event DSChiefChecked(address guy);
     event FlipperChecked(address guy);
 
-    constructor(address pot_, address chief_, address flipper_) {
+    constructor(address chai_, address chief_, address flipper_) {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
         _setupRole(ADMIN_ROLE, owner());
         _setupRole(PAUSER_ROLE, owner());
 
-        /// @dev MCD_POT Address
-        pot = PotLike(pot_);
+        /// @dev CHAI Address
+        chai = ChaiLike(chai_);
 
         /// @dev MCD_ADM Address
         chief = DSChiefLike(chief_);
@@ -109,17 +105,18 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
         return true;
     }
 
-    /// @notice Pot Challenge
+    /// @notice Chai Challenge
     /// @dev Keeps track of the address of the caller if successful
-    /// @return True if the caller successfully checked for activity on Pot
-    function potChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-        require(_dai(msg.sender) >= 1 ether, "Caller has not accrued 1 or more Dai interest on Pot");
+    /// @return True if the caller successfully checked for activity on Chai
+    function chaiChallenge(uint256 templateId) external whenNotPaused returns (bool) {
+        require(chai.dai(msg.sender) >= 1 ether, "Caller has not accrued 1 or more Dai interest on Pot");
         if (!redeemers[templateId].contains(msg.sender)) {
             require(redeemers[templateId].add(msg.sender));
         }
-        emit PotChecked(msg.sender);
+        emit ChaiChecked(msg.sender);
         return true;
     }
+
 
     /// @notice DSChief Challenge
     /// @dev Keeps track of the address of the caller if successful
@@ -191,22 +188,5 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     function unpause() external {
         require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to unpause");
         _unpause();
-    }
-
-    /// @notice Maker Math
-    /// @dev Used by _dai() function
-    function rmul(uint256 x, uint256 y) internal view whenNotPaused returns (uint256 z) {
-        /// @dev always rounds down
-        z = x.mul(y) / RAY;
-    }
-
-    /// @notice Return the accrued interest of guy on Pot
-    /// @dev Based on Chai dai() function
-    /// @param guy Address to check
-    /// @return wad Accrued interest of guy
-    function _dai(address guy) private view whenNotPaused returns (uint256 wad) {
-        uint256 slice = pot.pie(guy);
-        uint256 chi = (block.timestamp > pot.rho()) ? pot.drip() : pot.chi();
-        wad = rmul(slice, chi);
     }
 }
