@@ -23,11 +23,11 @@ const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5';
 const flipper = '0x0F398a2DaAa134621e4b687FCcfeE4CE47599Cc1';
 
 const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
-const flip = '0xF4ba847fa7AB857917C9e714EE723Bed7E915A38';
+const flip = '0x5152dD5a3e6aB6bc421DA90066BF0bAF58aa50bD';
 
 
 const templateId = 1;
-const bidId = 54;
+const bidId = 55;
 
   // Check that the owner is set as the deploying address
   // Check that the owner is set as the only admin when the contract is deployed
