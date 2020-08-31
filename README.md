@@ -130,7 +130,7 @@ Clone this GitHub repository.
      ```s
      $ truffle migrate
      ```
-   - Test the smart contracts using Mocha & OpenZeppelin Test Environment:
+   - Test the smart contracts using Mocha & OpenZeppelin Test Environment (Forking Mainnet):
      - Add Infura Key in ```config.js```
      - Run the following command:
      ```sh
