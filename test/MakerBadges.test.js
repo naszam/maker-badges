@@ -17,11 +17,14 @@ const DEFAULT_ADMIN_ROLE = '0x00000000000000000000000000000000000000000000000000
 const ADMIN_ROLE = web3.utils.soliditySha3('ADMIN_ROLE');
 const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 
+// https://etherscan.io/address/0x06AF07097C9Eeb7fD685c692751D5C66dB49c215
+const chai = '0x06AF07097C9Eeb7fD685c692751D5C66dB49c215';
 // https://changelog.makerdao.com/releases/mainnet/1.0.9/contracts.json
-const pot = '0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7';
 const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5';
 const flipper = '0x0F398a2DaAa134621e4b687FCcfeE4CE47599Cc1';
 
+// mainnet redeemer addresses
+const usr = '0xA25e31D8e4ED3e959898a089Dc2624F14a7fB738';
 const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
 const flip = '0x5152dD5a3e6aB6bc421DA90066BF0bAF58aa50bD';
 
@@ -34,7 +37,7 @@ const bidId = 55;
   // Check that the owner is set as the only templater when the contract is deployed
   // Check that the owner is set as the only pauser when the contract is deployed
   beforeEach(async function () {
-    maker = await MakerBadges.new(pot, chief, flipper, { from: owner });
+    maker = await MakerBadges.new(chai, chief, flipper, { from: owner });
   });
 
   describe('Setup', async function () {
@@ -67,24 +70,26 @@ const bidId = 55;
       });
   });
 
-/*
-  describe('potChallenge()', async function () {
+  // Check chiefChallenge() for success when a caller has accrued 1 or more Dai interest on Pot
+  // Check chiefChallenge() for sucessfully emit event when the caller is checked for chai
+  // Check chiefChallenge() for failure when a random address has not accrued 1 or more Dai interest on Pot
+  describe('chaiChallenge()', async function () {
 
       it('caller has accrued one or more dai on pot', async function () {
-        await maker.potChallenge(templateId, { from: chai });
-        expect(await maker.verify(templateId, chai, {from: random})).to.equal(true);
+        await maker.chaiChallenge(templateId, { from: usr });
+        expect(await maker.verify(templateId, usr, {from: random})).to.equal(true);
       });
 
-      it('should emit the appropriate event when pot is checked', async function () {
-        const receipt = await maker.potChallenge(templateId, { from: chai });
-        expectEvent(receipt, 'PotChecked', { guy: chai });
+      it('should emit the appropriate event when chai is checked', async function () {
+        const receipt = await maker.chaiChallenge(templateId, { from: usr });
+        expectEvent(receipt, 'ChaiChecked', { usr: usr });
       });
 
       it('random address should not be able to pass the challenge', async function () {
-        await expectRevert(maker.potChallenge(templateId, { from: random }), 'Caller has not accrued 1 or more Dai interest on Pot');
+        await expectRevert(maker.chaiChallenge(templateId, { from: random }), 'Caller has not accrued 1 or more Dai interest on Pot');
       });
   });
-*/
+
   // Check chiefChallenge() for success when a caller is voting in an executive spell
   // Check chiefChallenge() for sucessfully emit event when the caller is checked for chief
   // Check chiefChallenge() for failure when a random address is not voting in an executive spell
