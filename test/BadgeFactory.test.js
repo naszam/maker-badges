@@ -44,17 +44,19 @@ const baseURI2 = 'https://badegs.com/token/';
 const tokenURI = 'ipfs.js';
 
 // https://changelog.makerdao.com/releases/mainnet/1.0.9/contracts.json
-const pot = '0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7';
+const chai = '0x06AF07097C9Eeb7fD685c692751D5C66dB49c215';
 const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5';
 const flipper = '0x0F398a2DaAa134621e4b687FCcfeE4CE47599Cc1';
 
+// mainnet redeemer addresses
+const usr = '0xA25e31D8e4ED3e959898a089Dc2624F14a7fB738';
 const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
 const flip = '0x5152dD5a3e6aB6bc421DA90066BF0bAF58aa50bD';
 
 const bidId = 55;
 
   beforeEach(async function () {
-    maker = await MakerBadges.new(pot, chief, flipper, { from: owner });
+    maker = await MakerBadges.new(chai, chief, flipper, { from: owner });
     factory = await BadgeFactory.new(maker.address, { from: owner });
   });
 
@@ -154,18 +156,18 @@ const bidId = 55;
   // Check activateBadge() for failure when a random address try to activate a badge
   describe('activateBadge()', async function () {
 
-    beforeEach(async function () {
-      await factory.createTemplate(template_name, template_description, template_image, { from: owner });
-      await maker.setRootHashes(rootHashes, { from: owner });
-    });
+      beforeEach(async function () {
+        await factory.createTemplate(template_name, template_description, template_image, { from: owner });
+        await maker.setRootHashes(rootHashes, { from: owner });
+      });
 
-      it('should allow redeemers checked onchain for flipper to activate a badge', async function () {
-        await maker.flipperChallenge(templateId, bidId, { from: flip });
-        await factory.activateBadge(proof, templateId, tokenURI, { from: flip });
-        const tokenId = await factory.tokenOfOwnerByIndex(flip, index1, { from: random });
+      it('should allow redeemers checked onchain for chai to activate a badge', async function () {
+        await maker.chaiChallenge(templateId, { from: usr });
+        await factory.activateBadge(proof, templateId, tokenURI, { from: usr });
+        const tokenId = await factory.tokenOfOwnerByIndex(usr, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
-      })
+      });
 
       it('should allow redeemers checked onchain for chief to activate a badge', async function () {
         await maker.chiefChallenge(templateId, { from: exec });
@@ -173,14 +175,22 @@ const bidId = 55;
         const tokenId = await factory.tokenOfOwnerByIndex(exec, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
-      })
+      });
+
+      it('should allow redeemers checked onchain for flipper to activate a badge', async function () {
+        await maker.flipperChallenge(templateId, bidId, { from: flip });
+        await factory.activateBadge(proof, templateId, tokenURI, { from: flip });
+        const tokenId = await factory.tokenOfOwnerByIndex(flip, index1, { from: random });
+        expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
+        expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
+      });
 
       it('should allow redeemers checked offchain to activate a badge', async function () {
         await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
         const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
-      })
+      });
 
       it('should emit the appropriate event when a badge is activated', async function () {
         const receipt = await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
