@@ -4,7 +4,7 @@ const kovan = require('./maker');
 
 
 module.exports = function(deployer) {
-	deployer.deploy(MakerBadges, kovan.maker.pot, kovan.maker.chief, kovan.maker.flipper).then(function() {
+	deployer.deploy(MakerBadges, kovan.maker.chai, kovan.maker.chief, kovan.maker.flipper).then(function() {
 		return deployer.deploy(BadgeFactory, MakerBadges.address);
 	});
 };

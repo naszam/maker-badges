@@ -2,8 +2,8 @@
 
 module.exports = {
 maker: {
-  // MCD_POT Kovan Address https://kovan.etherscan.io/address/0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb#code
-  pot: '0xEA190DBDC7adF265260ec4dA6e9675Fd4f5A78bb',
+  // CHAI Kovan Address https://kovan.etherscan.io/address/0x623f148dabd40dd221807c5e98235bc40e54a106#code
+  chai: '0x623f148dAbD40dd221807c5e98235bC40E54a106',
 
   // MCD_ADM Kovan Address https://kovan.etherscan.io/address/0xbBFFC76e94B34F72D96D054b31f6424249c1337d#code
   chief: '0xbBFFC76e94B34F72D96D054b31f6424249c1337d',
