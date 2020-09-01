@@ -144,10 +144,6 @@ Clone this GitHub repository.
      ```sh
      $ mythx analyze
      ```
-## MythX CLI Report
-Contract | Line | SWC Title | Severity | Short Description
---- | --- | --- | --- | ---
-MakerBadges.sol | [209](https://github.com/naszam/maker-badges/blob/master/contracts/MakerBadges.sol#L209)| Timestamp Dependence | Low | A control flow decision is made based on The block.timestamp environment variable.
 
 Deploy
 ============
