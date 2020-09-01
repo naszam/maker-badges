@@ -34,7 +34,7 @@ An incentivization protocol to enhance activity on MakerDAO Ecosystem
 Building Blocks
 ===============
 
-![Smart Contracts Flow-Chart](Contracts.png)
+![Smart Contracts Flow-Chart](MakerBadges.png)
 
 ### [MakerBadges](./contracts/MakerBadges.sol)
 > MakerBadges to check for activities on MakerDAO ecosystem and keep track of redeemers
