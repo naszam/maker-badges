@@ -23,6 +23,6 @@ module.exports = {
    gasLimit: 8e6, // Maximum gas per block
    gasPrice: 20e9, // Sets the default gas price for transactions if not otherwise specified.
    fork: 'https://mainnet.infura.io/v3/' + key, // An url to Ethereum node to use as a source for a fork
-   unlocked_accounts: ['0xA25e31D8e4ED3e959898a089Dc2624F14a7fB738','0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0','0x5152dD5a3e6aB6bc421DA90066BF0bAF58aa50bD'], // Array of addresses specifying which accounts should be unlocked.
+   unlocked_accounts: ['0xA25e31D8e4ED3e959898a089Dc2624F14a7fB738','0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0','0xF3d18dB1B4900bAd51b6106F757515d1650A5894'], // Array of addresses specifying which accounts should be unlocked.
  },
 };
