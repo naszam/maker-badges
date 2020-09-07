@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.7.0;
+pragma solidity 0.6.12;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18
 /// @author Nazzareno Massari @naszam
@@ -52,6 +52,7 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
     constructor(address maker_)
         ERC721("MakerBadges", "MAKER")
+        public
     {
         _setBaseURI("https://badges.makerdao.com/token/");
         maker = MakerBadgesLike(maker_);

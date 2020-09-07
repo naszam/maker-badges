@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.7.0;
+pragma solidity 0.6.12;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18
 /// @author Nazzareno Massari @naszam
@@ -19,7 +19,7 @@ contract BadgeRoles is Ownable, AccessControl, Pausable {
     bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    constructor() {
+    constructor() public {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
         _setupRole(TEMPLATER_ROLE, owner());

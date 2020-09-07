@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.7.0;
+pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 
@@ -67,7 +67,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     event DSChiefChecked(address guy);
     event FlipperChecked(address guy);
 
-    constructor(address chai_, address chief_, address flipper_) {
+    constructor(address chai_, address chief_, address flipper_) public {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
         _setupRole(ADMIN_ROLE, owner());
