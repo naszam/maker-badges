@@ -15,6 +15,8 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
+import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
+import "@opengsn/gsn/contracts/interfaces/IKnowForwarderAddress.sol";
 
 interface ChaiLike {
     function dai(address usr) external returns (uint256);
@@ -41,7 +43,7 @@ interface FlipperLike {
 }
 
 
-contract MakerBadges is Ownable, AccessControl, Pausable {
+contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IKnowForwarderAddress {
 
     /// @dev Libraries
     using SafeMath for uint256;
@@ -67,11 +69,14 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     event DSChiefChecked(address guy);
     event FlipperChecked(address guy);
 
-    constructor(address chai_, address chief_, address flipper_) public {
+    constructor(address _forwarder, address chai_, address chief_, address flipper_) public {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
         _setupRole(ADMIN_ROLE, owner());
         _setupRole(PAUSER_ROLE, owner());
+
+        /// @dev OpenGSN Trusted Forwarder
+        trustedForwarder = _forwarder;
 
         /// @dev CHAI Address
         chai = ChaiLike(chai_);
@@ -91,7 +96,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
 
     /// @dev Modifiers
     modifier onlyAdmin() {
-        require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
+        require(hasRole(ADMIN_ROLE, _msgSender()), "Caller is not an admin");
         _;
     }
 
@@ -109,11 +114,11 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     /// @dev Keeps track of the address of the caller if successful
     /// @return True if the caller successfully checked for activity on Chai
     function chaiChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-        require(chai.dai(msg.sender) >= 1 ether, "Caller has not accrued 1 or more Dai interest on Pot");
-        if (!redeemers[templateId].contains(msg.sender)) {
-            require(redeemers[templateId].add(msg.sender));
+        require(chai.dai(_msgSender()) >= 1 ether, "Caller has not accrued 1 or more Dai interest on Pot");
+        if (!redeemers[templateId].contains(_msgSender())) {
+            require(redeemers[templateId].add(_msgSender()));
         }
-        emit ChaiChecked(msg.sender);
+        emit ChaiChecked(_msgSender());
         return true;
     }
 
@@ -122,11 +127,11 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     /// @dev Keeps track of the address of the caller if successful
     /// @return True if the caller successfully checked for activity on DSChief
     function chiefChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-        require(chief.votes(msg.sender) != 0x00, "Caller is not voting in an Executive Spell");
-        if (!redeemers[templateId].contains(msg.sender)) {
-            require(redeemers[templateId].add(msg.sender));
+        require(chief.votes(_msgSender()) != 0x00, "Caller is not voting in an Executive Spell");
+        if (!redeemers[templateId].contains(_msgSender())) {
+            require(redeemers[templateId].add(_msgSender()));
         }
-        emit DSChiefChecked(msg.sender);
+        emit DSChiefChecked(_msgSender());
         return true;
     }
 
@@ -136,13 +141,13 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     /// @return True if the caller successfully checked for activity on Flipper
     function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused returns (bool) {
         require(
-            flipper.bids(bidId).guy == msg.sender,
+            flipper.bids(bidId).guy == _msgSender(),
             "Caller is not the high bidder in the current Bid in ETH Collateral Auctions"
         );
-        if (!redeemers[templateId].contains(msg.sender)) {
-            require(redeemers[templateId].add(msg.sender));
+        if (!redeemers[templateId].contains(_msgSender())) {
+            require(redeemers[templateId].add(_msgSender()));
         }
-        emit FlipperChecked(msg.sender);
+        emit FlipperChecked(_msgSender());
         return true;
     }
 
@@ -154,12 +159,20 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
         return redeemers[templateId].contains(guy);
     }
 
+    function versionRecipient() external virtual view override returns (string memory) {
+        return "0.6.0";
+    }
+
+    function getTrustedForwarder() public view override returns(address) {
+        return trustedForwarder;
+    }
+
     /// @notice Add a new Admin
     /// @dev Access restricted only for Default Admin
     /// @param account Address of the new Admin
     /// @return True if the account address is added as Admin
     function addAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Caller is not the default admin");
         require(!hasRole(ADMIN_ROLE, account), "Account is already an admin");
         grantRole(ADMIN_ROLE, account);
         return true;
@@ -170,7 +183,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     /// @param account Address of the Admin
     /// @return True if the account address is removed as Admin
     function removeAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Caller is not the default admin");
         require(hasRole(ADMIN_ROLE, account), "Account is not an admin");
         revokeRole(ADMIN_ROLE, account);
         return true;
@@ -179,14 +192,21 @@ contract MakerBadges is Ownable, AccessControl, Pausable {
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to pause");
+        require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges: must have pauser role to pause");
         _pause();
     }
 
     /// @notice Unpause all the functions
     /// @dev The caller must have the 'PAUSER_ROLE'
     function unpause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges: must have pauser role to unpause");
         _unpause();
+    }
+
+    /// @notice OpenGSN _msgSender()
+    /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
+    /// @return msg.sender after relay call
+    function _msgSender() internal override(Context, BaseRelayRecipient) view returns (address payable) {
+          return BaseRelayRecipient._msgSender();
     }
 }
