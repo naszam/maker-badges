@@ -10,7 +10,7 @@ pragma solidity 0.6.12;
 
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
 
@@ -20,7 +20,7 @@ interface MakerBadgesLike {
 }
 
 
-contract BadgeFactory is BadgeRoles, ERC721Burnable {
+contract BadgeFactory is BadgeRoles, ERC721 {
 
     /// @dev Libraries
     using SafeMath for uint256;
@@ -149,18 +149,6 @@ contract BadgeFactory is BadgeRoles, ERC721Burnable {
         require(_mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
 
         emit BadgeActivated(msg.sender, templateId, tokenURI);
-        return true;
-    }
-
-    /// @notice Burn Badge
-    /// @dev burn() Check if the caller is approved or owner of the Badge
-    /// @param tokenId Token Id of the Badge to burn
-    /// @return True if the Badge has been burned
-    function burnBadge(uint256 tokenId) external whenNotPaused returns (bool){
-        uint256 templateId = getBadgeTemplate(tokenId);
-        _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
-
-        burn(tokenId);
         return true;
     }
 
