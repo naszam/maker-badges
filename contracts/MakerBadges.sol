@@ -69,14 +69,14 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
     event DSChiefChecked(address guy);
     event FlipperChecked(address guy);
 
-    constructor(address _forwarder, address chai_, address chief_, address flipper_) public {
+    constructor(address forwarder_, address chai_, address chief_, address flipper_) public {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
         _setupRole(ADMIN_ROLE, owner());
         _setupRole(PAUSER_ROLE, owner());
 
         /// @dev OpenGSN Trusted Forwarder
-        trustedForwarder = _forwarder;
+        trustedForwarder = forwarder_;
 
         /// @dev CHAI Address
         chai = ChaiLike(chai_);
@@ -159,14 +159,6 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
         return redeemers[templateId].contains(guy);
     }
 
-    function versionRecipient() external virtual view override returns (string memory) {
-        return "0.6.0";
-    }
-
-    function getTrustedForwarder() public view override returns(address) {
-        return trustedForwarder;
-    }
-
     /// @notice Add a new Admin
     /// @dev Access restricted only for Default Admin
     /// @param account Address of the new Admin
@@ -203,10 +195,18 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
         _unpause();
     }
 
+    function versionRecipient() external virtual view override returns (string memory) {
+        return "0.6.0";
+    }
+
+    function getTrustedForwarder() public view override returns(address) {
+        return trustedForwarder;
+    }
+
     /// @notice OpenGSN _msgSender()
     /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
     /// @return msg.sender after relay call
-    function _msgSender() internal override(Context, BaseRelayRecipient) view returns (address payable) {
+    function _msgSender() internal view override(Context, BaseRelayRecipient) returns (address payable) {
           return BaseRelayRecipient._msgSender();
     }
 }
