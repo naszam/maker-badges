@@ -50,9 +50,10 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     event NewTemplate(uint256 templateId, string name, string description, string image);
     event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);
 
-    constructor(address maker_)
-        ERC721("MakerBadges", "MAKER")
+    constructor(address forwarder_, address maker_)
         public
+        ERC721("MakerBadges", "MAKER")
+        BadgeRoles(forwarder_)
     {
         _setBaseURI("https://badges.makerdao.com/token/");
         maker = MakerBadgesLike(maker_);
@@ -168,6 +169,13 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {
         require(templates.length > templateId, "No template with that id");
         return _templateQuantities[templateId];
+    }
+
+    /// @notice OpenGSN _msgSender()
+    /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
+    /// @return _msgSender() after relay call
+    function _msgSender() internal view override(Context, BadgeRoles) returns (address payable) {
+          return BaseRelayRecipient._msgSender();
     }
 
     /// @notice ERC721 _transfer() Disabled
