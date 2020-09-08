@@ -10,10 +10,9 @@ pragma solidity 0.6.12;
 
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
-import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
-import "@opengsn/gsn/contracts/interfaces/IKnowForwarderAddress.sol";
+
 
 interface MakerBadgesLike {
     function verify(uint256 templateId, address guy) external view returns (bool);
@@ -21,7 +20,7 @@ interface MakerBadgesLike {
 }
 
 
-contract BadgeFactory is BadgeRoles, ERC721, BaseRelayRecipient, IKnowForwarderAddress {
+contract BadgeFactory is BadgeRoles, ERC721Burnable {
 
     /// @dev Libraries
     using SafeMath for uint256;
@@ -51,15 +50,12 @@ contract BadgeFactory is BadgeRoles, ERC721, BaseRelayRecipient, IKnowForwarderA
     event NewTemplate(uint256 templateId, string name, string description, string image);
     event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);
 
-    constructor(address forwarder_, address maker_)
+    constructor(address maker_)
         ERC721("MakerBadges", "MAKER")
         public
     {
         _setBaseURI("https://badges.makerdao.com/token/");
         maker = MakerBadgesLike(maker_);
-
-        /// @dev OpenGSN Trusted Forwarder
-        trustedForwarder = forwarder_;
     }
 
     /// @notice Fallback function
@@ -93,7 +89,7 @@ contract BadgeFactory is BadgeRoles, ERC721, BaseRelayRecipient, IKnowForwarderA
    {
         BadgeTemplate memory _newTemplate = BadgeTemplate({
             name: name,
-            owner: _msgSender(),
+            owner: msg.sender,
             description: description,
             image: image
         });
@@ -139,23 +135,35 @@ contract BadgeFactory is BadgeRoles, ERC721, BaseRelayRecipient, IKnowForwarderA
         returns (bool)
     {
         require(templates.length > templateId, "No template with that id");
-        require(redeemed[templateId][_msgSender()] == 0, "Badge already activated!");
+        require(redeemed[templateId][msg.sender] == 0, "Badge already activated!");
         require(
-            maker.verify(templateId, _msgSender()) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(_msgSender()))),
+            maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))),
             "Caller is not a redeemer"
         );
 
         /// @dev Increase the quantities
         _tokenTemplates[_tokenIdTracker.current()] = templateId;
         _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-        redeemed[templateId][_msgSender()] = 1;
+        redeemed[templateId][msg.sender] = 1;
 
-        require(_mintWithTokenURI(_msgSender(), tokenURI), "ERC721: Token not minted");
+        require(_mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
 
-        emit BadgeActivated(_msgSender(), templateId, tokenURI);
+        emit BadgeActivated(msg.sender, templateId, tokenURI);
         return true;
     }
-    
+
+    /// @notice Burn Badge
+    /// @dev burn() Check if the caller is approved or owner of the Badge
+    /// @param tokenId Token Id of the Badge to burn
+    /// @return True if the Badge has been burned
+    function burnBadge(uint256 tokenId) external whenNotPaused returns (bool){
+        uint256 templateId = getBadgeTemplate(tokenId);
+        _templateQuantities[templateId] = _templateQuantities[templateId].sub(1);
+
+        burn(tokenId);
+        return true;
+    }
+
     /// @notice Getter function for templateId associated with the tokenId
     /// @dev Check if the tokenId exists
     /// @param tokenId Token Id of the Badge
@@ -172,21 +180,6 @@ contract BadgeFactory is BadgeRoles, ERC721, BaseRelayRecipient, IKnowForwarderA
     function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {
         require(templates.length > templateId, "No template with that id");
         return _templateQuantities[templateId];
-    }
-
-    function versionRecipient() external virtual view override returns (string memory) {
-        return "0.6.0";
-    }
-
-    function getTrustedForwarder() public view override returns(address) {
-        return trustedForwarder;
-    }
-
-    /// @notice OpenGSN _msgSender()
-    /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
-    /// @return _msgSender() after relay call
-    function _msgSender() internal view override(Context, BaseRelayRecipient) returns (address payable) {
-          return BaseRelayRecipient._msgSender();
     }
 
     /// @notice ERC721 _transfer() Disabled
