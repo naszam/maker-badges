@@ -10,7 +10,7 @@ maker: {
 
   // MCD_FLIP_ETH_A Kovan Address https://kovan.etherscan.io/address/0x750295A8db0580F32355f97de7918fF538c818F1#code
   flipper: '0x750295A8db0580F32355f97de7918fF538c818F1',
-}
+},
 
 opengsn: {
    trustedForwarder: '0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B',
