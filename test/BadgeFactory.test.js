@@ -61,7 +61,7 @@ const bidId = 52;
 
   beforeEach(async function () {
     maker = await MakerBadges.new(forwarder, chai, chief, flipper, { from: owner });
-    factory = await BadgeFactory.new(maker.address, { from: owner });
+    factory = await BadgeFactory.new(forwarder, maker.address, { from: owner });
   });
 
   // Check that the owner is set as the deploying address
@@ -198,7 +198,9 @@ const bidId = 52;
 
       it('should emit the appropriate event when a badge is activated', async function () {
         const receipt = await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
+        const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
         expectEvent(receipt, 'BadgeActivated', { redeemer: redeemer, templateId: templateId, tokenURI: tokenURI });
+        expectEvent(receipt, 'Transfer', { from: ZERO_ADDRESS, to: redeemer, tokenId: tokenId });
       });
 
       it("should revert when templeteId does not exist", async () => {
@@ -212,36 +214,6 @@ const bidId = 52;
       it("redeemer should not be able to activate the same badge twice", async () => {
         await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
         await expectRevert(factory.activateBadge(proof, templateId, tokenURI, { from: redeemer}), 'Badge already activated!');
-      });
-  });
-
-  // Check burnBadge() for success when a badge owner try to burn the badge
-  // Check burnBadge() for sucessfully emit event when the badge is burned
-  // Check burnBadge() for failure when a random address try to burn a badge
-  describe('burnBadge()', async function () {
-
-      beforeEach(async function () {
-        await factory.createTemplate(template_name, template_description, template_image, { from: owner });
-        await maker.setRootHashes(rootHashes, { from: owner });
-        await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
-      });
-
-      it('badge owners should be able to burn a badge', async function () {
-        const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
-        await factory.burnBadge(tokenId, { from: redeemer });
-        expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('0');
-        expect(await factory.totalSupply({ from: random })).to.be.bignumber.equal('0');
-      });
-
-      it('should emit the appropriate event when a badge is burned', async function () {
-        const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
-        const receipt = await factory.burnBadge(tokenId, { from: redeemer });
-        expectEvent(receipt, 'Transfer', { from: redeemer, to: ZERO_ADDRESS, tokenId: tokenId });
-      });
-
-      it('random address should not be able to burn a badge', async function () {
-        const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
-        await expectRevert(factory.burnBadge(tokenId, { from: random }), 'ERC721Burnable: caller is not owner nor approved');
       });
   });
 

@@ -17,12 +17,15 @@ const DEFAULT_ADMIN_ROLE = '0x00000000000000000000000000000000000000000000000000
 const TEMPLATER_ROLE = web3.utils.soliditySha3('TEMPLATER_ROLE');
 const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 
+// https://docs.opengsn.org/gsn-provider/networks.html
+const forwarder = '0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B';
+
   // Check that the owner is set as the deploying address
   // Check that the owner is set as the only admin when the contract is deployed
   // Check that the owner is set as the only templater when the contract is deployed
   // Check that the owner is set as the only pauser when the contract is deployed
   beforeEach(async function () {
-    roles = await BadgeRoles.new({ from: owner });
+    roles = await BadgeRoles.new(forwarder, { from: owner });
   });
 
   describe('Setup', async function () {
