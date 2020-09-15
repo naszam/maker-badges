@@ -23,25 +23,25 @@ contract BadgePaymaster is BasePaymaster {
     event PostRelayed(uint);
 
     function setTarget(address target) external onlyOwner {
-    		validTargets[target] = true;
-    		emit TargetSet(target);
+      	validTargets[target] = true;
+      	emit TargetSet(target);
   	}
 
     function preRelayedCall(
-  		  GsnTypes.RelayRequest calldata relayRequest,
-  		  bytes calldata signature,
-  		  bytes calldata approvalData,
-  		  uint256 maxPossibleGas
+        GsnTypes.RelayRequest calldata relayRequest,
+        bytes calldata signature,
+        bytes calldata approvalData,
+        uint256 maxPossibleGas
   	)
         override
         virtual
         external
   	    returns (bytes memory context, bool)
     {
-    		(signature, approvalData, maxPossibleGas);
+        (signature, approvalData, maxPossibleGas);
         _verifyForwarder(relayRequest);
         require(validTargets[relayRequest.request.to], "not a registered target");
-    		emit PreRelayed(now);
+        emit PreRelayed(now);
         return (abi.encode(now), false);
     }
 
@@ -50,13 +50,13 @@ contract BadgePaymaster is BasePaymaster {
     		bool success,
     		uint256 gasUseWithoutPost,
     		GsnTypes.RelayData calldata relayData
-  	)
+    )
         external
         override
         virtual
     {
         (context, success, gasUseWithoutPost, relayData);
-    		emit PostRelayed(abi.decode(context, (uint)));
+        emit PostRelayed(abi.decode(context, (uint)));
     }
 
     function deposit() public payable {
