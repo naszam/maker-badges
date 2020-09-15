@@ -18,16 +18,16 @@ contract BadgePaymaster is BasePaymaster {
     mapping(address => bool) public validTargets;
 
   	/// @dev Events
-  	event TargetSet(address target);
+    event TargetSet(address target);
     event PreRelayed(uint);
-  	event PostRelayed(uint);
+    event PostRelayed(uint);
 
     function setTarget(address target) external onlyOwner {
     		validTargets[target] = true;
     		emit TargetSet(target);
   	}
 
-  	function preRelayedCall(
+    function preRelayedCall(
   		  GsnTypes.RelayRequest calldata relayRequest,
   		  bytes calldata signature,
   		  bytes calldata approvalData,
@@ -43,9 +43,9 @@ contract BadgePaymaster is BasePaymaster {
         require(validTargets[relayRequest.request.to], "not a registered target");
     		emit PreRelayed(now);
         return (abi.encode(now), false);
-  	}
+    }
 
-  	function postRelayedCall(
+    function postRelayedCall(
     		bytes calldata context,
     		bool success,
     		uint256 gasUseWithoutPost,
@@ -57,7 +57,7 @@ contract BadgePaymaster is BasePaymaster {
     {
         (context, success, gasUseWithoutPost, relayData);
     		emit PostRelayed(abi.decode(context, (uint)));
-  	}
+    }
 
     function deposit() public payable {
         require(address(relayHub) != address(0), "relay hub address not set");
