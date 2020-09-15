@@ -25,18 +25,18 @@ contract BadgePaymaster is BasePaymaster {
     function setTarget(address target) external onlyOwner {
       	validTargets[target] = true;
       	emit TargetSet(target);
-  	}
+    }
 
     function preRelayedCall(
         GsnTypes.RelayRequest calldata relayRequest,
         bytes calldata signature,
         bytes calldata approvalData,
         uint256 maxPossibleGas
-  	)
+    )
         override
         virtual
         external
-  	    returns (bytes memory context, bool)
+        returns (bytes memory context, bool)
     {
         (signature, approvalData, maxPossibleGas);
         _verifyForwarder(relayRequest);
@@ -46,10 +46,10 @@ contract BadgePaymaster is BasePaymaster {
     }
 
     function postRelayedCall(
-    		bytes calldata context,
-    		bool success,
-    		uint256 gasUseWithoutPost,
-    		GsnTypes.RelayData calldata relayData
+        bytes calldata context,
+        bool success,
+        uint256 gasUseWithoutPost,
+        GsnTypes.RelayData calldata relayData
     )
         external
         override
