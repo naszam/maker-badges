@@ -12,12 +12,12 @@ const BadgePaymaster = artifacts.require('BadgePaymaster');
 
 
 const callThroughGsn = async (contract, provider) => {
-		const transaction = await contract.pause();
-		const receipt = await provider.waitForTransaction(transaction.hash)
-		const result = receipt.logs.
-			map(entry => contract.interface.parseLog(entry)).
-			filter(entry => entry != null)[0];
-		return result.values['0']
+	const transaction = await contract.pause();
+	const receipt = await provider.waitForTransaction(transaction.hash)
+	const result = receipt.logs.
+		map(entry => contract.interface.parseLog(entry)).
+		filter(entry => entry != null)[0];
+	return result.values['0']
 };  // callThroughGsn
 
 contract('BadgePaymaster', async accounts => {
