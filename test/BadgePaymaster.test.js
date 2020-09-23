@@ -35,7 +35,7 @@ contract('BadgePaymaster', async accounts => {
   it ('Runs with GSN', async () => {
 
     let env = await GsnTestEnvironment.startGsn('localhost');
-    const { naivePaymasterAddress, forwarderAddress } = env.deploymentResult;
+    const { relayHubAddress, forwarderAddress } = env.deploymentResult;
 		const web3provider = new Web3HttpProvider('http://localhost:8545');
 		const deploymentProvider= new ethers.providers.Web3Provider(web3provider)
 
@@ -44,10 +44,16 @@ contract('BadgePaymaster', async accounts => {
 		const roles = await factory.deploy(forwarderAddress)
 		await roles.deployed()
 
+		paymaster = await BadgePaymaster.new();
+		await paymaster.setRelayHub(relayHubAddress);
+		await paymaster.setTrustedForwarder(forwarderAddress)
+		await paymaster.send(1e18);
+		await paymaster.setTarget(roles.address);
+
     const config = await resolveConfigurationGSN(web3provider, {
            verbose: false,
            forwarderAddress,
-           paymasterAddress: naivePaymasterAddress,
+           paymasterAddress: paymaster.address,
     });
 
 		let gsnProvider = new RelayProvider(web3provider, config);
