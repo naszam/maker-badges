@@ -7,7 +7,7 @@ const ethers = require('ethers')
 const Web3HttpProvider = require( 'web3-providers-http');
 
 const MakerBadges = artifacts.require('MakerBadges');
-const BadgeRoles = artifacts.require('BadgeRoles');
+const BadgeFactory = artifacts.require('BadgeFactory');
 const BadgePaymaster = artifacts.require('BadgePaymaster');
 
 
@@ -29,61 +29,23 @@ contract('BadgePaymaster', async accounts => {
 	let roles;
 
 	it ('Runs without GSN', async () => {
-		roles = await BadgeRoles.new(ZERO_ADDRESS,{from: owner});
+		badges = await BadgeFactory.new(ZERO_ADDRESS, ZERO_ADDRESS,{from: owner});
 
-		const ownerAddress = await roles.owner();
+		const ownerAddress = await badges.owner();
 		assert.equal(ownerAddress, owner);
 
 	});
 
-	it ('Runs with GSN (BadgeRoles)', async () => {
+	it ('Runs with GSN (BadgeFactory)', async () => {
 
 		let env = await GsnTestEnvironment.startGsn('localhost');
 		const { relayHubAddress, forwarderAddress } = env.deploymentResult;
 		const web3provider = new Web3HttpProvider('http://localhost:8545');
 		const deploymentProvider= new ethers.providers.Web3Provider(web3provider)
 
-		const factory = new ethers.ContractFactory(BadgeRoles.abi, BadgeRoles.bytecode, deploymentProvider.getSigner());
-		const maker = new ethers.ContractFactory(MakerBadges.abi, MakerBadges.bytecode, deploymentProvider.getSigner());
+		const factory = new ethers.ContractFactory(BadgeFactory.abi, BadgeFactory.bytecode, deploymentProvider.getSigner());
 
-		const roles = await factory.deploy(forwarderAddress)
-		await roles.deployed()
-
-		paymaster = await BadgePaymaster.new();
-		await paymaster.setRelayHub(relayHubAddress);
-		await paymaster.setTrustedForwarder(forwarderAddress)
-		await paymaster.send(1e18);
-		await paymaster.setTarget(roles.address);
-
-		const config = await resolveConfigurationGSN(web3provider, {
-		       verbose: false,
-		       forwarderAddress,
-		       paymasterAddress: paymaster.address,
-		});
-
-		let gsnProvider = new RelayProvider(web3provider, config);
-
-		const provider = new ethers.providers.Web3Provider(gsnProvider);
-
-		//const acct = provider.provider.newAccount();
-
-		const contract = await new ethers.Contract(roles.address, roles.interface.abi, provider.getSigner(owner.address, owner.privateKey));
-
-		var result = await callThroughGsn(contract, provider);
-		assert.equal(result, owner);
-
-	});
-
-	it ('Runs with GSN (MakerBadges)', async () => {
-
-		let env = await GsnTestEnvironment.startGsn('localhost');
-		const { relayHubAddress, forwarderAddress } = env.deploymentResult;
-		const web3provider = new Web3HttpProvider('http://localhost:8545');
-		const deploymentProvider= new ethers.providers.Web3Provider(web3provider)
-
-		const factory = new ethers.ContractFactory(MakerBadges.abi, MakerBadges.bytecode, deploymentProvider.getSigner());
-
-		const badges = await factory.deploy(forwarderAddress, ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS);
+		const badges = await factory.deploy(forwarderAddress, ZERO_ADDRESS)
 		await badges.deployed()
 
 		paymaster = await BadgePaymaster.new();
@@ -105,6 +67,43 @@ contract('BadgePaymaster', async accounts => {
 		//const acct = provider.provider.newAccount();
 
 		const contract = await new ethers.Contract(badges.address, badges.interface.abi, provider.getSigner(owner.address, owner.privateKey));
+
+		var result = await callThroughGsn(contract, provider);
+		assert.equal(result, owner);
+
+	});
+
+	it ('Runs with GSN (MakerBadges)', async () => {
+
+		let env = await GsnTestEnvironment.startGsn('localhost');
+		const { relayHubAddress, forwarderAddress } = env.deploymentResult;
+		const web3provider = new Web3HttpProvider('http://localhost:8545');
+		const deploymentProvider= new ethers.providers.Web3Provider(web3provider)
+
+		const factory = new ethers.ContractFactory(MakerBadges.abi, MakerBadges.bytecode, deploymentProvider.getSigner());
+
+		const maker = await factory.deploy(forwarderAddress, ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS);
+		await maker.deployed()
+
+		paymaster = await BadgePaymaster.new();
+		await paymaster.setRelayHub(relayHubAddress);
+		await paymaster.setTrustedForwarder(forwarderAddress)
+		await paymaster.send(1e18);
+		await paymaster.setTarget(maker.address);
+
+		const config = await resolveConfigurationGSN(web3provider, {
+		       verbose: false,
+		       forwarderAddress,
+		       paymasterAddress: paymaster.address,
+		});
+
+		let gsnProvider = new RelayProvider(web3provider, config);
+
+		const provider = new ethers.providers.Web3Provider(gsnProvider);
+
+		//const acct = provider.provider.newAccount();
+
+		const contract = await new ethers.Contract(maker.address, maker.interface.abi, provider.getSigner(owner.address, owner.privateKey));
 
 		var result = await callThroughGsn(contract, provider);
 		assert.equal(result, owner);
