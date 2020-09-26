@@ -118,28 +118,32 @@ Clone this GitHub repository.
     ```
 ## Running the project with local test network (ganache-cli)
 
-   - Start ganache-cli, in a separate terminal, with the following command (global dependency):
-     ```sh
-     $ ganache-cli
-     ```
    - Compile the smart contract using Truffle with the following command (global dependecy):
      ```sh
      $ truffle compile
      ```
    - Deploy the smart contracts using Truffle & Ganache with the following command (global dependency):
-     ```s
+     ```sh
      $ truffle migrate
      ```
    - Test the smart contracts using Mocha & OpenZeppelin Test Environment (Forking Mainnet):
      - Add Infura Key in ```config.js```
      - Run the following command:
      ```sh
-     $ npm test
+     $ npm test test/MakerBadges.test.js test/BadgeFactory.test.js test/BadgeRoles.test.js
+     ```
+   - Start ganache-cli, in a separate terminal, with the following command (global dependency):
+     ```sh
+     $ ganache-cli
+     ```
+   - Test BadgePaymaster using Truffle Tests & OpenGSN Test Environment:
+     ```sh
+     $ truffle test test/BadgePaymaster.test.js
      ```
    - Analyze the smart contracts using Slither with the following command (optional):
-      ```sh
-      $ slither .
-      ```
+     ```sh
+     $ slither .
+     ```
    - Analyze the smart contracts using MythX CLI with the following command (optional):
      ```sh
      $ mythx analyze
