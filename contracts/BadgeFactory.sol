@@ -91,7 +91,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
    {
         BadgeTemplate memory _newTemplate = BadgeTemplate({
             name: name,
-            owner: msg.sender,
+            owner: _msgSender(),
             description: description,
             image: image
         });
@@ -137,20 +137,20 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         returns (bool)
     {
         require(templates.length > templateId, "BadgeFactory: no template with that id");
-        require(redeemed[templateId][msg.sender] == 0, "BadgeFactory: badge already activated!");
+        require(redeemed[templateId][_msgSender()] == 0, "BadgeFactory: badge already activated!");
         require(
-            maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))),
+            maker.verify(templateId, _msgSender()) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(_msgSender()))),
             "BadgeFactory: caller is not a redeemer"
         );
 
         /// @dev Increase the quantities
         _tokenTemplates[_tokenIdTracker.current()] = templateId;
         _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-        redeemed[templateId][msg.sender] = 1;
+        redeemed[templateId][_msgSender()] = 1;
 
-        require(_mintWithTokenURI(msg.sender, tokenURI), "BadgeFactory: badge not minted");
+        require(_mintWithTokenURI(_msgSender(), tokenURI), "BadgeFactory: badge not minted");
 
-        emit BadgeActivated(msg.sender, templateId, tokenURI);
+        emit BadgeActivated(_msgSender(), templateId, tokenURI);
         return true;
     }
 
