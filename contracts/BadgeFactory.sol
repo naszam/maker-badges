@@ -1,12 +1,13 @@
 /// SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.6.12;
 
-/// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18
+/// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29
 /// @author Nazzareno Massari @naszam
-/// @notice BadgeFactory to manage Templates and activate Non-transferable Badges by redeemers
+/// @notice BadgeFactory to manage Templates and activate Non-transferable MakerBadges by redeemers
 /// @dev See https://github.com/makerdao/community/issues/537
+/// @dev See https://github.com/makerdao/community/issues/721
 /// @dev All function calls are currently implemented without side effects through TDD approach
-/// @dev OpenZeppelin library is used for secure contract development
+/// @dev OpenZeppelin Library is used for secure contract development
 
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";

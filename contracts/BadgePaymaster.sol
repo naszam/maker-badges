@@ -2,12 +2,13 @@
 pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
-/// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18
+/// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29
 /// @author Nazzareno Massari @naszam
 /// @notice BadgePaymaster to pay for user's transaction fees
-/// @dev see https://github.com/makerdao/community/issues/537
+/// @dev See https://github.com/makerdao/community/issues/537
+/// @dev See https://github.com/makerdao/community/issues/721
 /// @dev All function calls are currently implemented without side effecs through TDD approach
-/// @dev OpenZeppelin library is used for secure contract development
+/// @dev OpenZeppelin Library is used for secure contract development
 
 import "@opengsn/gsn/contracts/forwarder/IForwarder.sol";
 import "@opengsn/gsn/contracts/BasePaymaster.sol";
