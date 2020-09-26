@@ -41,7 +41,7 @@ contract BadgePaymaster is BasePaymaster {
     {
         (signature, approvalData, maxPossibleGas);
         _verifyForwarder(relayRequest);
-        require(validTargets[relayRequest.request.to], "not a registered target");
+        require(validTargets[relayRequest.request.to], "BadgePaymaster: not a registered target");
         emit PreRelayed(now);
         return (abi.encode(now), false);
     }

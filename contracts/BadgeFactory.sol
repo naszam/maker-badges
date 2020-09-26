@@ -111,7 +111,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         whenNotPaused
         returns (string memory name, string memory description, string memory image)
     {
-        require(templates.length > templateId, "No template with that id");
+        require(templates.length > templateId, "BadgeFactory: no template with that id");
         BadgeTemplate memory template = templates[templateId];
         return (template.name, template.description, template.image);
     }
@@ -136,11 +136,11 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         whenNotPaused
         returns (bool)
     {
-        require(templates.length > templateId, "No template with that id");
-        require(redeemed[templateId][msg.sender] == 0, "Badge already activated!");
+        require(templates.length > templateId, "BadgeFactory: no template with that id");
+        require(redeemed[templateId][msg.sender] == 0, "BadgeFactory: badge already activated!");
         require(
             maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))),
-            "Caller is not a redeemer"
+            "BadgeFactory: caller is not a redeemer"
         );
 
         /// @dev Increase the quantities
@@ -148,7 +148,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
         redeemed[templateId][msg.sender] = 1;
 
-        require(_mintWithTokenURI(msg.sender, tokenURI), "ERC721: Token not minted");
+        require(_mintWithTokenURI(msg.sender, tokenURI), "BadgeFactory: badge not minted");
 
         emit BadgeActivated(msg.sender, templateId, tokenURI);
         return true;
@@ -159,7 +159,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param tokenId Token Id of the Badge
     /// @return Template Id associated with the tokenId
     function getBadgeTemplate(uint256 tokenId) public view whenNotPaused returns (uint256) {
-        require(_exists(tokenId), "ERC721: No token with that id");
+        require(_exists(tokenId), "BadgeFactory: no token with that id");
         return _tokenTemplates[tokenId];
     }
 
@@ -168,7 +168,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param templateId Template Id
     /// @return Quantity of Badges associated with templateId
     function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {
-        require(templates.length > templateId, "No template with that id");
+        require(templates.length > templateId, "BadgeFactory: no template with that id");
         return _templateQuantities[templateId];
     }
 
@@ -183,7 +183,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @dev _transfer() has been overriden
     /// @dev reverts on transferFrom() and safeTransferFrom()
     function _transfer(address from, address to, uint256 tokenId) internal override {
-        require(false, "ERC721: token transfer disabled");
+        require(false, "BadgeFactory: badge transfer disabled");
         super._transfer(from, to, tokenId);
     }
 

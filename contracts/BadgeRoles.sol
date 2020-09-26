@@ -34,12 +34,12 @@ contract BadgeRoles is Ownable, AccessControl, Pausable, BaseRelayRecipient, IKn
 
     /// @dev Modifiers
     modifier onlyAdmin() {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Caller is not an admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "BadgeFactory: caller is not an admin");
         _;
     }
 
     modifier onlyTemplater() {
-        require(hasRole(TEMPLATER_ROLE, _msgSender()), "Caller is not a template owner");
+        require(hasRole(TEMPLATER_ROLE, _msgSender()), "BadgeFactory: caller is not a template owner");
         _;
     }
 
@@ -50,7 +50,7 @@ contract BadgeRoles is Ownable, AccessControl, Pausable, BaseRelayRecipient, IKn
     /// @param guy Address of the new Templater
     /// @return True if the guy address is added as Templater
     function addTemplater(address guy) external onlyAdmin returns (bool) {
-        require(!hasRole(TEMPLATER_ROLE, guy), "guy is already a templater");
+        require(!hasRole(TEMPLATER_ROLE, guy), "BadgeFactory: guy is already a templater");
         grantRole(TEMPLATER_ROLE, guy);
         return true;
     }
@@ -60,7 +60,7 @@ contract BadgeRoles is Ownable, AccessControl, Pausable, BaseRelayRecipient, IKn
     /// @param guy Address of the Templater
     /// @return True if the guy address is removed as Templater
     function removeTemplater(address guy) external onlyAdmin returns (bool) {
-        require(hasRole(TEMPLATER_ROLE, guy), "guy is not a templater");
+        require(hasRole(TEMPLATER_ROLE, guy), "BadgeFactory: guy is not a templater");
         revokeRole(TEMPLATER_ROLE, guy);
         return true;
     }

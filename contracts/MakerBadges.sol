@@ -97,7 +97,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
 
     /// @dev Modifiers
     modifier onlyAdmin() {
-        require(hasRole(ADMIN_ROLE, _msgSender()), "Caller is not an admin");
+        require(hasRole(ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not an admin");
         _;
     }
 
@@ -115,7 +115,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
     /// @dev Keeps track of the address of the caller if successful
     /// @return True if the caller successfully checked for activity on Chai
     function chaiChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-        require(chai.dai(_msgSender()) >= 1 ether, "Caller has not accrued 1 or more Dai interest on Pot");
+        require(chai.dai(_msgSender()) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
         if (!redeemers[templateId].contains(_msgSender())) {
             require(redeemers[templateId].add(_msgSender()));
         }
@@ -128,7 +128,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
     /// @dev Keeps track of the address of the caller if successful
     /// @return True if the caller successfully checked for activity on DSChief
     function chiefChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-        require(chief.votes(_msgSender()) != 0x00, "Caller is not voting in an Executive Spell");
+        require(chief.votes(_msgSender()) != 0x00, "MakerBadges: caller is not voting in an executive spell");
         if (!redeemers[templateId].contains(_msgSender())) {
             require(redeemers[templateId].add(_msgSender()));
         }
@@ -143,7 +143,7 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
     function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused returns (bool) {
         require(
             flipper.bids(bidId).guy == _msgSender(),
-            "Caller is not the high bidder in the current Bid in ETH Collateral Auctions"
+            "MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions"
         );
         if (!redeemers[templateId].contains(_msgSender())) {
             require(redeemers[templateId].add(_msgSender()));
@@ -165,8 +165,8 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
     /// @param account Address of the new Admin
     /// @return True if the account address is added as Admin
     function addAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Caller is not the default admin");
-        require(!hasRole(ADMIN_ROLE, account), "Account is already an admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not the default admin");
+        require(!hasRole(ADMIN_ROLE, account), "MakerBadges: account is already an admin");
         grantRole(ADMIN_ROLE, account);
         return true;
     }
@@ -176,8 +176,8 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
     /// @param account Address of the Admin
     /// @return True if the account address is removed as Admin
     function removeAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Caller is not the default admin");
-        require(hasRole(ADMIN_ROLE, account), "Account is not an admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not the default admin");
+        require(hasRole(ADMIN_ROLE, account), "MakerBadges: account is not an admin");
         revokeRole(ADMIN_ROLE, account);
         return true;
     }
