@@ -89,7 +89,7 @@ const bidId = 52;
       });
 
       it('random address should not be able to pass the challenge', async function () {
-        await expectRevert(maker.chaiChallenge(templateId, { from: random }), 'Caller has not accrued 1 or more Dai interest on Pot');
+        await expectRevert(maker.chaiChallenge(templateId, { from: random }), 'MakerBadges: caller has not accrued 1 or more dai interest on pot');
       });
   });
 
@@ -109,7 +109,7 @@ const bidId = 52;
       });
 
       it('random address should not be able to pass the challenge', async function () {
-        await expectRevert(maker.chiefChallenge(templateId, { from: random }), 'Caller is not voting in an Executive Spell');
+        await expectRevert(maker.chiefChallenge(templateId, { from: random }), 'MakerBadges: caller is not voting in an executive spell');
       });
   });
 
@@ -129,7 +129,7 @@ const bidId = 52;
       });
 
       it('random address should not be able to pass the challenge', async function () {
-        await expectRevert(maker.flipperChallenge(templateId, bidId, { from: random }), 'Caller is not the high bidder in the current Bid in ETH Collateral Auctions');
+        await expectRevert(maker.flipperChallenge(templateId, bidId, { from: random }), 'MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions');
       });
   });
 
@@ -149,7 +149,7 @@ const bidId = 52;
       });
 
       it('random address should not be able to add a new admin', async function () {
-        await expectRevert(maker.addAdmin(admin, { from: random }), 'Caller is not the default admin');
+        await expectRevert(maker.addAdmin(admin, { from: random }), 'MakerBadges: caller is not the default admin');
       });
   });
 
@@ -173,7 +173,7 @@ const bidId = 52;
       });
 
       it('random address should not be able to remove an admin', async function () {
-        await expectRevert(maker.removeAdmin(admin, { from: random }), 'Caller is not the default admin');
+        await expectRevert(maker.removeAdmin(admin, { from: random }), 'MakerBadges: caller is not the default admin');
       });
   });
 

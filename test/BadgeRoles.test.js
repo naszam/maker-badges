@@ -66,7 +66,7 @@ const forwarder = '0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B';
       });
 
       it('random address should not be able to add a new templater', async function () {
-        await expectRevert(roles.addTemplater(templater, { from: random }), 'Caller is not an admin');
+        await expectRevert(roles.addTemplater(templater, { from: random }), 'BadgeFactory: caller is not an admin');
       });
   });
 
@@ -90,7 +90,7 @@ const forwarder = '0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B';
       });
 
       it('random address should not be able to remove a templater', async function () {
-        await expectRevert(roles.removeTemplater(templater, { from: random }), 'Caller is not an admin');
+        await expectRevert(roles.removeTemplater(templater, { from: random }), 'BadgeFactory: caller is not an admin');
       });
   });
 

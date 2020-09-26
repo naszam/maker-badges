@@ -151,7 +151,7 @@ const bidId = 52;
       });
 
       it("random address should not be able to create a new template", async () => {
-        await expectRevert(factory.createTemplate(template_name, template_description, template_image, { from: random }), 'Caller is not a template owner');
+        await expectRevert(factory.createTemplate(template_name, template_description, template_image, { from: random }), 'BadgeFactory: caller is not a template owner');
       });
   });
 
@@ -204,16 +204,16 @@ const bidId = 52;
       });
 
       it("should revert when templeteId does not exist", async () => {
-        await expectRevert(factory.activateBadge(proof, templateId+1, tokenURI, { from: redeemer }), 'No template with that id');
+        await expectRevert(factory.activateBadge(proof, templateId+1, tokenURI, { from: redeemer }), 'BadgeFactory: no template with that id');
       });
 
       it("random address should not be able to activate a new badge", async () => {
-        await expectRevert(factory.activateBadge(proof, templateId, tokenURI, { from: random }), 'Caller is not a redeemer');
+        await expectRevert(factory.activateBadge(proof, templateId, tokenURI, { from: random }), 'BadgeFactory: caller is not a redeemer');
       });
 
       it("redeemer should not be able to activate the same badge twice", async () => {
         await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
-        await expectRevert(factory.activateBadge(proof, templateId, tokenURI, { from: redeemer}), 'Badge already activated!');
+        await expectRevert(factory.activateBadge(proof, templateId, tokenURI, { from: redeemer}), 'BadgeFactory: badge already activated!');
       });
   });
 
@@ -227,12 +227,12 @@ const bidId = 52;
 
       it('check transferFrom() for revert', async function () {
         const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
-        await expectRevert(factory.transferFrom(redeemer, random, tokenId, {from:redeemer}), 'ERC721: token transfer disabled');
+        await expectRevert(factory.transferFrom(redeemer, random, tokenId, {from:redeemer}), 'BadgeFactory: badge transfer disabled');
       });
 
       it('check safeTransferFrom() for revert', async function () {
         const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
-        await expectRevert(factory.safeTransferFrom(redeemer, random, tokenId, {from:redeemer}), 'ERC721: token transfer disabled');
+        await expectRevert(factory.safeTransferFrom(redeemer, random, tokenId, {from:redeemer}), 'BadgeFactory: badge transfer disabled');
       });
   });
 
