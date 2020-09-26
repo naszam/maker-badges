@@ -83,7 +83,7 @@ contract BadgeRoles is Ownable, AccessControl, Pausable, BaseRelayRecipient, IKn
         return "0.6.0";
     }
 
-    function getTrustedForwarder() public view override returns(address) {
+    function getTrustedForwarder() public view override returns (address) {
         return trustedForwarder;
     }
 
