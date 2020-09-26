@@ -118,7 +118,7 @@ Clone this GitHub repository.
     ```
 ## Running the project with local test network (ganache-cli)
 
-   - Compile the smart contract using Truffle with the following command (global dependecy):
+   - Compile the smart contracts using Truffle with the following command (global dependecy):
      ```sh
      $ truffle compile
      ```
