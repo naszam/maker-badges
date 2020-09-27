@@ -47,6 +47,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
 
     /// @dev Events
     event NewTemplate(uint256 templateId, string name, string description, string image);
+    event TemplateUpdated(uint256 templateId, string name, string description, string image);
     event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);
 
     constructor(address forwarder_, address maker_)
@@ -94,6 +95,27 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         _templateIdTracker.increment();
         uint256 _templateId = _templateIdTracker.current().sub(1);
         emit NewTemplate(_templateId, name, description, image);
+        return true;
+    }
+
+    /// @notice Update a template
+    /// @dev Access restricted to only Templaters
+    /// @param templateId Template Id
+    /// @param name The name of the template
+    /// @param description The description of the template
+    /// @param image The filename of the template
+    /// @return True If the new Template is Updated
+    function updateTemplate(uint256 templateId, string calldata name, string calldata description, string calldata image)
+        external
+        onlyTemplater
+        whenNotPaused
+        returns (bool)
+    {
+        require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
+        templates[templateId].name = name;
+        templates[templateId].description = description;
+        templates[templateId].image = image;
+        emit TemplateUpdated(templateId, name, description, image);
         return true;
     }
 
