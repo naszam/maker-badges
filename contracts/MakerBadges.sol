@@ -27,7 +27,6 @@ interface DSChiefLike {
     function votes(address) external view returns (bytes32);
 }
 
-
 interface FlipperLike {
     struct Bid {
         uint256 bid;
@@ -42,7 +41,6 @@ interface FlipperLike {
 
     function bids(uint256) external view returns (Bid memory);
 }
-
 
 contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IKnowForwarderAddress {
 
@@ -97,7 +95,6 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
         require(hasRole(ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not an admin");
         _;
     }
-
 
     /// @notice Set Merkle Tree Root Hashes array
     /// @dev Called by owner to update roots for different address batches by templateId

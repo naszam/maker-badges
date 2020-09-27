@@ -68,5 +68,4 @@ contract BadgePaymaster is BasePaymaster {
     function versionPaymaster() external virtual view override returns (string memory) {
         return "0.6.0";
     }
-
 }

@@ -14,12 +14,10 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
-
 interface MakerBadgesLike {
     function verify(uint256 templateId, address guy) external view returns (bool);
     function roots(uint256 templateId) external view returns (bytes32);
 }
-
 
 contract BadgeFactory is BadgeRoles, ERC721 {
 
@@ -88,7 +86,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         onlyTemplater
         whenNotPaused
         returns (bool)
-   {
+    {
         BadgeTemplate memory _newTemplate = BadgeTemplate({
             name: name,
             owner: _msgSender(),

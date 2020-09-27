@@ -15,7 +15,6 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
 import "@opengsn/gsn/contracts/interfaces/IKnowForwarderAddress.sol";
 
-
 contract BadgeRoles is Ownable, AccessControl, Pausable, BaseRelayRecipient, IKnowForwarderAddress {
 
     /// @dev Roles
