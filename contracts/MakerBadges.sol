@@ -55,9 +55,6 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
     DSChiefLike internal immutable chief;
     FlipperLike internal immutable flipper;
 
-    /// @dev Math
-    uint256 constant RAY = 10 ** 27;
-
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
