@@ -28,16 +28,16 @@ contract BadgeFactory is BadgeRoles, ERC721 {
 
     MakerBadgesLike internal immutable maker;
 
+    Counters.Counter private _templateIdTracker;
     Counters.Counter private _tokenIdTracker;
 
     struct BadgeTemplate {
         string name;
         string description;
         string image;
-        address owner;
     }
 
-    BadgeTemplate[] private templates;
+    mapping (uint256 => BadgeTemplate) private templates;
 
     /// @dev Supplies of each badge template
     mapping(uint256 => uint256) private _templateQuantities;
@@ -87,14 +87,12 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         whenNotPaused
         returns (bool)
     {
-        BadgeTemplate memory _newTemplate = BadgeTemplate({
-            name: name,
-            owner: _msgSender(),
-            description: description,
-            image: image
-        });
-        templates.push(_newTemplate);
-        uint256 _templateId = templates.length.sub(1);
+        templates[_templateIdTracker.current()].name = name;
+        templates[_templateIdTracker.current()].description = description;
+        templates[_templateIdTracker.current()].image = image;
+
+        _templateIdTracker.increment();
+        uint256 _templateId = _templateIdTracker.current().sub(1);
         emit NewTemplate(_templateId, name, description, image);
         return true;
     }
@@ -109,16 +107,15 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         whenNotPaused
         returns (string memory name, string memory description, string memory image)
     {
-        require(templates.length > templateId, "BadgeFactory: no template with that id");
-        BadgeTemplate memory template = templates[templateId];
-        return (template.name, template.description, template.image);
+        require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
+        return (templates[templateId].name, templates[templateId].description, templates[templateId].image);
     }
 
     /// @notice Getter function for templates count
     /// @dev Return lenght of template array
     /// @return count The current number of templates
     function getTemplatesCount() external view whenNotPaused returns (uint256 count) {
-        return templates.length;
+        return _templateIdTracker.current();
     }
 
     /// @dev Badges
@@ -134,7 +131,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         whenNotPaused
         returns (bool)
     {
-        require(templates.length > templateId, "BadgeFactory: no template with that id");
+        require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         require(redeemed[templateId][_msgSender()] == 0, "BadgeFactory: badge already activated!");
         require(
             maker.verify(templateId, _msgSender()) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(_msgSender()))),
@@ -166,7 +163,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param templateId Template Id
     /// @return Quantity of Badges associated with templateId
     function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {
-        require(templates.length > templateId, "BadgeFactory: no template with that id");
+        require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         return _templateQuantities[templateId];
     }
 
