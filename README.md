@@ -70,7 +70,7 @@ In particular, we'll use:
 
 A Merkle Tree is generated for every Template and the root hash is updated by owner of MakerBadges daily to allow batches of redeemers to be checked and to redeem Badges.  
 
-BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template via **createTemplate()** specifying name, description and image.  
+BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template via **createTemplate()** specifying name, description and image. A Templater can also update the template info via **updateTemplate()**.
 
 It also inherits ERC721Burnable, where the **_transfer()** has been overridden to implement Non-transferable feature, allowing redeemers checked on-chain/offchain to redeem a Badge for a specific activity on MakerDAO ecosystem via **activateBadge()** that will verify if the caller is a redeemer and then will allow the caller to mint a new Non-transferable Badge with tokenURI stored on IPFS (eg. "ipfs.json").  
 To avoid that a redeemer could activate the same Badge twice or more, **redeemed** is introduced to check if a Badge is already activeted and revert the transaction.  
