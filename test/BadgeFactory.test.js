@@ -28,6 +28,9 @@ const proof = merkleTree.getHexProof(redeemer);
 const template_name = 'Beginner';
 const template_description = 'Beginner Template';
 const template_image = 'badge.png';
+const template_name2 = "Intermediate";
+const template_description2 = "Intermediate Template";
+const template_image2 = "badge2.png";
 const templateId = '0';
 const index1 = '0';
 const index2 = '1';
@@ -152,6 +155,34 @@ const bidId = 52;
 
       it("random address should not be able to create a new template", async () => {
         await expectRevert(factory.createTemplate(template_name, template_description, template_image, { from: random }), 'BadgeFactory: caller is not a template owner');
+      });
+  });
+
+  // Check updateTemplate() for success when a templater try to update a template
+  // Check updateTemplate() for sucessfully emit event when the template is updated
+  // Check updateTemplate() for failure when a random address try to update a template
+  describe('updateTemplate()', async function () {
+
+      beforeEach(async function () {
+        await factory.createTemplate(template_name, template_description, template_image, { from: owner });
+      });
+
+      it('templaters should be able to update a template', async function () {
+        await factory.updateTemplate(templateId, template_name2, template_description2, template_image2, { from: owner });
+        const receipt = await factory.getTemplate(templateId, { from: random });
+        expect(receipt[0]).equal(template_name2);
+        expect(receipt[1]).equal(template_description2);
+        expect(receipt[2]).equal(template_image2);
+        expect(await factory.getTemplatesCount({ from: random })).to.be.bignumber.equal('1');
+      });
+
+      it('should emit the appropriate event when a template is updated', async function () {
+        const receipt = await factory.updateTemplate(templateId, template_name2, template_description2, template_image2, { from: owner });
+        expectEvent(receipt, 'TemplateUpdated', { templateId: templateId, name: template_name2, description: template_description2, image: template_image2 });
+      });
+
+      it('random address should not be able to update a template', async function () {
+        await expectRevert(factory.updateTemplate(templateId, template_name2, template_description2, template_image2, { from: random }), 'BadgeFactory: caller is not a template owner');
       });
   });
 
