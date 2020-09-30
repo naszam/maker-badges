@@ -190,10 +190,17 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     }
 
     /// @notice OpenGSN _msgSender()
-    /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
+    /// @dev override _msgSender() in OZ Context.sol and BadgeRoles.sol
     /// @return _msgSender() after relay call
     function _msgSender() internal view override(Context, BadgeRoles) returns (address payable) {
           return BaseRelayRecipient._msgSender();
+    }
+
+    /// @notice OpenGSN _msgData()
+    /// @dev override _msgData() in OZ Context.sol and BadgeRoles.sol
+    /// @return _msgData() after relay call
+    function _msgData() internal view override(Context, BadgeRoles) returns (bytes memory) {
+          return BaseRelayRecipient._msgData();
     }
 
     /// @notice ERC721 _transfer() Disabled

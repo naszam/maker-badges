@@ -92,4 +92,11 @@ contract BadgeRoles is Ownable, AccessControl, Pausable, BaseRelayRecipient, IKn
     function _msgSender() internal virtual view override(Context, BaseRelayRecipient) returns (address payable) {
           return BaseRelayRecipient._msgSender();
     }
+
+    /// @notice OpenGSN _msgData()
+    /// @dev override _msgData() in OZ Context.sol and BaseRelayRecipient.sol
+    /// @return _msgData() after relay call
+    function _msgData() internal virtual view override(Context, BaseRelayRecipient) returns (bytes memory) {
+          return BaseRelayRecipient._msgData();
+    }
 }

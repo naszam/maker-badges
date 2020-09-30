@@ -200,8 +200,15 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
 
     /// @notice OpenGSN _msgSender()
     /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
-    /// @return msg.sender after relay call
+    /// @return _msgSender() after relay call
     function _msgSender() internal view override(Context, BaseRelayRecipient) returns (address payable) {
           return BaseRelayRecipient._msgSender();
+    }
+
+    /// @notice OpenGSN _msgData()
+    /// @dev override _msgData() in OZ Context.sol and BaseRelayRecipient.sol
+    /// @return _msgData() after relay call
+    function _msgData() internal view override(Context, BaseRelayRecipient) returns (bytes memory) {
+          return BaseRelayRecipient._msgData();
     }
 }
