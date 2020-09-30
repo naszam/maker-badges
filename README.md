@@ -81,7 +81,16 @@ During deployment the contract sets the following ERC721 metadata:
 - baseURI: "https://badges.makerdao.com/token/"  
 
 ### [BadgePaymaster](./contracts/BadgePaymaster.sol)
-> BadgePaymaster to pay for user's meta-transactions
+> BadgePaymaster to pay for user's meta-transactions  
+
+In order to pay for user's meta-transaction BadgePaymaster inherits OpenGSNv2 BasePaymaster and IForwarder and implement the following functions:
+
+- **preRelayedCall()**
+- **postRelayedCall()**
+
+Once deployed, BadgePaymaster owner need to set the RelayHub contract address via **setRelayHub()** as well as the Trusted Forwarder via **setTrustedForwarder** and specify the target contracts to pay gas for via **setTarget()**.
+
+Finally, the owner just need to fund the contract sending ether to BadgePaymaster contract address and the balance will be automatically updated in RelayHub contract.
 
 Setup
 ============
