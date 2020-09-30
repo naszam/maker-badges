@@ -209,8 +209,8 @@ Deploy
 
 ## Project deployed on Kovan
 [MakerBadges](https://kovan.etherscan.io/address/0x1E7062E43cDA1d5Ab1fA2F95a55F843658B41946)  
-[BadgeFactory](https://kovan.etherscan.io/address/0xCF5A613CC1774eE6fCc171ff00673bC74e6F6D81)
-[BadgePaymaster](https://kovan.etherscan.io/address/0x3823aFCC7F008999E8F9d05606205B1974bc7F13)
+[BadgeFactory](https://kovan.etherscan.io/address/0xCF5A613CC1774eE6fCc171ff00673bC74e6F6D81)  
+[BadgePaymaster](https://kovan.etherscan.io/address/0x3823aFCC7F008999E8F9d05606205B1974bc7F13)  
 
 
 Interface
