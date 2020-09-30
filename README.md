@@ -90,7 +90,7 @@ In order to pay for user's meta-transaction BadgePaymaster inherits OpenGSNv2 Ba
 
 Once deployed, BadgePaymaster owner need to set the RelayHub contract address via **setRelayHub()** as well as the Trusted Forwarder via **setTrustedForwarder** and specify the target contracts to pay gas for via **setTarget()**.
 
-Finally, the owner just need to fund the contract sending ether to BadgePaymaster contract address and the balance will be automatically updated in RelayHub contract.
+Finally, the owner just need to fund the contract sending ether to BadgePaymaster contract address and the balance will be automatically updated in RelayHub contract. The owner can at any time withdraw the paymaster balance via **withdrawAll()**.
 
 Setup
 ============
