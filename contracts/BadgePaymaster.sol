@@ -23,9 +23,10 @@ contract BadgePaymaster is BasePaymaster {
     event PreRelayed(uint);
     event PostRelayed(uint);
 
-    function setTarget(address target) external onlyOwner {
+    function setTarget(address target) external onlyOwner returns (bool) {
       	validTargets[target] = true;
       	emit TargetSet(target);
+        return true;
     }
 
     function preRelayedCall(
@@ -61,9 +62,10 @@ contract BadgePaymaster is BasePaymaster {
         emit PostRelayed(abi.decode(context, (uint)));
     }
 
-    function withdrawAll(address payable destination) public onlyOwner {
+    function withdrawAll(address payable destination) external onlyOwner returns (bool) {
         uint256 amount = relayHub.balanceOf(address(this));
         withdrawRelayHubDepositTo(amount, destination);
+        return true;
     }
 
     function versionPaymaster() external virtual view override returns (string memory) {
