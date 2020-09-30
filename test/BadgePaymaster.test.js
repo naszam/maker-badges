@@ -12,12 +12,12 @@ const BadgePaymaster = artifacts.require('BadgePaymaster');
 
 
 const callThroughGsn = async (contract, provider) => {
-const transaction = await contract.pause();
-const receipt = await provider.waitForTransaction(transaction.hash)
-const result = receipt.logs.
-	map(entry => contract.interface.parseLog(entry)).
-	filter(entry => entry != null)[0];
-return result.values['0']
+    const transaction = await contract.pause();
+    const receipt = await provider.waitForTransaction(transaction.hash)
+    const result = receipt.logs.
+        map(entry => contract.interface.parseLog(entry)).
+        filter(entry => entry != null)[0];
+    return result.values['0']
 };  // callThroughGsn
 
 contract('BadgePaymaster', async accounts => {
@@ -28,15 +28,15 @@ ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 let roles;
 
- it ('Runs without GSN', async () => {
-  badges = await BadgeFactory.new(ZERO_ADDRESS, ZERO_ADDRESS,{from: owner});
+    it ('Runs without GSN', async () => {
+        badges = await BadgeFactory.new(ZERO_ADDRESS, ZERO_ADDRESS,{from: owner});
 
 	const ownerAddress = await badges.owner();
 	assert.equal(ownerAddress, owner);
 
- });
+    });
 
- it ('Runs with GSN (BadgeFactory)', async () => {
+    it ('Runs with GSN (BadgeFactory)', async () => {
 
 	let env = await GsnTestEnvironment.startGsn('localhost');
 	const { relayHubAddress, forwarderAddress } = env.deploymentResult;
@@ -55,9 +55,9 @@ let roles;
 	await paymaster.setTarget(badges.address);
 
 	const config = await resolveConfigurationGSN(web3provider, {
-	  verbose: false,
-		forwarderAddress,
-		paymasterAddress: paymaster.address,
+	    verbose: false,
+	    forwarderAddress,
+            paymasterAddress: paymaster.address,
 	});
 
 	let gsnProvider = new RelayProvider(web3provider, config);
@@ -69,11 +69,11 @@ let roles;
 	var result = await callThroughGsn(contract, provider);
 	assert.equal(result, owner);
 
- });
+     });
 
- it ('Runs with GSN (MakerBadges)', async () => {
+     it ('Runs with GSN (MakerBadges)', async () => {
 
-  let env = await GsnTestEnvironment.startGsn('localhost');
+        let env = await GsnTestEnvironment.startGsn('localhost');
 	const { relayHubAddress, forwarderAddress } = env.deploymentResult;
 	const web3provider = new Web3HttpProvider('http://localhost:8545');
 	const deploymentProvider= new ethers.providers.Web3Provider(web3provider)
@@ -90,9 +90,9 @@ let roles;
 	await paymaster.setTarget(maker.address);
 
 	const config = await resolveConfigurationGSN(web3provider, {
-	 verbose: false,
-	 forwarderAddress,
-	 paymasterAddress: paymaster.address,
+	   verbose: false,
+	   forwarderAddress,
+	   paymasterAddress: paymaster.address,
 	});
 
 	let gsnProvider = new RelayProvider(web3provider, config);
@@ -104,5 +104,5 @@ let roles;
 	var result = await callThroughGsn(contract, provider);
 	assert.equal(result, owner);
 
- });
+    });
 });
