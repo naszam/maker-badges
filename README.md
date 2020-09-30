@@ -162,9 +162,9 @@ Clone this GitHub repository.
      ```sh
      $ npm test test/MakerBadges.test.js test/BadgeFactory.test.js test/BadgeRoles.test.js
      ```
-   - Start ganache-cli, in a separate terminal, with the following command (global dependency):
+   - Start ganache-cli, in a separate terminal, with the following command (to overcome [signature mismatch](https://www.notion.so/signature-mismatch-when-using-Metamask-with-local-ganache-cbd0067f2f0c4822ac458016e20e0426)):
      ```sh
-     $ ganache-cli
+     $ net=`date "+%j%H%M%S"` ganache-cli --networkId $net --chainId $net
      ```
    - Test BadgePaymaster using Truffle Tests & OpenGSN Test Environment:
      ```sh
