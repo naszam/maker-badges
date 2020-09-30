@@ -1,26 +1,26 @@
 // test/BadgePaymaster.test.js
 
-const { RelayProvider, resolveConfigurationGSN } = require('@opengsn/gsn');
-const { GsnTestEnvironment } = require('@opengsn/gsn/dist/GsnTestEnvironment');
-const ethers = require('ethers')
+	const { RelayProvider, resolveConfigurationGSN } = require('@opengsn/gsn');
+	const { GsnTestEnvironment } = require('@opengsn/gsn/dist/GsnTestEnvironment');
+	const ethers = require('ethers')
 
-const Web3HttpProvider = require( 'web3-providers-http');
+	const Web3HttpProvider = require( 'web3-providers-http');
 
-const MakerBadges = artifacts.require('MakerBadges');
-const BadgeFactory = artifacts.require('BadgeFactory');
-const BadgePaymaster = artifacts.require('BadgePaymaster');
+	const MakerBadges = artifacts.require('MakerBadges');
+	const BadgeFactory = artifacts.require('BadgeFactory');
+	const BadgePaymaster = artifacts.require('BadgePaymaster');
 
 
-const callThroughGsn = async (contract, provider) => {
+	const callThroughGsn = async (contract, provider) => {
 	const transaction = await contract.pause();
 	const receipt = await provider.waitForTransaction(transaction.hash)
 	const result = receipt.logs.
 		map(entry => contract.interface.parseLog(entry)).
 		filter(entry => entry != null)[0];
 	return result.values['0']
-};  // callThroughGsn
+	};  // callThroughGsn
 
-contract('BadgePaymaster', async accounts => {
+	contract('BadgePaymaster', async accounts => {
 
 	const owner = accounts[0];
 
@@ -111,4 +111,4 @@ contract('BadgePaymaster', async accounts => {
 	});
 
 
-});
+	});
