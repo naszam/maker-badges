@@ -57,7 +57,7 @@ The contract also inherits OpenZeppelic AccessControl.sol, allowing the owner of
 In order to integrate OpenGSNv2, MakerBadges inherits BaseRelayRecipient and IKnowForwarderAddress and implement the following changes:  
 
 - msg.sender is replaced by **_msgSender()**.  
-- **trustedForwarder** is set in the constructor with the address deployed on [Kovan](https://docs.opengsn.org/gsn-provider/networks.html).    
+- **trustedForwarder** is set in the constructor with the address deployed on [Kovan](https://github.com/opengsn/gsn/releases/tag/v2.0.1).    
 - **_msgSender()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgSender().  
 - **_msgData()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgData().  
 
@@ -69,7 +69,7 @@ BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of th
 In order to integrate OpenGSNv2, BadgeRoles inherits BaseRelayRecipient and IKnowForwarderAddress and implement the following changes:  
 
 - msg.sender is replaced by **_msgSender()**.  
-- **trustedForwarder** is set in the constructor with the address deployed on [Kovan](https://docs.opengsn.org/gsn-provider/networks.html).    
+- **trustedForwarder** is set in the constructor with the address deployed on [Kovan](https://github.com/opengsn/gsn/releases/tag/v2.0.1).    
 - **_msgSender()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgSender().  
 - **_msgData()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgData().  
 
