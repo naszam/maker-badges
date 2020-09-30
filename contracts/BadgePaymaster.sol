@@ -61,7 +61,7 @@ contract BadgePaymaster is BasePaymaster {
         emit PostRelayed(abi.decode(context, (uint)));
     }
 
-    function withdrawAll(address payable destination) public {
+    function withdrawAll(address payable destination) public onlyOwner {
         uint256 amount = relayHub.balanceOf(address(this));
         withdrawRelayHubDepositTo(amount, destination);
     }
