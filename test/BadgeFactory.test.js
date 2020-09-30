@@ -211,7 +211,7 @@ const bidId = 52;
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
-
+/* In order to test flipper check https://changelog.makerdao.com/releases/mainnet/latest/ and set bidId to last kick (before deal) and unlock high bidder (guy) address
       it('should allow redeemers checked onchain for flipper to activate a badge', async function () {
         await maker.flipperChallenge(templateId, bidId, { from: flip });
         await factory.activateBadge(proof, templateId, tokenURI, { from: flip });
@@ -219,7 +219,7 @@ const bidId = 52;
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
-
+*/
       it('should allow redeemers checked offchain to activate a badge', async function () {
         await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
         const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });

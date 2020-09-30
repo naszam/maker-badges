@@ -113,6 +113,8 @@ const bidId = 52;
       });
   });
 
+/* In order to test flipper check https://changelog.makerdao.com/releases/mainnet/latest/ and set bidId to last kick (before deal) and unlock high bidder (guy) address
+
   // Check flipperChallenge() for success when a caller is the high bidder in the current bid in eth collateral auctions
   // Check flipperChallenge() for sucessfully emit event when the caller is checked for flipper
   // Check flipperChallenge() for failure when a random address is not the high bidder in the current bid in eth collateral auctions
@@ -132,6 +134,8 @@ const bidId = 52;
         await expectRevert(maker.flipperChallenge(templateId, bidId, { from: random }), 'MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions');
       });
   });
+
+*/
 
   // Check addAdmin() for success when the default admin is adding a new admin
   // Check addAdmin() for sucessfully emit event when the admin is added
