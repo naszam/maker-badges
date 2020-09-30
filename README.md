@@ -52,12 +52,26 @@ The functions to check on-chain for activities on Maker Ecosystem will keep trac
 MakerBadges, let the admin to set (via **setRootHashes()**) an array of root hashes, called **roots**, ordered by template Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to activate Badge.
 The getter function **roots(uint templateId)** is then linked to BadgeFactory and checked via OpenZeppelin MerkleProof.sol **verify()** function.
 
-The contract also inherits OpenZeppelic AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and Amdin, to add an Admin via **addAdmin()** and remove an Admin via **removeAdmin()** functions as well as to **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
+The contract also inherits OpenZeppelic AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and Amdin, to add an Admin via **addAdmin()** and remove an Admin via **removeAdmin()** functions as well as to **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).  
+
+In order to integrate OpenGSNv2, MakerBadges inherits BaseRelayRecipient and IKnowForwarderAddress and implement the following changes:  
+
+- msg.sender is replaced by **_msgSender()**.  
+- **trustedForwarder** is set in the constructor with the address deployed on [Kovan](https://docs.opengsn.org/gsn-provider/networks.html).    
+- **_msgSender()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgSender().  
+- **_msgData()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgData().  
 
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
 > BadgeRoles Access Management for Default Admin, Templater and Pauser Role
 
 BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater, to add a Templater via **addTemplater()** and remove a Templater via **removeTemplater()** functions.  
+
+In order to integrate OpenGSNv2, BadgeRoles inherits BaseRelayRecipient and IKnowForwarderAddress and implement the following changes:  
+
+- msg.sender is replaced by **_msgSender()**.  
+- **trustedForwarder** is set in the constructor with the address deployed on [Kovan](https://docs.opengsn.org/gsn-provider/networks.html).    
+- **_msgSender()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgSender().  
+- **_msgData()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgData().  
 
 ### [BadgeFactory](./contracts/BadgeFactory.sol)
 > BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
@@ -74,6 +88,11 @@ BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template 
 
 It also inherits ERC721, where the **_transfer()** has been overridden to implement the non-transferable feature, allowing redeemers checked on-chain/offchain to redeem a Badge for a specific activity on MakerDAO ecosystem via **activateBadge()** that will verify if the caller is a redeemer and then will allow the caller to mint a new Non-transferable Badge with tokenURI stored on IPFS (eg. "ipfs.json").  
 To avoid that a redeemer could activate the same Badge twice or more, **redeemed** is introduced to check if a Badge is already activeted and revert the transaction.  
+
+In order to integrate OpenGSNv2, BadgeFactory inherits BadgeRoles and implement the following changes:  
+
+**_msgSender()** function is added to override OpenZeppelin Context and BadgeRoles _msgSender().    
+**_msgData()** function is added to override OpenZeppelin Context and BadgeRoles _msgData().  
 
 During deployment the contract sets the following ERC721 metadata:
 - name: "MakerBadges"
