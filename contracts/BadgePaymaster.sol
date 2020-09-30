@@ -34,13 +34,14 @@ contract BadgePaymaster is BasePaymaster {
         bytes calldata approvalData,
         uint256 maxPossibleGas
     )
+        external
         override
         virtual
-        external
         returns (bytes memory context, bool)
     {
-        (signature, approvalData, maxPossibleGas);
+        (signature);
         _verifyForwarder(relayRequest);
+        (approvalData, maxPossibleGas);
         require(validTargets[relayRequest.request.to], "BadgePaymaster: not a registered target");
         emit PreRelayed(now);
         return (abi.encode(now), false);
