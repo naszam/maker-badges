@@ -1,7 +1,7 @@
 {
   "name": "maker-badges",
   "version": "0.6.0",
-  "description": "Non-transferable Badges for Maker Ecosystem Activity, issue #537",
+  "description": "Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
@@ -32,12 +32,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/naszam/insigniadao.git"
+    "url": "git+https://github.com/naszam/maker-badges.git"
   },
-  "author": "Nazzareno Massari, Scott Herren",
-  "license": "GPL-3.0",
+  "author": "Nazzareno Massari",
+  "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/naszam/insigniadao/issues"
+    "url": "https://github.com/naszam/maker-badges/issues"
   },
-  "homepage": "https://github.com/naszam/insigniadao#readme"
+  "homepage": "https://github.com/naszam/maker-badges#readme"
 }
