@@ -175,7 +175,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @dev Check if the tokenId exists
     /// @param tokenId Token Id of the Badge
     /// @return Template Id associated with the tokenId
-    function getBadgeTemplate(uint256 tokenId) public view whenNotPaused returns (uint256) {
+    function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256) {
         require(_exists(tokenId), "BadgeFactory: no token with that id");
         return _tokenTemplates[tokenId];
     }
