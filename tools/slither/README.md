@@ -4,7 +4,7 @@
 
 - Install viewer for dot graphs:
 ```sh
-$ apt install xdot
+$ sudo apt-get install xdot
 ```
 
 - Visualize Maker Badges Inheritance Graph:
