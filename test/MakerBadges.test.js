@@ -45,10 +45,6 @@ const bidId = 52;
 
   describe('Setup', async function () {
 
-      it('the deployer is the owner', async function () {
-        expect(await maker.owner()).to.equal(owner);
-      });
-
       it('owner has the default admin role', async function () {
         expect(await maker.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
         expect(await maker.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);

@@ -30,10 +30,6 @@ const forwarder = '0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B';
 
   describe('Setup', async function () {
 
-      it('the deployer is the owner', async function () {
-        expect(await roles.owner()).to.equal(owner);
-      });
-
       it('owner has the default admin role', async function () {
         expect(await roles.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
         expect(await roles.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);

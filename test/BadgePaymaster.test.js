@@ -31,9 +31,8 @@ let roles;
     it ('Runs without GSN', async () => {
         badges = await BadgeFactory.new(ZERO_ADDRESS, ZERO_ADDRESS,{from: owner});
 
-	const ownerAddress = await badges.owner();
-	assert.equal(ownerAddress, owner);
-
+	      const receipt = await badges.pause();
+	      assert.equal(receipt.logs[0].event, 'Paused');
     });
 
     it ('Runs with GSN (BadgeFactory)', async () => {
