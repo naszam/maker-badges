@@ -11,7 +11,6 @@ pragma experimental ABIEncoderV2;
 /// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin Library is used for secure contract development
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
@@ -42,7 +41,7 @@ interface FlipperLike {
     function bids(uint256) external view returns (Bid memory);
 }
 
-contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IKnowForwarderAddress {
+contract MakerBadges is AccessControl, Pausable, BaseRelayRecipient, IKnowForwarderAddress {
 
     /// @dev Libraries
     using SafeMath for uint256;
@@ -66,10 +65,10 @@ contract MakerBadges is Ownable, AccessControl, Pausable, BaseRelayRecipient, IK
     event FlipperChecked(address guy);
 
     constructor(address forwarder_, address chai_, address chief_, address flipper_) public {
-        _setupRole(DEFAULT_ADMIN_ROLE, owner());
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
-        _setupRole(ADMIN_ROLE, owner());
-        _setupRole(PAUSER_ROLE, owner());
+        _setupRole(ADMIN_ROLE, msg.sender);
+        _setupRole(PAUSER_ROLE, msg.sender);
 
         /// @dev OpenGSN Trusted Forwarder
         trustedForwarder = forwarder_;

@@ -69,7 +69,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @dev Update the baseURI specified in the constructor
     /// @param baseURI New baseURI
     /// @return True if the new baseURI is set
-    function setBaseURI(string calldata baseURI) external onlyOwner returns (bool) {
+    function setBaseURI(string calldata baseURI) external onlyAdmin returns (bool) {
         _setBaseURI(baseURI);
         return true;
     }

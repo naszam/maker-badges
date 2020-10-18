@@ -9,23 +9,22 @@ pragma solidity 0.6.12;
 /// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin Library is used for secure contract development
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
 import "@opengsn/gsn/contracts/interfaces/IKnowForwarderAddress.sol";
 
-contract BadgeRoles is Ownable, AccessControl, Pausable, BaseRelayRecipient, IKnowForwarderAddress {
+contract BadgeRoles is AccessControl, Pausable, BaseRelayRecipient, IKnowForwarderAddress {
 
     /// @dev Roles
     bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     constructor(address forwarder_) public {
-        _setupRole(DEFAULT_ADMIN_ROLE, owner());
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
-        _setupRole(TEMPLATER_ROLE, owner());
-        _setupRole(PAUSER_ROLE, owner());
+        _setupRole(TEMPLATER_ROLE, msg.sender);
+        _setupRole(PAUSER_ROLE, msg.sender);
 
         /// @dev OpenGSN Trusted Forwarder
         trustedForwarder = forwarder_;
