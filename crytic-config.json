@@ -8,7 +8,7 @@
         "enabled": true,
         "commands": [
             {
-                "command": ["npm", "test", "test/MakerBadges", "test/BadgeFactory", "test/BadgeRoles"]
+                "command": ["npm", "test", "test/MakerBadges.test.js", "test/BadgeFactory.test.js", "test/BadgeRoles.test.js"]
             }
         ]
     },
