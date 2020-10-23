@@ -146,6 +146,9 @@ Clone this GitHub repository.
     $ git clone git://github.com/dmuhs/mythx-cli && cd mythx-cli
     $ sudo python setup.py install
     ```
+    - Echidna (optional):  
+    [binaries](https://github.com/crytic/echidna/releases)  
+    
 ## Running the project with local test network (ganache-cli)
 
    - Compile the smart contracts using Truffle with the following command (global dependecy):
@@ -178,7 +181,10 @@ Clone this GitHub repository.
      ```sh
      $ mythx analyze
      ```
-
+   - Analyze the smart contracts using Echidna with the following command (optional):
+   ```sh
+   $ echidna-test . --contract CryticTestBadgeRoles --config echidna_crytic_default.yaml
+   ```
 Deploy
 ============
 ## Deploy on Kovan Testnet
