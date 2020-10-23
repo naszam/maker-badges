@@ -14,11 +14,11 @@ contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
 
     constructor() public {
         _setupRole(PAUSER_ROLE, crytic_owner);
-        paused();
+        pause();
     }
 
     function crytic_no_transfer() public view returns(bool){
-        return is_paused == true;
+        return paused() == true;
     }
 
 }
