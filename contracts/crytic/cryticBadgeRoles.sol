@@ -22,4 +22,12 @@ contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
         return hasRole(DEFAULT_ADMIN_ROLE, crytic_owner);
     }
 
+    function crytic_templater_constant() public returns(bool){
+        return hasRole(TEMPLATER_ROLE, crytic_owner);
+    }
+
+    function crytic_pauser_constant() public returns(bool){
+        return hasRole(PAUSER_ROLE, crytic_owner);
+    }
+
 }
