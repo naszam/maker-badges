@@ -13,8 +13,7 @@ contract CryticInterface{
 contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
 
     constructor() public {
-        _setupRole(PAUSER_ROLE, crytic_owner);
-        _paused = true;
+        pause();
     }
 
     function crytic_no_transfer() public view returns(bool){
