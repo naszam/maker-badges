@@ -16,6 +16,6 @@
         "target": "."
     },
     "echidna": {
-        "contract": ""
+        "contract": "CryticTestBadgeRoles"
     }
 }
