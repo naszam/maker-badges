@@ -18,7 +18,7 @@ contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
     {
     }
 
-    function crytic_default_admin_constant() public view returns(bool){
+    function crytic_default_admin_constant() public returns(bool){
         return hasRole(DEFAULT_ADMIN_ROLE, crytic_owner);
     }
 
