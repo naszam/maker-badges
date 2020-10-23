@@ -1,5 +1,5 @@
 {
-    "detectors_to_exclude": "assembly,low-level-calls,pragma,naming-convention,solc-version,redundant-statements,shadowing-local,uninitialized-return,empty-functions,external-function",
+    "detectors_to_exclude": "assembly,low-level-calls,pragma,naming-convention,solc-version,redundant-statements,shadowing-local,uninitialized-return,empty-functions,external-function,unused-return",
     "exclude_informational": false,
     "exclude_low": false,
     "exclude_medium": false,
