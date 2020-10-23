@@ -12,12 +12,8 @@ contract CryticInterface{
 
 contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
 
-    constructor() public {
-        pause();
-    }
-
-    function crytic_no_transfer() public view returns(bool){
-        return paused() == true;
+    function crytic_default_admin_constant() public view returns(bool){
+        return hasRole(DEFAULT_ADMIN_ROLE, crytic_owner);
     }
 
 }
