@@ -12,8 +12,4 @@ maker: {
   flipper: '0x750295A8db0580F32355f97de7918fF538c818F1',
 },
 
-opengsn: {
-   trustedForwarder: '0x0842Ad6B8cb64364761C7c170D0002CC56b1c498',
-}
-
 };
