@@ -54,24 +54,10 @@ The getter function **roots(uint templateId)** is then linked to BadgeFactory an
 
 The contract also inherits OpenZeppelic AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and Amdin, to add an Admin via **addAdmin()** and remove an Admin via **removeAdmin()** functions as well as to **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).  
 
-In order to integrate OpenGSNv2, MakerBadges inherits BaseRelayRecipient and IKnowForwarderAddress and implement the following changes:  
-
-- msg.sender is replaced by **_msgSender()**.  
-- **trustedForwarder** is set in the constructor with the address deployed on [Kovan](https://github.com/opengsn/gsn/releases/tag/v2.0.1).    
-- **_msgSender()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgSender().  
-- **_msgData()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgData().  
-
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
 > BadgeRoles Access Management for Default Admin, Templater and Pauser Role
 
 BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater, to add a Templater via **addTemplater()** and remove a Templater via **removeTemplater()** functions.  
-
-In order to integrate OpenGSNv2, BadgeRoles inherits BaseRelayRecipient and IKnowForwarderAddress and implement the following changes:  
-
-- msg.sender is replaced by **_msgSender()**.  
-- **trustedForwarder** is set in the constructor with the address deployed on [Kovan](https://github.com/opengsn/gsn/releases/tag/v2.0.1).    
-- **_msgSender()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgSender().  
-- **_msgData()** function is added to override OpenZeppelin Context and OpenGSN BaseRelayRecipient _msgData().  
 
 ### [BadgeFactory](./contracts/BadgeFactory.sol)
 > BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
@@ -89,27 +75,10 @@ BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template 
 It also inherits ERC721, where the **_transfer()** has been overridden to implement the non-transferable feature, allowing redeemers checked on-chain/offchain to redeem a Badge for a specific activity on MakerDAO ecosystem via **activateBadge()** that will verify if the caller is a redeemer and then will allow the caller to mint a new Non-transferable Badge with tokenURI stored on IPFS (eg. "ipfs.json").  
 To avoid that a redeemer could activate the same Badge twice or more, **redeemed** is introduced to check if a Badge is already activeted and revert the transaction.  
 
-In order to integrate OpenGSNv2, BadgeFactory inherits BadgeRoles and implement the following changes:  
-
-**_msgSender()** function is added to override OpenZeppelin Context and BadgeRoles _msgSender().    
-**_msgData()** function is added to override OpenZeppelin Context and BadgeRoles _msgData().  
-
 During deployment the contract sets the following ERC721 metadata:
 - name: "MakerBadges"
 - symbol: "MAKER"
 - baseURI: "https://badges.makerdao.com/token/"  
-
-### [BadgePaymaster](./contracts/BadgePaymaster.sol)
-> BadgePaymaster to pay for user's meta-transactions  
-
-In order to pay for user's meta-transaction BadgePaymaster inherits OpenGSNv2 BasePaymaster and IForwarder and implement the following functions:
-
-- **preRelayedCall()**
-- **postRelayedCall()**
-
-Once deployed, BadgePaymaster owner need to set the RelayHub contract address via **setRelayHub()** as well as the Trusted Forwarder via **setTrustedForwarder** and specify the target contracts to pay gas for via **setTarget()**.
-
-Finally, the owner just need to fund the contract sending ether to BadgePaymaster contract address and the balance will be automatically updated in RelayHub contract. The owner can at any time withdraw the paymaster balance via **withdrawAll()**.
 
 Setup
 ============
@@ -121,7 +90,7 @@ Clone this GitHub repository.
   - Local dependencies:
     - Truffle
     - Ganache CLI
-    - OpenZeppelin Contracts v3.0.1
+    - OpenZeppelin Contracts 
     - Truffle HD Wallet Provider
     - Truffle-Flattener
     ```sh
@@ -163,15 +132,7 @@ Clone this GitHub repository.
      - Add Infura Key in ```config.js```
      - Run the following command:
      ```sh
-     $ npm test test/MakerBadges.test.js test/BadgeFactory.test.js test/BadgeRoles.test.js
-     ```
-   - Start ganache-cli, in a separate terminal, with the following command (to overcome [signature mismatch](https://www.notion.so/signature-mismatch-when-using-Metamask-with-local-ganache-cbd0067f2f0c4822ac458016e20e0426)):
-     ```sh
-     $ net=`date "+%j%H%M%S"` ganache-cli --networkId $net --chainId $net
-     ```
-   - Test BadgePaymaster using Truffle Tests & OpenGSN Test Environment:
-     ```sh
-     $ truffle test test/BadgePaymaster.test.js
+     $ npm test
      ```
    - Analyze the smart contracts using Slither with the following command (optional):
      ```sh
@@ -215,9 +176,7 @@ Deploy
 
 ## Project deployed on Kovan
 [MakerBadges](https://kovan.etherscan.io/address/0x1E7062E43cDA1d5Ab1fA2F95a55F843658B41946)  
-[BadgeFactory](https://kovan.etherscan.io/address/0xCF5A613CC1774eE6fCc171ff00673bC74e6F6D81)  
-[BadgePaymaster](https://kovan.etherscan.io/address/0x3823aFCC7F008999E8F9d05606205B1974bc7F13)  
-
+[BadgeFactory](https://kovan.etherscan.io/address/0xCF5A613CC1774eE6fCc171ff00673bC74e6F6D81)    
 
 Interface
 ============
