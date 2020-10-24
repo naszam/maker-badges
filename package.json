@@ -20,7 +20,6 @@
     "truffle-flattener": "^1.5.0"
   },
   "devDependencies": {
-    "@opengsn/gsn": "^2.0.1",
     "@openzeppelin/test-environment": "^0.1.5",
     "@openzeppelin/test-helpers": "^0.5.7",
     "chai": "^4.2.0",
