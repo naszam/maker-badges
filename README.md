@@ -143,9 +143,9 @@ Clone this GitHub repository.
      $ mythx analyze
      ```
    - Analyze the smart contracts using Echidna with the following command (optional):
-   ```sh
-   $ echidna-test . --contract CryticTestBadgeRoles --config echidna_crytic_default.yaml
-   ```
+     ```sh
+     $ echidna-test . --contract CryticTestBadgeRoles --config echidna_crytic_default.yaml
+     ```
 Deploy
 ============
 ## Deploy on Kovan Testnet
