@@ -5,9 +5,9 @@ pragma solidity 0.6.12;
 import "../BadgeRoles.sol";
 
 contract CryticInterface{
-    address internal crytic_owner = address(0x41414141);
-    address internal crytic_user = address(0x42424242);
-    address internal crytic_attacker = address(0x43434343);
+    address constant internal crytic_owner = address(0x41414141);
+    //address constant internal crytic_user = address(0x42424242);
+    //address constant internal crytic_attacker = address(0x43434343);
 }
 
 contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
