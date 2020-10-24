@@ -86,7 +86,7 @@ contract MakerBadges is AccessControl, Pausable {
 
     /// @dev Modifiers
     modifier onlyAdmin() {
-        require(hasRole(ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not an admin");
+        require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
         _;
     }
 
@@ -103,11 +103,11 @@ contract MakerBadges is AccessControl, Pausable {
     /// @dev Keeps track of the address of the caller if successful
     /// @return True if the caller successfully checked for activity on Chai
     function chaiChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-        require(chai.dai(_msgSender()) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
-        if (!redeemers[templateId].contains(_msgSender())) {
-            require(redeemers[templateId].add(_msgSender()));
+        require(chai.dai(msg.sender) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
+        if (!redeemers[templateId].contains(msg.sender)) {
+            require(redeemers[templateId].add(msg.sender));
         }
-        emit ChaiChecked(_msgSender());
+        emit ChaiChecked(msg.sender);
         return true;
     }
 
@@ -116,11 +116,11 @@ contract MakerBadges is AccessControl, Pausable {
     /// @dev Keeps track of the address of the caller if successful
     /// @return True if the caller successfully checked for activity on DSChief
     function chiefChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-        require(chief.votes(_msgSender()) != 0x00, "MakerBadges: caller is not voting in an executive spell");
-        if (!redeemers[templateId].contains(_msgSender())) {
-            require(redeemers[templateId].add(_msgSender()));
+        require(chief.votes(msg.sender) != 0x00, "MakerBadges: caller is not voting in an executive spell");
+        if (!redeemers[templateId].contains(msg.sender)) {
+            require(redeemers[templateId].add(msg.sender));
         }
-        emit DSChiefChecked(_msgSender());
+        emit DSChiefChecked(msg.sender);
         return true;
     }
 
@@ -130,13 +130,13 @@ contract MakerBadges is AccessControl, Pausable {
     /// @return True if the caller successfully checked for activity on Flipper
     function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused returns (bool) {
         require(
-            flipper.bids(bidId).guy == _msgSender(),
+            flipper.bids(bidId).guy == msg.sender,
             "MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions"
         );
-        if (!redeemers[templateId].contains(_msgSender())) {
-            require(redeemers[templateId].add(_msgSender()));
+        if (!redeemers[templateId].contains(msg.sender)) {
+            require(redeemers[templateId].add(msg.sender));
         }
-        emit FlipperChecked(_msgSender());
+        emit FlipperChecked(msg.sender);
         return true;
     }
 
@@ -153,7 +153,7 @@ contract MakerBadges is AccessControl, Pausable {
     /// @param account Address of the new Admin
     /// @return True if the account address is added as Admin
     function addAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
         require(!hasRole(ADMIN_ROLE, account), "MakerBadges: account is already an admin");
         grantRole(ADMIN_ROLE, account);
         return true;
@@ -164,7 +164,7 @@ contract MakerBadges is AccessControl, Pausable {
     /// @param account Address of the Admin
     /// @return True if the account address is removed as Admin
     function removeAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
         require(hasRole(ADMIN_ROLE, account), "MakerBadges: account is not an admin");
         revokeRole(ADMIN_ROLE, account);
         return true;
@@ -173,14 +173,14 @@ contract MakerBadges is AccessControl, Pausable {
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges: must have pauser role to pause");
+        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to pause");
         _pause();
     }
 
     /// @notice Unpause all the functions
     /// @dev The caller must have the 'PAUSER_ROLE'
     function unpause() external {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to unpause");
         _unpause();
     }
 }
