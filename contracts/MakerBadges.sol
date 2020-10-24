@@ -15,8 +15,6 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
-import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
-import "@opengsn/gsn/contracts/interfaces/IKnowForwarderAddress.sol";
 
 interface ChaiLike {
     function dai(address usr) external returns (uint256);
@@ -41,7 +39,7 @@ interface FlipperLike {
     function bids(uint256) external view returns (Bid memory);
 }
 
-contract MakerBadges is AccessControl, Pausable, BaseRelayRecipient, IKnowForwarderAddress {
+contract MakerBadges is AccessControl, Pausable {
 
     /// @dev Libraries
     using SafeMath for uint256;
@@ -64,14 +62,11 @@ contract MakerBadges is AccessControl, Pausable, BaseRelayRecipient, IKnowForwar
     event DSChiefChecked(address guy);
     event FlipperChecked(address guy);
 
-    constructor(address forwarder_, address chai_, address chief_, address flipper_) public {
+    constructor(address chai_, address chief_, address flipper_) public {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
         _setupRole(ADMIN_ROLE, msg.sender);
         _setupRole(PAUSER_ROLE, msg.sender);
-
-        /// @dev OpenGSN Trusted Forwarder
-        trustedForwarder = forwarder_;
 
         /// @dev CHAI Address
         chai = ChaiLike(chai_);
@@ -187,27 +182,5 @@ contract MakerBadges is AccessControl, Pausable, BaseRelayRecipient, IKnowForwar
     function unpause() external {
         require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges: must have pauser role to unpause");
         _unpause();
-    }
-
-    function versionRecipient() external virtual view override returns (string memory) {
-        return "0.6.0";
-    }
-
-    function getTrustedForwarder() external view override returns (address) {
-        return trustedForwarder;
-    }
-
-    /// @notice OpenGSN _msgSender()
-    /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
-    /// @return _msgSender() after relay call
-    function _msgSender() internal view override(Context, BaseRelayRecipient) returns (address payable) {
-          return BaseRelayRecipient._msgSender();
-    }
-
-    /// @notice OpenGSN _msgData()
-    /// @dev override _msgData() in OZ Context.sol and BaseRelayRecipient.sol
-    /// @return _msgData() after relay call
-    function _msgData() internal view override(Context, BaseRelayRecipient) returns (bytes memory) {
-          return BaseRelayRecipient._msgData();
     }
 }

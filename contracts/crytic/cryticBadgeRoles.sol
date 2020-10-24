@@ -13,7 +13,6 @@ contract CryticInterface{
 contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
 
     constructor ()
-        BadgeRoles(0x0842Ad6B8cb64364761C7c170D0002CC56b1c498)
         public
     {
     }

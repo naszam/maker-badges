@@ -50,10 +50,9 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     event TemplateUpdated(uint256 templateId, string name, string description, string image);
     event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);
 
-    constructor(address forwarder_, address maker_)
+    constructor(address maker_)
         public
         ERC721("MakerBadges", "MAKER")
-        BadgeRoles(forwarder_)
     {
         _setBaseURI("https://badges.makerdao.com/token/");
         maker = MakerBadgesLike(maker_);
@@ -154,20 +153,20 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         returns (bool)
     {
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
-        require(redeemed[templateId][_msgSender()] == 0, "BadgeFactory: badge already activated!");
+        require(redeemed[templateId][msg.sender] == 0, "BadgeFactory: badge already activated!");
         require(
-            maker.verify(templateId, _msgSender()) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(_msgSender()))),
+            maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))),
             "BadgeFactory: caller is not a redeemer"
         );
 
         /// @dev Increase the quantities
         _tokenTemplates[_tokenIdTracker.current()] = templateId;
         _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-        redeemed[templateId][_msgSender()] = 1;
+        redeemed[templateId][msg.sender] = 1;
 
-        require(_mintWithTokenURI(_msgSender(), tokenURI), "BadgeFactory: badge not minted");
+        require(_mintWithTokenURI(msg.sender, tokenURI), "BadgeFactory: badge not minted");
 
-        emit BadgeActivated(_msgSender(), templateId, tokenURI);
+        emit BadgeActivated(msg.sender, templateId, tokenURI);
         return true;
     }
 
@@ -187,20 +186,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         return _templateQuantities[templateId];
-    }
-
-    /// @notice OpenGSN _msgSender()
-    /// @dev override _msgSender() in OZ Context.sol and BadgeRoles.sol
-    /// @return _msgSender() after relay call
-    function _msgSender() internal view override(Context, BadgeRoles) returns (address payable) {
-          return BaseRelayRecipient._msgSender();
-    }
-
-    /// @notice OpenGSN _msgData()
-    /// @dev override _msgData() in OZ Context.sol and BadgeRoles.sol
-    /// @return _msgData() after relay call
-    function _msgData() internal view override(Context, BadgeRoles) returns (bytes memory) {
-          return BaseRelayRecipient._msgData();
     }
 
     /// @notice ERC721 _transfer() Disabled

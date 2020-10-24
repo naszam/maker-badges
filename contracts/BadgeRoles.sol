@@ -11,23 +11,19 @@ pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
-import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
-import "@opengsn/gsn/contracts/interfaces/IKnowForwarderAddress.sol";
 
-contract BadgeRoles is AccessControl, Pausable, BaseRelayRecipient, IKnowForwarderAddress {
+contract BadgeRoles is AccessControl, Pausable {
 
     /// @dev Roles
     bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    constructor(address forwarder_) public {
+    constructor() public {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
         _setupRole(TEMPLATER_ROLE, msg.sender);
         _setupRole(PAUSER_ROLE, msg.sender);
 
-        /// @dev OpenGSN Trusted Forwarder
-        trustedForwarder = forwarder_;
     }
 
     /// @dev Modifiers
@@ -75,27 +71,5 @@ contract BadgeRoles is AccessControl, Pausable, BaseRelayRecipient, IKnowForward
     function unpause() external {
         require(hasRole(PAUSER_ROLE, _msgSender()), "BadgeFactory: must have pauser role to unpause");
         _unpause();
-    }
-
-    function versionRecipient() external virtual view override returns (string memory) {
-        return "0.6.0";
-    }
-
-    function getTrustedForwarder() external view override returns (address) {
-        return trustedForwarder;
-    }
-
-    /// @notice OpenGSN _msgSender()
-    /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
-    /// @return _msgSender() after relay call
-    function _msgSender() internal virtual view override(Context, BaseRelayRecipient) returns (address payable) {
-          return BaseRelayRecipient._msgSender();
-    }
-
-    /// @notice OpenGSN _msgData()
-    /// @dev override _msgData() in OZ Context.sol and BaseRelayRecipient.sol
-    /// @return _msgData() after relay call
-    function _msgData() internal virtual view override(Context, BaseRelayRecipient) returns (bytes memory) {
-          return BaseRelayRecipient._msgData();
     }
 }
