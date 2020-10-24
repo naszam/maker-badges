@@ -24,9 +24,6 @@ const chai = '0x06AF07097C9Eeb7fD685c692751D5C66dB49c215';
 const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5';
 const flipper = '0xF32836B9E1f47a0515c6Ec431592D5EbC276407f';
 
-// https://docs.opengsn.org/gsn-provider/networks.html
-const forwarder = '0x6453D37248Ab2C16eBd1A8f782a2CBC65860E60B';
-
 // mainnet redeemer addresses
 const usr = '0xA25e31D8e4ED3e959898a089Dc2624F14a7fB738';
 const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
@@ -40,7 +37,7 @@ const bidId = 52;
   // Check that the owner is set as the only templater when the contract is deployed
   // Check that the owner is set as the only pauser when the contract is deployed
   beforeEach(async function () {
-    maker = await MakerBadges.new(forwarder, chai, chief, flipper, { from: owner });
+    maker = await MakerBadges.new(chai, chief, flipper, { from: owner });
   });
 
   describe('Setup', async function () {
