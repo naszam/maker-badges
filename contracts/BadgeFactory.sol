@@ -68,7 +68,8 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @dev Update the baseURI specified in the constructor
     /// @param baseURI New baseURI
     /// @return True if the new baseURI is set
-    function setBaseURI(string calldata baseURI) external onlyAdmin returns (bool) {
+    function setBaseURI(string calldata baseURI) external returns (bool) {
+        require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
         _setBaseURI(baseURI);
         return true;
     }
@@ -83,10 +84,10 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @return True If the new Template is Created
     function createTemplate(string calldata name, string calldata description, string calldata image)
         external
-        onlyTemplater
         whenNotPaused
         returns (bool)
     {
+        require(hasRole(TEMPLATER_ROLE, _msgSender()), "BadgeFactory: caller is not a template owner");
         templates[_templateIdTracker.current()].name = name;
         templates[_templateIdTracker.current()].description = description;
         templates[_templateIdTracker.current()].image = image;
@@ -106,10 +107,10 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @return True If the new Template is Updated
     function updateTemplate(uint256 templateId, string calldata name, string calldata description, string calldata image)
         external
-        onlyTemplater
         whenNotPaused
         returns (bool)
     {
+        require(hasRole(TEMPLATER_ROLE, _msgSender()), "BadgeFactory: caller is not a template owner");
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         templates[templateId].name = name;
         templates[templateId].description = description;
