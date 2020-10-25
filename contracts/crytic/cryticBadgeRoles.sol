@@ -16,12 +16,17 @@ contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
         public
     {
       _setupRole(DEFAULT_ADMIN_ROLE, crytic_owner);
+      _setupRole(ADMIN_ROLE, crytic_owner);
       _setupRole(TEMPLATER_ROLE, crytic_owner);
       _setupRole(PAUSER_ROLE, crytic_owner);
     }
 
     function crytic_default_admin_constant() external view returns(bool){
         return hasRole(DEFAULT_ADMIN_ROLE, crytic_owner);
+    }
+
+    function crytic_admin_constant() external view returns(bool){
+        return hasRole(ADMIN_ROLE, crytic_owner);
     }
 
     function crytic_templater_constant() external view returns(bool){
