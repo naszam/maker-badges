@@ -15,6 +15,7 @@ contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
     constructor ()
         public
     {
+      _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
     function crytic_default_admin_constant() public view returns(bool){
