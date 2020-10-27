@@ -100,6 +100,16 @@ const bidId = 52;
         expect(await maker.verify(templateId, exec, {from: random})).to.equal(true);
       });
 
+      it('caller is voting in an executive spell via proxy', async function () {
+        await maker.chiefChallenge(templateId, proxy, { from: exec_proxy });
+        expect(await maker.verify(templateId, exec_proxy, {from: random})).to.equal(true);
+      });
+
+      it('caller is voting in an executive spell via proxy2', async function () {
+        await maker.chiefChallenge(templateId, proxy2, { from: exec_proxy2 });
+        expect(await maker.verify(templateId, exec_proxy2, {from: random})).to.equal(true);
+      });
+
       it('should emit the appropriate event when the caller is checked for chief', async function () {
         const receipt = await maker.chiefChallenge(templateId, proxy, { from: exec });
         expectEvent(receipt, 'DSChiefChecked', { guy: exec });
