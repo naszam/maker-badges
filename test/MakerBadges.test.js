@@ -132,7 +132,7 @@ const bidId = 52;
       });
 
       it('should revert by passing address zero as proxy when called by proxy user', async function () {
-        await expectRevert.unspecified(maker.chiefChallenge(templateId, ZERO_ADDRESS, { from: exec_proxy }));
+        await expectRevert(maker.chiefChallenge(templateId, ZERO_ADDRESS, { from: exec_proxy }), 'MakerBadges: caller is not voting in an executive spell');
       });
   });
 
