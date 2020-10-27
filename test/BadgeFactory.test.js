@@ -51,10 +51,12 @@ const chai = '0x06AF07097C9Eeb7fD685c692751D5C66dB49c215';
 // https://changelog.makerdao.com/releases/mainnet/1.1.1/contracts.json
 const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5';
 const flipper = '0xF32836B9E1f47a0515c6Ec431592D5EbC276407f';
+const proxy = '0x0b65234703A6c2957fCFaff30531ABBabF581C8e';
 
 // mainnet redeemer addresses
 const usr = '0xA25e31D8e4ED3e959898a089Dc2624F14a7fB738';
 const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
+const exec_proxy = '0xB190BC922e8fbEc4DD673deE6C0D86F0e4B73f09';
 const flip = '0xF3d18dB1B4900bAd51b6106F757515d1650A5894';
 
 const bidId = 52;
@@ -198,12 +200,21 @@ const bidId = 52;
       });
 
       it('should allow redeemers checked onchain for chief to activate a badge', async function () {
-        await maker.chiefChallenge(templateId, { from: exec });
+        await maker.chiefChallenge(templateId, proxy, { from: exec });
         await factory.activateBadge(proof, templateId, tokenURI, { from: exec });
         const tokenId = await factory.tokenOfOwnerByIndex(exec, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
+
+      it('should allow redeemers checked onchain for chief via proxy to activate a badge', async function () {
+        await maker.chiefChallenge(templateId, proxy, { from: exec_proxy });
+        await factory.activateBadge(proof, templateId, tokenURI, { from: exec_proxy });
+        const tokenId = await factory.tokenOfOwnerByIndex(exec_proxy, index1, { from: random });
+        expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
+        expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
+      });
+
 /* In order to test flipper check https://changelog.makerdao.com/releases/mainnet/latest/ and set bidId to last kick (before deal) and unlock high bidder (guy) address
       it('should allow redeemers checked onchain for flipper to activate a badge', async function () {
         await maker.flipperChallenge(templateId, bidId, { from: flip });
