@@ -39,6 +39,11 @@ interface FlipperLike {
     function bids(uint256) external view returns (Bid memory);
 }
 
+interface VoteProxyLike {
+    function cold() external view returns (address);
+    function hot() external view returns (address);
+}
+
 contract MakerBadges is AccessControl, Pausable {
 
     /// @dev Libraries
@@ -49,6 +54,7 @@ contract MakerBadges is AccessControl, Pausable {
     ChaiLike  internal immutable chai;
     DSChiefLike internal immutable chief;
     FlipperLike internal immutable flipper;
+    VoteProxyLike internal proxy;
 
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -115,8 +121,12 @@ contract MakerBadges is AccessControl, Pausable {
     /// @notice DSChief Challenge
     /// @dev Keeps track of the address of the caller if successful
     /// @return True if the caller successfully checked for activity on DSChief
-    function chiefChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-        require(chief.votes(msg.sender) != 0x00, "MakerBadges: caller is not voting in an executive spell");
+    function chiefChallenge(uint256 templateId, address _proxy) external whenNotPaused returns (bool) {
+        proxy = VoteProxyLike(_proxy);
+        require(
+            chief.votes(msg.sender) != 0x00 || chief.votes(_proxy)!= 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
+            "MakerBadges: caller is not voting in an executive spell"
+        );
         if (!redeemers[templateId].contains(msg.sender)) {
             require(redeemers[templateId].add(msg.sender));
         }
