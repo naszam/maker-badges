@@ -2,7 +2,9 @@
 
 const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-const { expectEvent, expectRevert, send } = require('@openzeppelin/test-helpers');
+const { expectEvent, expectRevert, send, constants } = require('@openzeppelin/test-helpers');
+
+const { ZERO_ADDRESS } = constants;
 
 const { expect } = require('chai');
 
@@ -127,6 +129,10 @@ const bidId = 52;
 
       it('random address should not be able to pass the challenge', async function () {
         await expectRevert(maker.chiefChallenge(templateId, proxy, { from: random }), 'MakerBadges: caller is not voting in an executive spell');
+      });
+
+      it('should revert by passing address zero as proxy when called by proxy user', async function () {
+        await expectRevert.unspecified(maker.chiefChallenge(templateId, ZERO_ADDRESS, { from: exec_proxy }));
       });
   });
 
