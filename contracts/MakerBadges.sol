@@ -66,6 +66,7 @@ contract MakerBadges is AccessControl, Pausable {
     /// @dev Events
     event ChaiChecked(address usr);
     event DSChiefChecked(address guy);
+    event RobotChecked(address guy);
     event FlipperChecked(address guy);
 
     constructor(address chai_, address chief_, address flipper_) public {
@@ -121,18 +122,31 @@ contract MakerBadges is AccessControl, Pausable {
     /// @notice DSChief Challenge
     /// @dev Keeps track of the address of the caller if successful
     /// @return True if the caller successfully checked for activity on DSChief
-    function chiefChallenge(uint256 templateId, address _proxy) external whenNotPaused returns (bool) {
-        proxy = VoteProxyLike(_proxy);
-        require(
-            chief.votes(msg.sender) != 0x00 || chief.votes(_proxy)!= 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
-            "MakerBadges: caller is not voting in an executive spell"
-        );
+    function chiefChallenge(uint256 templateId) external whenNotPaused returns (bool) {
+        require(chief.votes(msg.sender) != 0x00,"MakerBadges: caller is not voting in an executive spell");
         if (!redeemers[templateId].contains(msg.sender)) {
             require(redeemers[templateId].add(msg.sender));
         }
         emit DSChiefChecked(msg.sender);
         return true;
     }
+
+    /// @notice Robot Challenge
+    /// @dev Keeps track of the address of the caller if successful
+    /// @return True if the caller successfully checked for activity on DSChief
+    function robotChallenge(uint256 templateId, address _proxy) external whenNotPaused returns (bool) {
+        proxy = VoteProxyLike(_proxy);
+        require(
+            chief.votes(_proxy)!= 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
+            "MakerBadges: caller is not voting in an executive spell via vote proxy"
+        );
+        if (!redeemers[templateId].contains(msg.sender)) {
+            require(redeemers[templateId].add(msg.sender));
+        }
+        emit RobotChecked(msg.sender);
+        return true;
+    }
+
 
     /// @notice Flipper Challenge
     /// @dev Keeps track of the address of the caller if successful
