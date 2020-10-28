@@ -91,18 +91,13 @@ contract MakerBadges is AccessControl, Pausable {
         revert();
     }
 
-    /// @dev Modifiers
-    modifier onlyAdmin() {
-        require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
-        _;
-    }
-
     /// @notice Set Merkle Tree Root Hashes array
     /// @dev Called by owner to update roots for different address batches by templateId
-    /// @param rootHashes Root hashes of the Merkle Trees by templateId
+    /// @param _roots Root hashes of the Merkle Trees by templateId
     /// @return True if successfully updated
-    function setRootHashes(bytes32[] calldata rootHashes) external onlyAdmin whenNotPaused returns (bool) {
-        roots = rootHashes;
+    function setRootHashes(bytes32[] calldata _roots) external whenNotPaused returns (bool) {
+        require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
+        roots = _roots;
         return true;
     }
 
