@@ -133,7 +133,7 @@ contract MakerBadges is AccessControl, Pausable {
 
     /// @notice Robot Challenge
     /// @dev Keeps track of the address of the caller if successful
-    /// @return True if the caller successfully checked for activity on DSChief
+    /// @return True if the caller successfully checked for activity via vote proxy on DSChief
     function robotChallenge(uint256 templateId, address _proxy) external whenNotPaused returns (bool) {
         proxy = VoteProxyLike(_proxy);
         require(
