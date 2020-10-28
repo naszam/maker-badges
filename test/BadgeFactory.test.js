@@ -202,23 +202,23 @@ const bidId = 52;
       });
 
       it('should allow redeemers checked onchain for chief to activate a badge', async function () {
-        await maker.chiefChallenge(templateId, proxy, { from: exec });
+        await maker.chiefChallenge(templateId, { from: exec });
         await factory.activateBadge(proof, templateId, tokenURI, { from: exec });
         const tokenId = await factory.tokenOfOwnerByIndex(exec, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
 
-      it('should allow redeemers checked onchain for chief via proxy to activate a badge', async function () {
-        await maker.chiefChallenge(templateId, proxy, { from: exec_proxy });
+      it('should allow redeemers checked onchain for robot via proxy to activate a badge', async function () {
+        await maker.robotChallenge(templateId, proxy, { from: exec_proxy });
         await factory.activateBadge(proof, templateId, tokenURI, { from: exec_proxy });
         const tokenId = await factory.tokenOfOwnerByIndex(exec_proxy, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
 
-      it('should allow redeemers checked onchain for chief via proxy2 to activate a badge', async function () {
-        await maker.chiefChallenge(templateId, proxy2, { from: exec_proxy2 });
+      it('should allow redeemers checked onchain for robot via proxy2 to activate a badge', async function () {
+        await maker.robotChallenge(templateId, proxy2, { from: exec_proxy2 });
         await factory.activateBadge(proof, templateId, tokenURI, { from: exec_proxy2 });
         const tokenId = await factory.tokenOfOwnerByIndex(exec_proxy2, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
