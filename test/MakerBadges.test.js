@@ -98,41 +98,52 @@ const bidId = 52;
   describe('chiefChallenge()', async function () {
 
       it('caller is voting in an executive spell', async function () {
-        await maker.chiefChallenge(templateId, proxy, { from: exec });
+        await maker.chiefChallenge(templateId, { from: exec });
         expect(await maker.verify(templateId, exec, {from: random})).to.equal(true);
       });
 
+      it('should emit the appropriate event when the caller is checked for chief', async function () {
+        const receipt = await maker.chiefChallenge(templateId, { from: exec });
+        expectEvent(receipt, 'DSChiefChecked', { guy: exec });
+      });
+
+      it('random address should not be able to pass the challenge', async function () {
+        await expectRevert(maker.chiefChallenge(templateId, { from: random }), 'MakerBadges: caller is not voting in an executive spell');
+      });
+  });
+
+  // Check robotChallenge() for success when a caller is voting in an executive spell via vote proxy
+  // Check robotChallenge() for sucessfully emit event when the caller is checked for robot chief
+  // Check robotChallenge() for failure when a random address is not voting in an executive spell via proxy
+  // Check robotChallenge() for failure when a proxy user pass zero address as proxy address 
+  describe('robotChallenge()', async function () {
+
       it('caller is voting in an executive spell via proxy', async function () {
-        await maker.chiefChallenge(templateId, proxy, { from: exec_proxy });
+        await maker.robotChallenge(templateId, proxy, { from: exec_proxy });
         expect(await maker.verify(templateId, exec_proxy, {from: random})).to.equal(true);
       });
 
       it('caller is voting in an executive spell via proxy2', async function () {
-        await maker.chiefChallenge(templateId, proxy2, { from: exec_proxy2 });
+        await maker.robotChallenge(templateId, proxy2, { from: exec_proxy2 });
         expect(await maker.verify(templateId, exec_proxy2, {from: random})).to.equal(true);
       });
 
-      it('should emit the appropriate event when the caller is checked for chief', async function () {
-        const receipt = await maker.chiefChallenge(templateId, proxy, { from: exec });
-        expectEvent(receipt, 'DSChiefChecked', { guy: exec });
-      });
-
       it('should emit the appropriate event when the proxy caller is checked for chief', async function () {
-        const receipt = await maker.chiefChallenge(templateId, proxy, { from: exec_proxy });
-        expectEvent(receipt, 'DSChiefChecked', { guy: exec_proxy });
+        const receipt = await maker.robotChallenge(templateId, proxy, { from: exec_proxy });
+        expectEvent(receipt, 'RobotChecked', { guy: exec_proxy });
       });
 
       it('should emit the appropriate event when the proxy2 caller is checked for chief', async function () {
-        const receipt = await maker.chiefChallenge(templateId, proxy2, { from: exec_proxy2 });
-        expectEvent(receipt, 'DSChiefChecked', { guy: exec_proxy2 });
+        const receipt = await maker.robotChallenge(templateId, proxy2, { from: exec_proxy2 });
+        expectEvent(receipt, 'RobotChecked', { guy: exec_proxy2 });
       });
 
-      it('random address should not be able to pass the challenge', async function () {
-        await expectRevert(maker.chiefChallenge(templateId, proxy, { from: random }), 'MakerBadges: caller is not voting in an executive spell');
+      it('random address should not be able to pass the robot challenge', async function () {
+        await expectRevert(maker.robotChallenge(templateId, proxy, { from: random }), 'MakerBadges: caller is not voting in an executive spell via vote proxy');
       });
 
       it('should revert by passing address zero as proxy when called by proxy user', async function () {
-        await expectRevert(maker.chiefChallenge(templateId, ZERO_ADDRESS, { from: exec_proxy }), 'MakerBadges: caller is not voting in an executive spell');
+        await expectRevert(maker.robotChallenge(templateId, ZERO_ADDRESS, { from: exec_proxy }), 'MakerBadges: caller is not voting in an executive spell via vote proxy');
       });
   });
 
