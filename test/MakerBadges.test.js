@@ -115,7 +115,7 @@ const bidId = 52;
   // Check robotChallenge() for success when a caller is voting in an executive spell via vote proxy
   // Check robotChallenge() for sucessfully emit event when the caller is checked for robot chief
   // Check robotChallenge() for failure when a random address is not voting in an executive spell via proxy
-  // Check robotChallenge() for failure when a proxy user pass zero address as proxy address 
+  // Check robotChallenge() for failure when a proxy user pass zero address as proxy address
   describe('robotChallenge()', async function () {
 
       it('caller is voting in an executive spell via proxy', async function () {
@@ -139,11 +139,11 @@ const bidId = 52;
       });
 
       it('random address should not be able to pass the robot challenge', async function () {
-        await expectRevert(maker.robotChallenge(templateId, proxy, { from: random }), 'MakerBadges: caller is not voting in an executive spell via vote proxy');
+        await expectRevert(maker.robotChallenge(templateId, proxy, { from: random }), 'MakerBadges: caller is not voting via proxy in an executive spell');
       });
 
       it('should revert by passing address zero as proxy when called by proxy user', async function () {
-        await expectRevert(maker.robotChallenge(templateId, ZERO_ADDRESS, { from: exec_proxy }), 'MakerBadges: caller is not voting in an executive spell via vote proxy');
+        await expectRevert(maker.robotChallenge(templateId, ZERO_ADDRESS, { from: exec_proxy }), 'MakerBadges: caller is not voting via proxy in an executive spell');
       });
   });
 

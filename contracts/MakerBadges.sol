@@ -138,7 +138,7 @@ contract MakerBadges is AccessControl, Pausable {
         proxy = VoteProxyLike(_proxy);
         require(
             chief.votes(_proxy)!= 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
-            "MakerBadges: caller is not voting in an executive spell via vote proxy"
+            "MakerBadges: caller is not voting via proxy in an executive spell"
         );
         if (!redeemers[templateId].contains(msg.sender)) {
             require(redeemers[templateId].add(msg.sender));
