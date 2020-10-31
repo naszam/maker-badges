@@ -16,7 +16,7 @@ pragma experimental ABIEncoderV2;
 ████  ████ ██   ██ ██  ██  ██      ██   ██ 
 ██ ████ ██ ███████ █████   █████   ██████  
 ██  ██  ██ ██   ██ ██  ██  ██      ██   ██ 
-██      ██ ██   ██ ██   ██ ███████ ██   ██                                                                                               
+██      ██ ██   ██ ██   ██ ███████ ██   ██ 
 */
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
