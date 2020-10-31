@@ -173,7 +173,6 @@ contract MakerBadges is AccessControl, Pausable {
     /// @return True if the account address is added as Admin
     function addAdmin(address account) external returns (bool) {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
-        require(!hasRole(ADMIN_ROLE, account), "MakerBadges: account is already an admin");
         grantRole(ADMIN_ROLE, account);
         return true;
     }
@@ -184,7 +183,6 @@ contract MakerBadges is AccessControl, Pausable {
     /// @return True if the account address is removed as Admin
     function removeAdmin(address account) external returns (bool) {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
-        require(hasRole(ADMIN_ROLE, account), "MakerBadges: account is not an admin");
         revokeRole(ADMIN_ROLE, account);
         return true;
     }
