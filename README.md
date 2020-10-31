@@ -178,8 +178,8 @@ Deploy
    ```
 
 ## Project deployed on Kovan
-[MakerBadges](https://kovan.etherscan.io/address/)  
-[BadgeFactory](https://kovan.etherscan.io/address/)    
+[MakerBadges](https://kovan.etherscan.io/address/0xF64510B7aDa1E0De35C243984957cB6c547D6C47)  
+[BadgeFactory](https://kovan.etherscan.io/address/0x9f00d92d8858D1d1E42EA4aD7333a2BE3f1C8997)    
 
 Interface
 ============
