@@ -41,11 +41,13 @@ Building Blocks
 
 To enable MakerBadges to check on-chain for activities on MakerDAO ecosystem we're using three interface to map the functions that we'll use:
 - **Chai**: to check if a user has accrued 1 or more Dai from DSR (Pot), via **dai()** used in Chai contract to return the **wad** or the current accrued Dai interest in DSR.  
-To check redeemer activities on Pot it uses **chaiChallenge(uint templateId)** function.    
-- **DSChief**: to check if a user is voting in an Executive Spell via **votes(address)** a getter function to check who is currently voting.  
-To check redeemer activities on DSChief it uses **chiefChallenge(uint templateId)** function.    
+To check redeemer activities on Pot it uses **chaiChallenge()** function.    
+- **DSChief**: to check if a user is voting in an Executive Spell via **votes()** a getter function to check who is currently voting.  
+To check redeemer activities on DSChief it uses **chiefChallenge()** function.    
+- **VoteProxy**: to check if a user is voting in an Executive Spell via **VoteProxy** contract, a proxy identity for cold and hot wallets.  
+To check redeemer activities on DSChief via proxy it uses **robotChallenge()** that requires the proxy address used to vote.  
 - **Flipper**: to check for high bidder in the current Bid in Collateral Auctions via **bids(id)** a getter function of current Bid on Flipper to check for **bids(id).guy** the high bidder.   
-To check redeemer activities on Flipper it uses **flipperChallenge(uint templateId, uint bidId)** function.  
+To check redeemer activities on Flipper it uses **flipperChallenge()** function.  
 
 The functions to check on-chain for activities on Maker Ecosystem will keep track of the caller address into the OpenZeppelin EnumerableSet.AddressSet **redeemers** by templateId that will be verified in BadgeFactory via **verify(uint templateId, address guy)** function linked to it, to allow a redeemer to activate a Non-transferable Badge.
 
@@ -93,6 +95,7 @@ Clone this GitHub repository.
     - OpenZeppelin Contracts 
     - Truffle HD Wallet Provider
     - Truffle-Flattener
+    - Solhint
     ```sh
     $ yarn
     ```
