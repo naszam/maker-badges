@@ -30,6 +30,46 @@ contract BadgeRoles is AccessControl, Pausable {
 
     /// @dev Functions
 
+    /// @notice Add a new Admin
+    /// @dev Access restricted only to Default Admin
+    /// @param account Address of the new Admin
+    /// @return True if the account address is added as Admin
+    function addAdmin(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
+        grantRole(ADMIN_ROLE, account);
+        return true;
+    }
+
+    /// @notice Remove an Admin
+    /// @dev Access restricted only to Default Admin
+    /// @param account Address of the Admin
+    /// @return True if the account address is removed as Admin
+    function removeAdmin(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
+        revokeRole(ADMIN_ROLE, account);
+        return true;
+    }
+
+    /// @notice Add a new Templater
+    /// @dev Access restricted only to Default Admin
+    /// @param guy Address of the new Templater
+    /// @return True if the guy address is added as Templater
+    function addTemplater(address guy) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "BadgeFactory: caller is not the default admin");
+        grantRole(TEMPLATER_ROLE, guy);
+        return true;
+    }
+
+    /// @notice Remove a Templater
+    /// @dev Access restricted only to Default Admin
+    /// @param guy Address of the Templater
+    /// @return True if the guy address is removed as Templater
+    function removeTemplater(address guy) external returns (bool) {
+      require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "BadgeFactory: caller is not the default admin");
+      revokeRole(TEMPLATER_ROLE, guy);
+      return true;
+    }
+
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
