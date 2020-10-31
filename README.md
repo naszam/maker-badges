@@ -184,11 +184,11 @@ Deploy
 Interface
 ============
 
-- [Frontend](https://github.com/scottrepreneur/mb-frontend)
+- [Frontend](https://github.com/scottrepreneur/maker-badges/tree/master/packages/frontend)
 
 Backend
 =======
-- [Merkle Service](https://github.com/scottrepreneur/mb-merkle-service)
+- [Merkle Service](https://github.com/scottrepreneur/maker-badges/tree/master/packages/api)
 
 About
 ============
