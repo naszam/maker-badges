@@ -105,11 +105,11 @@ contract MakerBadges is AccessControl, Pausable {
     /// @dev Keeps track of the address of the caller if successful
     /// @return True if the caller successfully checked for activity on Chai
     function chaiChallenge(uint256 templateId) external whenNotPaused returns (bool) {
-        require(chai.dai(msg.sender) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
         if (!redeemers[templateId].contains(msg.sender)) {
             require(redeemers[templateId].add(msg.sender));
         }
         emit ChaiChecked(msg.sender);
+        require(chai.dai(msg.sender) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
         return true;
     }
 
