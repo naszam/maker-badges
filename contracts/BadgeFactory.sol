@@ -9,6 +9,16 @@ pragma solidity 0.6.12;
 /// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin Library is used for secure contract development
 
+/*
+███    ███  █████  ██   ██ ███████ ██████ 
+████  ████ ██   ██ ██  ██  ██      ██   ██ 
+██ ████ ██ ███████ █████   █████   ██████  
+██  ██  ██ ██   ██ ██  ██  ██      ██   ██ 
+██      ██ ██   ██ ██   ██ ███████ ██   ██ 
+*/
+
+
+
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";

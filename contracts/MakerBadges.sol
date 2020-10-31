@@ -11,6 +11,14 @@ pragma experimental ABIEncoderV2;
 /// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin Library is used for secure contract development
 
+/*
+███    ███  █████  ██   ██ ███████ ██████ 
+████  ████ ██   ██ ██  ██  ██      ██   ██ 
+██ ████ ██ ███████ █████   █████   ██████  
+██  ██  ██ ██   ██ ██  ██  ██      ██   ██ 
+██      ██ ██   ██ ██   ██ ███████ ██   ██                                                                                               
+*/
+
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
