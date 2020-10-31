@@ -1,6 +1,6 @@
 {
   "name": "maker-badges",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29",
   "main": "truffle-config.js",
   "directories": {
