@@ -55,7 +55,7 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @param guy Address of the new Templater
     /// @return True if the guy address is added as Templater
     function addTemplater(address guy) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "BadgeFactory: caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
         grantRole(TEMPLATER_ROLE, guy);
         return true;
     }
@@ -65,7 +65,7 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @param guy Address of the Templater
     /// @return True if the guy address is removed as Templater
     function removeTemplater(address guy) external returns (bool) {
-      require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "BadgeFactory: caller is not the default admin");
+      require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
       revokeRole(TEMPLATER_ROLE, guy);
       return true;
     }
@@ -73,14 +73,14 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "BadgeFactory: must have pauser role to pause");
+        require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to pause");
         _pause();
     }
 
     /// @notice Unpause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function unpause() external {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "BadgeFactory: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, msg.sender), "BadgeFactory: must have pauser role to unpause");
         _unpause();
     }
 }

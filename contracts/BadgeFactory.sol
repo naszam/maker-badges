@@ -97,7 +97,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         whenNotPaused
         returns (bool)
     {
-        require(hasRole(TEMPLATER_ROLE, _msgSender()), "BadgeFactory: caller is not a template owner");
+        require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
         templates[_templateIdTracker.current()].name = name;
         templates[_templateIdTracker.current()].description = description;
         templates[_templateIdTracker.current()].image = image;
@@ -120,7 +120,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         whenNotPaused
         returns (bool)
     {
-        require(hasRole(TEMPLATER_ROLE, _msgSender()), "BadgeFactory: caller is not a template owner");
+        require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         templates[templateId].name = name;
         templates[templateId].description = description;
