@@ -52,8 +52,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     mapping(uint256 => uint256) private _templateQuantities;
     mapping(uint256 => uint256) private _tokenTemplates;
 
-    mapping(bytes32 => uint256) public redeemed;
-
     /// @dev Events
     event NewTemplate(uint256 templateId, string name, string description, string image);
     event TemplateUpdated(uint256 templateId, string name, string description, string image);
@@ -163,7 +161,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         returns (bool)
     {
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
-        require(redeemed[keccak256(abi.encodePacked(msg.sender, templateId))] == 0, "BadgeFactory: badge already activated!");
         require(
             maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))),
             "BadgeFactory: caller is not a redeemer"
@@ -171,7 +168,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
 
         /// @dev Increase the quantities
         _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-        redeemed[keccak256(abi.encodePacked(msg.sender, templateId))] = 1;
 
         require(_mintWithTokenURI(msg.sender, templateId, tokenURI), "BadgeFactory: badge not minted");
 
