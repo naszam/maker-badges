@@ -39,7 +39,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     MakerBadgesLike internal immutable maker;
 
     Counters.Counter private _templateIdTracker;
-    Counters.Counter private _tokenIdTracker;
 
     struct BadgeTemplate {
         string name;
@@ -53,7 +52,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     mapping(uint256 => uint256) private _templateQuantities;
     mapping(uint256 => uint256) private _tokenTemplates;
 
-    mapping(uint256 => mapping (address => uint256)) public redeemed;
+    mapping(bytes32 => uint256) public redeemed;
 
     /// @dev Events
     event NewTemplate(uint256 templateId, string name, string description, string image);
@@ -164,18 +163,17 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         returns (bool)
     {
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
-        require(redeemed[templateId][msg.sender] == 0, "BadgeFactory: badge already activated!");
+        require(redeemed[keccak256(abi.encodePacked(msg.sender, templateId))] == 0, "BadgeFactory: badge already activated!");
         require(
             maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))),
             "BadgeFactory: caller is not a redeemer"
         );
 
         /// @dev Increase the quantities
-        _tokenTemplates[_tokenIdTracker.current()] = templateId;
         _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
-        redeemed[templateId][msg.sender] = 1;
+        redeemed[keccak256(abi.encodePacked(msg.sender, templateId))] = 1;
 
-        require(_mintWithTokenURI(msg.sender, tokenURI), "BadgeFactory: badge not minted");
+        require(_mintWithTokenURI(msg.sender, templateId, tokenURI), "BadgeFactory: badge not minted");
 
         emit BadgeActivated(msg.sender, templateId, tokenURI);
         return true;
@@ -184,10 +182,14 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @notice Getter function for templateId associated with the tokenId
     /// @dev Check if the tokenId exists
     /// @param tokenId Token Id of the Badge
-    /// @return Template Id associated with the tokenId
-    function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256) {
+    /// @return redeemer Redeemer Address
+    /// @return templateId Template Id
+    function unpackTokenId(uint256 tokenId) external view whenNotPaused returns (address redeemer, uint256 templateId) {
         require(_exists(tokenId), "BadgeFactory: no token with that id");
-        return _tokenTemplates[tokenId];
+        assembly {
+            redeemer := shr(96,  and(tokenId, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000))
+            templateId := shr(88, and(tokenId, 0x0000000000000000000000000000000000000000FF0000000000000000000000))
+        }
     }
 
     /// @notice Getter function for number of badges associated with templateId
@@ -213,10 +215,14 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param to owner of the new token
     /// @param tokenURI an <ipfs-hash>.json filename
     /// @return True if the new token is minted
-    function _mintWithTokenURI(address to, string calldata tokenURI) private returns (bool) {
-        _mint(to, _tokenIdTracker.current());
-        _setTokenURI(_tokenIdTracker.current(), tokenURI);
-        _tokenIdTracker.increment();
+    function _mintWithTokenURI(address to, uint256 templateId, string calldata tokenURI) private returns (bool) {
+        bytes memory _tokenIdBytes = abi.encodePacked(to, templateId);
+        uint _tokenId;
+        assembly {
+            _tokenId := mload(add(_tokenIdBytes, add(0x20, 0)))
+        }
+        _mint(to, _tokenId);
+        _setTokenURI(_tokenId, tokenURI);
         return true;
     }
 }
