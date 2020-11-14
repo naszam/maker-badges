@@ -115,7 +115,7 @@ const bidId = 52;
 
       it('return a baseURI + tokenURI for tokenId', async function () {
         await factory.createTemplate(template_name, template_description, template_image, { from: owner });
-        await maker.setRootHashes(rootHashes, { from: owner });
+        await factory.setRootHashes(rootHashes, { from: owner });
         await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
         const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
         expect(await factory.tokenURI(tokenId, { from: random })).equal(baseURI + tokenURI);
@@ -191,30 +191,38 @@ const bidId = 52;
 
       beforeEach(async function () {
         await factory.createTemplate(template_name, template_description, template_image, { from: owner });
-        await maker.setRootHashes(rootHashes, { from: owner });
+        await factory.setRootHashes(rootHashes, { from: owner });
       });
 
       it('should allow redeemers checked onchain for chai to activate a badge', async function () {
         await maker.chaiChallenge(templateId, { from: usr });
         await factory.activateBadge(proof, templateId, tokenURI, { from: usr });
+        const tokenId = await factory.tokenOfOwnerByIndex(usr, index1, { from: random });
+        expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
 
       it('should allow redeemers checked onchain for chief to activate a badge', async function () {
         await maker.chiefChallenge(templateId, { from: exec });
         await factory.activateBadge(proof, templateId, tokenURI, { from: exec });
+        const tokenId = await factory.tokenOfOwnerByIndex(exec, index1, { from: random });
+        expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
 
       it('should allow redeemers checked onchain for robot via proxy to activate a badge', async function () {
         await maker.robotChallenge(templateId, proxy, { from: exec_proxy });
         await factory.activateBadge(proof, templateId, tokenURI, { from: exec_proxy });
+        const tokenId = await factory.tokenOfOwnerByIndex(exec_proxy, index1, { from: random });
+        expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
 
       it('should allow redeemers checked onchain for robot via proxy2 to activate a badge', async function () {
         await maker.robotChallenge(templateId, proxy2, { from: exec_proxy2 });
         await factory.activateBadge(proof, templateId, tokenURI, { from: exec_proxy2 });
+        const tokenId = await factory.tokenOfOwnerByIndex(exec_proxy2, index1, { from: random });
+        expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
 
@@ -257,7 +265,7 @@ const bidId = 52;
   describe('ERC721 override _transfer()', async function () {
       beforeEach(async function () {
         await factory.createTemplate(template_name, template_description, template_image, { from: owner });
-        await maker.setRootHashes(rootHashes, { from: owner });
+        await factory.setRootHashes(rootHashes, { from: owner });
         await factory.activateBadge(proof, templateId, tokenURI, { from: redeemer });
       });
 
