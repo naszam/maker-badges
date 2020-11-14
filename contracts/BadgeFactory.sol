@@ -83,7 +83,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     }
 
     /// @notice Set Merkle Tree Root Hashes array
-    /// @dev Called by owner to update roots for different address batches by templateId
+    /// @dev Called by admin to update roots for different address batches by templateId
     /// @param _roots Root hashes of the Merkle Trees by templateId
     /// @return True if successfully updated
     function setRootHashes(bytes32[] calldata _roots) external whenNotPaused returns (bool) {
