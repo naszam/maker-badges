@@ -178,14 +178,19 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @notice Getter function for templateId associated with the tokenId
     /// @dev Check if the tokenId exists
     /// @param tokenId Token Id of the Badge
-    /// @return redeemer Redeemer Address
-    /// @return templateId Template Id
-    function unpackTokenId(uint256 tokenId) external view whenNotPaused returns (address redeemer, uint256 templateId) {
+    /// @return templateId Template Id associated with the tokenId
+    function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256 templateId) {
         require(_exists(tokenId), "BadgeFactory: no token with that id");
-        assembly {
-            redeemer := shr(96,  and(tokenId, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000))
-            templateId := shr(88, and(tokenId, 0x0000000000000000000000000000000000000000FF0000000000000000000000))
-        }
+        (,templateId) = _unpackTokenId(tokenId);
+    }
+
+    /// @notice Getter function for redeemer associated with the tokenId
+    /// @dev Check if the tokenId exists
+    /// @param tokenId Token Id of the Badge
+    /// @return redeemer Redeemer address associated with the tokenId
+    function getBadgeRedeemer(uint256 tokenId) external view whenNotPaused returns (address redeemer) {
+        require(_exists(tokenId), "BadgeFactory: no token with that id");
+        (redeemer,) = _unpackTokenId(tokenId);
     }
 
     /// @notice Getter function for number of badges associated with templateId
@@ -205,6 +210,29 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         super._transfer(from, to, tokenId);
     }
 
+    /// @notice Generate tokenId
+    /// @dev Augur twist by cat redeemer and templateId
+    /// @param redeemer Redeemer Address
+    /// @param templateId Template Id
+    /// @param _tokenId Token Id
+    function _getTokenId(address redeemer, uint256 templateId) private pure returns (uint256 _tokenId) {
+        bytes memory _tokenIdBytes = abi.encodePacked(redeemer, uint8(templateId));
+        assembly {
+            _tokenId := mload(add(_tokenIdBytes, add(0x20, 0)))
+        }
+    }
+
+    /// @notice Unpack tokenId
+    /// @param tokenId Token Id of the Badge
+    /// @return redeemer Redeemer Address
+    /// @return templateId Template Id
+    function _unpackTokenId(uint256 tokenId) private pure returns (address redeemer, uint256 templateId) {
+        assembly {
+            redeemer := shr(96,  and(tokenId, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000))
+            templateId := shr(88, and(tokenId, 0x0000000000000000000000000000000000000000FF0000000000000000000000))
+        }
+    }
+
     /// @notice Mint new token with tokenURI
     /// @dev Use an auto-generated tokenId
     /// @dev automatically concatenate baseURI with tokenURI via abi.encodePacked
@@ -212,11 +240,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param tokenURI an <ipfs-hash>.json filename
     /// @return True if the new token is minted
     function _mintWithTokenURI(address to, uint256 templateId, string calldata tokenURI) private returns (bool) {
-        bytes memory _tokenIdBytes = abi.encodePacked(to, templateId);
-        uint _tokenId;
-        assembly {
-            _tokenId := mload(add(_tokenIdBytes, add(0x20, 0)))
-        }
+        uint _tokenId = _getTokenId(to, templateId);
         _mint(to, _tokenId);
         _setTokenURI(_tokenId, tokenURI);
         return true;
