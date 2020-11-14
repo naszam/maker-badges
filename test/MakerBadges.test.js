@@ -13,10 +13,9 @@ const MakerBadges = contract.fromArtifact('MakerBadges');
 let maker;
 
 describe('MakerBadges', function () {
-const [ owner, admin, redeemer, random ] = accounts;
+const [ owner, redeemer, random ] = accounts;
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
-const ADMIN_ROLE = web3.utils.soliditySha3('ADMIN_ROLE');
 const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 
 // https://etherscan.io/address/0x06AF07097C9Eeb7fD685c692751D5C66dB49c215
@@ -51,11 +50,6 @@ const bidId = 52;
       it('owner has the default admin role', async function () {
         expect(await maker.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
         expect(await maker.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
-      });
-
-      it('owner has the admin role', async function () {
-        expect(await maker.getRoleMemberCount(ADMIN_ROLE)).to.be.bignumber.equal('1');
-        expect(await maker.getRoleMember(ADMIN_ROLE, 0)).to.equal(owner);
       });
 
       it('owner has the pauser role', async function () {
@@ -170,50 +164,6 @@ const bidId = 52;
   });
 
 */
-
-  // Check addAdmin() for success when the default admin is adding a new admin
-  // Check addAdmin() for sucessfully emit event when the admin is added
-  // Check addAdmin() for failure when a random address try to add a new admin
-  describe('addAdmin()', async function () {
-
-      it('default admin should be able to add an admin', async function () {
-        await maker.addAdmin(admin, { from: owner });
-        expect(await maker.hasRole(ADMIN_ROLE, admin)).to.equal(true);
-      });
-
-      it('should emit the appropriate event when a new admin is added', async function () {
-        const receipt = await maker.addAdmin(admin, { from: owner });
-        expectEvent(receipt, 'RoleGranted', { account: admin });
-      });
-
-      it('random address should not be able to add a new admin', async function () {
-        await expectRevert(maker.addAdmin(admin, { from: random }), 'MakerBadges: caller is not the default admin');
-      });
-  });
-
-  // Check removeAdmin() for success when the default admin is removing an admin
-  // Check removeAdmin() for sucessfully emit event when the admin is removed
-  // Check removeAdmin() for failure when a random address try to remove an admin
-  describe('removeAdmin()', async function () {
-
-      beforeEach(async function () {
-        await maker.addAdmin(admin, { from: owner });
-      });
-
-      it('default admin should be able to remove a templater', async function () {
-        await maker.removeAdmin(admin, { from: owner });
-        expect(await maker.hasRole(ADMIN_ROLE, admin)).to.equal(false)
-      });
-
-      it('should emit the appropriate event when an admin is removed', async function () {
-        const receipt = await maker.removeAdmin(admin, { from: owner });
-        expectEvent(receipt, 'RoleRevoked', { account: admin });
-      });
-
-      it('random address should not be able to remove an admin', async function () {
-        await expectRevert(maker.removeAdmin(admin, { from: random }), 'MakerBadges: caller is not the default admin');
-      });
-  });
 
   // Check pause() for success when the pauser is pausing all the functions
   // Check pause() for sucessfully emit event when the functions are paused
