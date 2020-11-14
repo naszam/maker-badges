@@ -199,6 +199,7 @@ const bidId = 52;
         await factory.activateBadge(proof, templateId, tokenURI, { from: usr });
         const tokenId = await factory.tokenOfOwnerByIndex(usr, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
+        expect(await factory.getBadgeRedeemer(tokenId), {from: random }).to.be.bignumber.equal(usr);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
 
@@ -207,6 +208,7 @@ const bidId = 52;
         await factory.activateBadge(proof, templateId, tokenURI, { from: exec });
         const tokenId = await factory.tokenOfOwnerByIndex(exec, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
+        expect(await factory.getBadgeRedeemer(tokenId), {from: random }).to.be.bignumber.equal(exec);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
 
@@ -215,6 +217,7 @@ const bidId = 52;
         await factory.activateBadge(proof, templateId, tokenURI, { from: exec_proxy });
         const tokenId = await factory.tokenOfOwnerByIndex(exec_proxy, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
+        expect(await factory.getBadgeRedeemer(tokenId), {from: random }).to.be.bignumber.equal(exec_proxy);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
 
@@ -223,6 +226,7 @@ const bidId = 52;
         await factory.activateBadge(proof, templateId, tokenURI, { from: exec_proxy2 });
         const tokenId = await factory.tokenOfOwnerByIndex(exec_proxy2, index1, { from: random });
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(templateId);
+        expect(await factory.getBadgeRedeemer(tokenId), {from: random }).to.be.bignumber.equal(exec_proxy2);
         expect(await factory.getBadgeTemplateQuantity(templateId, { from: random })).to.be.bignumber.equal('1');
       });
 
