@@ -26,7 +26,6 @@ import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
 interface MakerBadgesLike {
     function verify(uint256 templateId, address guy) external view returns (bool);
-    function roots(uint256 templateId) external view returns (bytes32);
 }
 
 contract BadgeFactory is BadgeRoles, ERC721 {
@@ -39,6 +38,8 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     MakerBadgesLike internal immutable maker;
 
     Counters.Counter private _templateIdTracker;
+
+    bytes32[] public roots;
 
     struct BadgeTemplate {
         string name;
@@ -78,6 +79,16 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     function setBaseURI(string calldata baseURI) external returns (bool) {
         require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
         _setBaseURI(baseURI);
+        return true;
+    }
+
+    /// @notice Set Merkle Tree Root Hashes array
+    /// @dev Called by owner to update roots for different address batches by templateId
+    /// @param _roots Root hashes of the Merkle Trees by templateId
+    /// @return True if successfully updated
+    function setRootHashes(bytes32[] calldata _roots) external whenNotPaused returns (bool) {
+        require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
+        roots = _roots;
         return true;
     }
 
@@ -162,7 +173,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     {
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         require(
-            maker.verify(templateId, msg.sender) || proof.verify(maker.roots(templateId), keccak256(abi.encodePacked(msg.sender))),
+            maker.verify(templateId, msg.sender) || proof.verify(roots[templateId], keccak256(abi.encodePacked(msg.sender))),
             "BadgeFactory: caller is not a redeemer"
         );
 

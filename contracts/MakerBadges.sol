@@ -64,10 +64,7 @@ contract MakerBadges is AccessControl, Pausable {
     FlipperLike internal immutable flipper;
     VoteProxyLike internal proxy;
 
-    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-
-    bytes32[] public roots;
 
     mapping(uint256 => EnumerableSet.AddressSet) private redeemers;
 
@@ -80,7 +77,6 @@ contract MakerBadges is AccessControl, Pausable {
     constructor(address chai_, address chief_, address flipper_) public {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
-        _setupRole(ADMIN_ROLE, msg.sender);
         _setupRole(PAUSER_ROLE, msg.sender);
 
         /// @dev CHAI Address
@@ -97,16 +93,6 @@ contract MakerBadges is AccessControl, Pausable {
     /// @dev Added not payable to revert transactions not matching any other function which send value
     fallback() external {
         revert();
-    }
-
-    /// @notice Set Merkle Tree Root Hashes array
-    /// @dev Called by owner to update roots for different address batches by templateId
-    /// @param _roots Root hashes of the Merkle Trees by templateId
-    /// @return True if successfully updated
-    function setRootHashes(bytes32[] calldata _roots) external whenNotPaused returns (bool) {
-        require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
-        roots = _roots;
-        return true;
     }
 
     /// @notice Chai Challenge
@@ -173,26 +159,6 @@ contract MakerBadges is AccessControl, Pausable {
     /// @return True if guy is a redeemer
     function verify(uint256 templateId, address guy) external view whenNotPaused returns (bool) {
         return redeemers[templateId].contains(guy);
-    }
-
-    /// @notice Add a new Admin
-    /// @dev Access restricted only for Default Admin
-    /// @param account Address of the new Admin
-    /// @return True if the account address is added as Admin
-    function addAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
-        grantRole(ADMIN_ROLE, account);
-        return true;
-    }
-
-    /// @notice Remove an Admin
-    /// @dev Access restricted only for Default Admin
-    /// @param account Address of the Admin
-    /// @return True if the account address is removed as Admin
-    function removeAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
-        revokeRole(ADMIN_ROLE, account);
-        return true;
     }
 
     /// @notice Pause all the functions
