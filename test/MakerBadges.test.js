@@ -84,6 +84,11 @@ const bidId = 52;
         expectEvent(receipt, 'ChaiChecked', { usr: usr });
       });
 
+      it('same address should not be able to be added twice', async function () {
+        await maker.chaiChallenge({from: usr});
+        await expectRevert(maker.chaiChallenge({ from: usr }), 'MakerBadges: caller already checked for chai');
+      });
+
       it('random address should not be able to pass the challenge', async function () {
         await expectRevert(maker.chaiChallenge({ from: random }), 'MakerBadges: caller has not accrued 1 or more dai interest on pot');
       });
@@ -102,6 +107,11 @@ const bidId = 52;
       it('should emit the appropriate event when the caller is checked for chief', async function () {
         const receipt = await maker.chiefChallenge({ from: exec });
         expectEvent(receipt, 'DSChiefChecked', { guy: exec });
+      });
+
+      it('same address should not be able to be added twice', async function () {
+        await maker.chiefChallenge({from: exec});
+        await expectRevert(maker.chiefChallenge({ from: exec }), 'MakerBadges: caller already checked for chief');
       });
 
       it('random address should not be able to pass the challenge', async function () {
@@ -135,6 +145,11 @@ const bidId = 52;
         expectEvent(receipt, 'RobotChecked', { guy: exec_proxy2 });
       });
 
+      it('same address should not be able to be added twice', async function () {
+        await maker.robotChallenge(proxy, {from: exec_proxy});
+        await expectRevert(maker.robotChallenge(proxy, {from: exec_proxy }), 'MakerBadges: caller already checked for robot');
+      });
+
       it('random address should not be able to pass the robot challenge', async function () {
         await expectRevert(maker.robotChallenge(proxy, { from: random }), 'MakerBadges: caller is not voting via proxy in an executive spell');
       });
@@ -159,6 +174,11 @@ const bidId = 52;
       it('should emit the appropriate event when flipper is checked', async function () {
         const receipt = await maker.flipperChallenge(bidId, { from: flip });
         expectEvent(receipt, 'FlipperChecked', { guy: flip });
+      });
+
+      it('same address should not be able to be added twice', async function () {
+        await maker.flipperChallenge({from: flip});
+        await expectRevert(maker.flipperChallenge({ from: flip }), 'MakerBadges: caller already checked for flipper');
       });
 
       it('random address should not be able to pass the challenge', async function () {
