@@ -56,7 +56,7 @@ The contract also inherits OpenZeppelic AccessControl.sol, allowing the owner of
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
 > BadgeRoles Access Management for Default Admin, Admin, Templater and Pauser Role
 
-BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Admin, Pauser and also as Templater, to add an Admin via **addAdmin** and remove an Admin via **removeAdmin** functions as well as add a Templater via **addTemplater** and remove a Templater via **removeTemplater** functions.  
+BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Admin, Pauser and also as Templater, to add an Admin via **addAdmin** and remove an Admin via **removeAdmin** functions as well as to add a Templater via **addTemplater** and remove a Templater via **removeTemplater** functions.  
 
 ### [BadgeFactory](./contracts/BadgeFactory.sol)
 > BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
