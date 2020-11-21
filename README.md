@@ -74,7 +74,7 @@ BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template 
 
 It also inherits ERC721, where the **_transfer** has been overridden to implement the non-transferable feature, allowing redeemers checked on-chain/offchain to redeem a Badge for a specific activity on MakerDAO ecosystem via **activateBadge** that will verify if the caller is a redeemer and then will allow the caller to mint a new Non-transferable Badge with tokenURI stored on IPFS (eg. "ipfs.json").  
 
-To avoid that a redeemer could activate the same Badge twice, the **tokenId** is generated via **_getTokenId"** that concatenates the **templateId** and the **redeemer** to get a unique hard-coded identifier. The **_mint** function will check then if the tokenId already exists (= already minted) and if not mint a new Badge.  
+To avoid that a redeemer could activate the same Badge twice, the **tokenId** is generated via **_getTokenId"** that concatenates the **redeemer** and the **templateId** to get a unique hard-coded identifier. The **_mint** function will check then if the tokenId already exists (= already minted) and if not mint a new Badge.  
 
 Finally **setBaseURI** is added to allow the admin to set a new baseURI.  
 
