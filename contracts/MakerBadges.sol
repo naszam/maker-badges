@@ -68,10 +68,10 @@ contract MakerBadges is AccessControl, Pausable {
 
     mapping(uint256 => EnumerableSet.AddressSet) private redeemers;
 
-    uint8 private constant chaiId = 0;
-    uint8 private constant chiefId = 1;
-    uint8 private constant robotId = 2;
-    uint8 private constant flipperId = 3;
+    uint256 private constant chaiId = 0;
+    uint256 private constant chiefId = 1;
+    uint256 private constant robotId = 2;
+    uint256 private constant flipperId = 3;
 
     /// @dev Events
     event ChaiChecked(address usr);
