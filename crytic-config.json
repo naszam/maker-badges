@@ -3,7 +3,7 @@
     "cwd": "",
     "node_version": "13.13.0",
     "solc": "0.6.12",
-    "use_yarn": true,
+    "use_yarn": false,
     "custom_unit_test": {
         "enabled": true,
         "commands": [
