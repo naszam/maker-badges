@@ -7,17 +7,17 @@
     "test": "test"
   },
   "dependencies": {
-    "@babel/core": "^7.12.3",
+    "@babel/core": "^7.12.7",
     "@openzeppelin/contracts": "^3.2.0",
-    "@truffle/hdwallet-provider": "^1.1.1",
+    "@truffle/hdwallet-provider": "^1.2.0",
     "ethereumjs-util": "^7.0.6",
     "ganache-cli": "^6.12.0",
     "gsn": "^0.0.1",
     "mkdirp": "^1.0.4",
     "node-fetch": "^2.6.1",
     "serialize-javascript": "^4.0.0",
-    "solhint": "^3.3.1",
-    "truffle": "^5.1.49",
+    "solhint": "^3.3.2",
+    "truffle": "^5.1.54",
     "truffle-flattener": "^1.5.0"
   },
   "devDependencies": {
@@ -25,7 +25,7 @@
     "@openzeppelin/test-helpers": "^0.5.7",
     "chai": "^4.2.0",
     "husky": "^4.3.0",
-    "mocha": "^8.2.0"
+    "mocha": "^8.2.1"
   },
   "scripts": {
     "test": "npx truffle compile && mocha --exit --recursive --parallel --timeout 0"
