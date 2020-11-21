@@ -61,20 +61,22 @@ BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of th
 ### [BadgeFactory](./contracts/BadgeFactory.sol)
 > BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
 
-To enable BadgeFactory to verify redeemers checked on-chain/off-chain for activities on MakerDAO ecosystem, when they try to redeem their Badge, we're using the interface InsigniaDAO to map the function we'll use.  
+To enable BadgeFactory to verify redeemers checked on-chain/off-chain for activities on MakerDAO ecosystem, when they try to redeem their Badge, we're using the interface **MakerBadges** to map the function we'll use.  
 
 In particular, we'll use:
 - **verify** to verify redeemers checked on-chain.
 
-BadgeFactory let the admin to set (via **setRootHashes**) an array of root hashes, called **roots**, ordered by template Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to activate Badge.
+BadgeFactory let the admin to set (via **setRootHashes**) an array of root hashes, called **roots**, ordered by template Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to redeem Badges.
 
-A Merkle Tree is generated for every Template and the root hash is updated by owner of MakerBadges daily to allow batches of redeemers to be checked and to redeem Badges.  
+A Merkle Tree is generated for every Template and the root hash is updated by the admin of BadgeFactory daily to allow batches of redeemers to be checked and to redeem Badges.  
 
 BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template via **createTemplate** specifying name, description and image. A Templater can also update the template info via **updateTemplate**.
 
 It also inherits ERC721, where the **_transfer** has been overridden to implement the non-transferable feature, allowing redeemers checked on-chain/offchain to redeem a Badge for a specific activity on MakerDAO ecosystem via **activateBadge** that will verify if the caller is a redeemer and then will allow the caller to mint a new Non-transferable Badge with tokenURI stored on IPFS (eg. "ipfs.json").  
 
-To avoid that a redeemer could activate the same Badge twice, the **tokenId** is generated via **_getTokenId"** that concatenates the **templateId** to **redeemer** to get a unique hard-coded identifier. The **_mint** function will check then if the tokenId already exists (= already minted) and if not mint a new Badge.  
+To avoid that a redeemer could activate the same Badge twice, the **tokenId** is generated via **_getTokenId"** that concatenates the **templateId** and the **redeemer** to get a unique hard-coded identifier. The **_mint** function will check then if the tokenId already exists (= already minted) and if not mint a new Badge.  
+
+Finally **setBaseURI** is added to allow the admin to set a new baseURI.  
 
 During deployment the contract sets the following ERC721 metadata:
 - name: "MakerBadges"
