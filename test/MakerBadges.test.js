@@ -177,8 +177,8 @@ const bidId = 52;
       });
 
       it('same address should not be able to be added twice', async function () {
-        await maker.flipperChallenge({from: flip});
-        await expectRevert(maker.flipperChallenge({ from: flip }), 'MakerBadges: caller already checked for flipper');
+        await maker.flipperChallenge(bidId, {from: flip});
+        await expectRevert(maker.flipperChallenge(bidId, { from: flip }), 'MakerBadges: caller already checked for flipper');
       });
 
       it('random address should not be able to pass the challenge', async function () {
