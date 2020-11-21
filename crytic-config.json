@@ -1,7 +1,7 @@
 
 {
     "cwd": "",
-    "node_version": "13.13.0",
+    "node_version": "14.15.1",
     "solc": "0.6.12",
     "use_yarn": false,
     "custom_unit_test": {
