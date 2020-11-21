@@ -51,12 +51,12 @@ To check redeemer activities on Flipper it uses **flipperChallenge** function.
 
 The functions to check on-chain for activities on Maker Ecosystem will keep track of the caller address into the OpenZeppelin EnumerableSet.AddressSet **redeemers** by templateId that will be verified in BadgeFactory via **verify** function linked to it, to allow a redeemer to activate a Non-transferable Badge.
 
-The contract also inherits OpenZeppelic AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and Amdin, to add an Admin via **addAdmin** and remove an Admin via **removeAdmin** functions as well as to **pause**, **unpause** functions in case of emergency (Circuit Breaker Design Pattern).  
+The contract also inherits OpenZeppelic AccessControl.sol, allowing the owner of the contract to be set as Default Admin and Pauser to call **pause**, **unpause** functions in case of emergency (Circuit Breaker Design Pattern).  
 
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
-> BadgeRoles Access Management for Default Admin, Templater and Pauser Role
+> BadgeRoles Access Management for Default Admin, Admin, Templater and Pauser Role
 
-BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Pauser and also as Templater, to add a Templater via **addTemplater** and remove a Templater via **removeTemplater** functions.  
+BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of the contract to be set as Default Admin, Admin, Pauser and also as Templater, to add an Admin via **addAdmin** and remove an Admin via **removeAdmin** functions as well as add a Templater via **addTemplater** and remove a Templater via **removeTemplater** functions.  
 
 ### [BadgeFactory](./contracts/BadgeFactory.sol)
 > BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
