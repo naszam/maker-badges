@@ -34,7 +34,10 @@ const exec_proxy = '0xB190BC922e8fbEc4DD673deE6C0D86F0e4B73f09';
 const exec_proxy2 = '0xAc75b73394C329376c214663D92156AfA864a77f';
 const flip = '0xF3d18dB1B4900bAd51b6106F757515d1650A5894';
 
-const templateId = 1;
+const chaiId = 0;
+const chiefId = 1;
+const robotId = 2;
+const flipperId = 3;
 const bidId = 52;
 
   // Check that the owner is set as the deploying address
@@ -72,17 +75,17 @@ const bidId = 52;
   describe('chaiChallenge()', async function () {
 
       it('caller has accrued one or more dai on pot', async function () {
-        await maker.chaiChallenge(templateId, { from: usr });
-        expect(await maker.verify(templateId, usr, {from: random})).to.equal(true);
+        await maker.chaiChallenge({ from: usr });
+        expect(await maker.verify(chaiId, usr, {from: random})).to.equal(true);
       });
 
       it('should emit the appropriate event when chai is checked', async function () {
-        const receipt = await maker.chaiChallenge(templateId, { from: usr });
+        const receipt = await maker.chaiChallenge({ from: usr });
         expectEvent(receipt, 'ChaiChecked', { usr: usr });
       });
 
       it('random address should not be able to pass the challenge', async function () {
-        await expectRevert(maker.chaiChallenge(templateId, { from: random }), 'MakerBadges: caller has not accrued 1 or more dai interest on pot');
+        await expectRevert(maker.chaiChallenge({ from: random }), 'MakerBadges: caller has not accrued 1 or more dai interest on pot');
       });
   });
 
@@ -92,17 +95,17 @@ const bidId = 52;
   describe('chiefChallenge()', async function () {
 
       it('caller is voting in an executive spell', async function () {
-        await maker.chiefChallenge(templateId, { from: exec });
-        expect(await maker.verify(templateId, exec, {from: random})).to.equal(true);
+        await maker.chiefChallenge({ from: exec });
+        expect(await maker.verify(chiefId, exec, {from: random})).to.equal(true);
       });
 
       it('should emit the appropriate event when the caller is checked for chief', async function () {
-        const receipt = await maker.chiefChallenge(templateId, { from: exec });
+        const receipt = await maker.chiefChallenge({ from: exec });
         expectEvent(receipt, 'DSChiefChecked', { guy: exec });
       });
 
       it('random address should not be able to pass the challenge', async function () {
-        await expectRevert(maker.chiefChallenge(templateId, { from: random }), 'MakerBadges: caller is not voting in an executive spell');
+        await expectRevert(maker.chiefChallenge({ from: random }), 'MakerBadges: caller is not voting in an executive spell');
       });
   });
 
@@ -113,31 +116,31 @@ const bidId = 52;
   describe('robotChallenge()', async function () {
 
       it('caller is voting in an executive spell via proxy', async function () {
-        await maker.robotChallenge(templateId, proxy, { from: exec_proxy });
-        expect(await maker.verify(templateId, exec_proxy, {from: random})).to.equal(true);
+        await maker.robotChallenge(proxy, { from: exec_proxy });
+        expect(await maker.verify(robotId, exec_proxy, {from: random})).to.equal(true);
       });
 
       it('caller is voting in an executive spell via proxy2', async function () {
-        await maker.robotChallenge(templateId, proxy2, { from: exec_proxy2 });
-        expect(await maker.verify(templateId, exec_proxy2, {from: random})).to.equal(true);
+        await maker.robotChallenge(proxy2, { from: exec_proxy2 });
+        expect(await maker.verify(robotId, exec_proxy2, {from: random})).to.equal(true);
       });
 
       it('should emit the appropriate event when the proxy caller is checked for chief', async function () {
-        const receipt = await maker.robotChallenge(templateId, proxy, { from: exec_proxy });
+        const receipt = await maker.robotChallenge(proxy, { from: exec_proxy });
         expectEvent(receipt, 'RobotChecked', { guy: exec_proxy });
       });
 
       it('should emit the appropriate event when the proxy2 caller is checked for chief', async function () {
-        const receipt = await maker.robotChallenge(templateId, proxy2, { from: exec_proxy2 });
+        const receipt = await maker.robotChallenge(proxy2, { from: exec_proxy2 });
         expectEvent(receipt, 'RobotChecked', { guy: exec_proxy2 });
       });
 
       it('random address should not be able to pass the robot challenge', async function () {
-        await expectRevert(maker.robotChallenge(templateId, proxy, { from: random }), 'MakerBadges: caller is not voting via proxy in an executive spell');
+        await expectRevert(maker.robotChallenge(proxy, { from: random }), 'MakerBadges: caller is not voting via proxy in an executive spell');
       });
 
       it('should revert by passing address zero as proxy when called by proxy user', async function () {
-        await expectRevert(maker.robotChallenge(templateId, ZERO_ADDRESS, { from: exec_proxy }), 'MakerBadges: caller is not voting via proxy in an executive spell');
+        await expectRevert(maker.robotChallenge(ZERO_ADDRESS, { from: exec_proxy }), 'MakerBadges: caller is not voting via proxy in an executive spell');
       });
   });
 
@@ -149,17 +152,17 @@ const bidId = 52;
   describe('flipperChallenge()', async function () {
 
       it('caller is the high bidder in the current bid in eth collateral auctions', async function () {
-        await maker.flipperChallenge(templateId, bidId, { from: flip });
-        expect(await maker.verify(templateId, flip, {from: random})).to.equal(true);
+        await maker.flipperChallenge(bidId, { from: flip });
+        expect(await maker.verify(flipperId, flip, {from: random})).to.equal(true);
       });
 
       it('should emit the appropriate event when flipper is checked', async function () {
-        const receipt = await maker.flipperChallenge(templateId, bidId, { from: flip });
+        const receipt = await maker.flipperChallenge(bidId, { from: flip });
         expectEvent(receipt, 'FlipperChecked', { guy: flip });
       });
 
       it('random address should not be able to pass the challenge', async function () {
-        await expectRevert(maker.flipperChallenge(templateId, bidId, { from: random }), 'MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions');
+        await expectRevert(maker.flipperChallenge(bidId, { from: random }), 'MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions');
       });
   });
 
