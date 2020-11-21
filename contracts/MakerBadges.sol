@@ -97,33 +97,28 @@ contract MakerBadges is AccessControl, Pausable {
 
     /// @notice Chai Challenge
     /// @dev Keeps track of the address of the caller if successful
-    /// @return True if the caller successfully checked for activity on Chai
-    function chaiChallenge(uint256 templateId) external whenNotPaused returns (bool) {
+    function chaiChallenge(uint256 templateId) external whenNotPaused {
         if (!redeemers[templateId].contains(msg.sender)) {
             require(redeemers[templateId].add(msg.sender));
         }
         emit ChaiChecked(msg.sender);
         require(chai.dai(msg.sender) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
-        return true;
     }
 
 
     /// @notice DSChief Challenge
     /// @dev Keeps track of the address of the caller if successful
-    /// @return True if the caller successfully checked for activity on DSChief
-    function chiefChallenge(uint256 templateId) external whenNotPaused returns (bool) {
+    function chiefChallenge(uint256 templateId) external whenNotPaused {
         require(chief.votes(msg.sender) != 0x00,"MakerBadges: caller is not voting in an executive spell");
         if (!redeemers[templateId].contains(msg.sender)) {
             require(redeemers[templateId].add(msg.sender));
         }
         emit DSChiefChecked(msg.sender);
-        return true;
     }
 
     /// @notice Robot Challenge
     /// @dev Keeps track of the address of the caller if successful
-    /// @return True if the caller successfully checked for activity via vote proxy on DSChief
-    function robotChallenge(uint256 templateId, address _proxy) external whenNotPaused returns (bool) {
+    function robotChallenge(uint256 templateId, address _proxy) external whenNotPaused {
         proxy = VoteProxyLike(_proxy);
         require(
             chief.votes(_proxy)!= 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
@@ -133,15 +128,13 @@ contract MakerBadges is AccessControl, Pausable {
             require(redeemers[templateId].add(msg.sender));
         }
         emit RobotChecked(msg.sender);
-        return true;
     }
 
 
     /// @notice Flipper Challenge
     /// @dev Keeps track of the address of the caller if successful
     /// @dev guy, high bidder
-    /// @return True if the caller successfully checked for activity on Flipper
-    function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused returns (bool) {
+    function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused {
         require(
             flipper.bids(bidId).guy == msg.sender,
             "MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions"
@@ -150,7 +143,6 @@ contract MakerBadges is AccessControl, Pausable {
             require(redeemers[templateId].add(msg.sender));
         }
         emit FlipperChecked(msg.sender);
-        return true;
     }
 
     /// @notice Check if guy is a redeemer

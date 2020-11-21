@@ -75,21 +75,17 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @notice Set the baseURI
     /// @dev Update the baseURI specified in the constructor
     /// @param baseURI New baseURI
-    /// @return True if the new baseURI is set
-    function setBaseURI(string calldata baseURI) external returns (bool) {
+    function setBaseURI(string calldata baseURI) external {
         require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
         _setBaseURI(baseURI);
-        return true;
     }
 
     /// @notice Set Merkle Tree Root Hashes array
     /// @dev Called by admin to update roots for different address batches by templateId
     /// @param _roots Root hashes of the Merkle Trees by templateId
-    /// @return True if successfully updated
-    function setRootHashes(bytes32[] calldata _roots) external whenNotPaused returns (bool) {
+    function setRootHashes(bytes32[] calldata _roots) external whenNotPaused {
         require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
         roots = _roots;
-        return true;
     }
 
     /// @dev Templates
@@ -99,11 +95,9 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param name The name of the new template
     /// @param description A description of the new template
     /// @param image A filename of the new template
-    /// @return True If the new Template is Created
     function createTemplate(string calldata name, string calldata description, string calldata image)
         external
         whenNotPaused
-        returns (bool)
     {
         require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
         templates[_templateIdTracker.current()].name = name;
@@ -113,7 +107,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         _templateIdTracker.increment();
         uint256 _templateId = _templateIdTracker.current().sub(1);
         emit NewTemplate(_templateId, name, description, image);
-        return true;
     }
 
     /// @notice Update a template
@@ -122,11 +115,9 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param name The name of the template
     /// @param description The description of the template
     /// @param image The filename of the template
-    /// @return True If the new Template is Updated
     function updateTemplate(uint256 templateId, string calldata name, string calldata description, string calldata image)
         external
         whenNotPaused
-        returns (bool)
     {
         require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
@@ -134,7 +125,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         templates[templateId].description = description;
         templates[templateId].image = image;
         emit TemplateUpdated(templateId, name, description, image);
-        return true;
     }
 
     /// @notice Getter function for templates
