@@ -13,12 +13,7 @@
         ]
     },
     "slither": {
-        "target": ".",
-	"command_before": [
-		{
-			"command": ["npx", "truffle", "compile"]
-		}
-	]
+        "target": "."
     },
     "echidna": {
         "contract": "CryticTestBadgeRoles"
