@@ -175,15 +175,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         return true;
     }
 
-    /// @notice Getter function for templateId associated with the tokenId
-    /// @dev Check if the tokenId exists
-    /// @param tokenId Token Id of the Badge
-    /// @return templateId Template Id associated with the tokenId
-    function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256 templateId) {
-        require(_exists(tokenId), "BadgeFactory: no token with that id");
-        (,templateId) = _unpackTokenId(tokenId);
-    }
-
     /// @notice Getter function for redeemer associated with the tokenId
     /// @dev Check if the tokenId exists
     /// @param tokenId Token Id of the Badge
@@ -191,6 +182,15 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     function getBadgeRedeemer(uint256 tokenId) external view whenNotPaused returns (address redeemer) {
         require(_exists(tokenId), "BadgeFactory: no token with that id");
         (redeemer,) = _unpackTokenId(tokenId);
+    }
+
+    /// @notice Getter function for templateId associated with the tokenId
+    /// @dev Check if the tokenId exists
+    /// @param tokenId Token Id of the Badge
+    /// @return templateId Template Id associated with the tokenId
+    function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256 templateId) {
+        require(_exists(tokenId), "BadgeFactory: no token with that id");
+        (,templateId) = _unpackTokenId(tokenId);
     }
 
     /// @notice Getter function for number of badges associated with templateId
