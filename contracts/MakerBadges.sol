@@ -103,9 +103,7 @@ contract MakerBadges is AccessControl, Pausable {
     /// @notice Chai Challenge
     /// @dev Keeps track of the address of the caller if successful
     function chaiChallenge() external whenNotPaused {
-        if (!redeemers[chaiId].contains(msg.sender)) {
-            require(redeemers[chaiId].add(msg.sender));
-        }
+        require(redeemers[chaiId].add(msg.sender), "MakerBadges: caller already checked for chai");
         emit ChaiChecked(msg.sender);
         require(chai.dai(msg.sender) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
     }
@@ -115,9 +113,7 @@ contract MakerBadges is AccessControl, Pausable {
     /// @dev Keeps track of the address of the caller if successful
     function chiefChallenge() external whenNotPaused {
         require(chief.votes(msg.sender) != 0x00,"MakerBadges: caller is not voting in an executive spell");
-        if (!redeemers[chiefId].contains(msg.sender)) {
-            require(redeemers[chiefId].add(msg.sender));
-        }
+        require(redeemers[chiefId].add(msg.sender), "MakerBadges: caller already checked for chief");
         emit DSChiefChecked(msg.sender);
     }
 
@@ -129,9 +125,7 @@ contract MakerBadges is AccessControl, Pausable {
             chief.votes(_proxy)!= 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
             "MakerBadges: caller is not voting via proxy in an executive spell"
         );
-        if (!redeemers[robotId].contains(msg.sender)) {
-            require(redeemers[robotId].add(msg.sender));
-        }
+        require(redeemers[robotId].add(msg.sender), "MakerBadges: caller already checked for robot");
         emit RobotChecked(msg.sender);
     }
 
@@ -144,9 +138,7 @@ contract MakerBadges is AccessControl, Pausable {
             flipper.bids(bidId).guy == msg.sender,
             "MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions"
         );
-        if (!redeemers[flipperId].contains(msg.sender)) {
-            require(redeemers[flipperId].add(msg.sender));
-        }
+        require(redeemers[flipperId].add(msg.sender), "MakerBadges: caller already checked for flipper");
         emit FlipperChecked(msg.sender);
     }
 
