@@ -68,6 +68,11 @@ contract MakerBadges is AccessControl, Pausable {
 
     mapping(uint256 => EnumerableSet.AddressSet) private redeemers;
 
+    uint8 constant chaiId = 0;
+    uint8 constant chiefId = 1;
+    uint8 constant robotId = 2;
+    uint8 constant flipperId = 3;
+
     /// @dev Events
     event ChaiChecked(address usr);
     event DSChiefChecked(address guy);
@@ -97,9 +102,9 @@ contract MakerBadges is AccessControl, Pausable {
 
     /// @notice Chai Challenge
     /// @dev Keeps track of the address of the caller if successful
-    function chaiChallenge(uint256 templateId) external whenNotPaused {
-        if (!redeemers[templateId].contains(msg.sender)) {
-            require(redeemers[templateId].add(msg.sender));
+    function chaiChallenge() external whenNotPaused {
+        if (!redeemers[chaiId].contains(msg.sender)) {
+            require(redeemers[chaiId].add(msg.sender));
         }
         emit ChaiChecked(msg.sender);
         require(chai.dai(msg.sender) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
@@ -108,24 +113,24 @@ contract MakerBadges is AccessControl, Pausable {
 
     /// @notice DSChief Challenge
     /// @dev Keeps track of the address of the caller if successful
-    function chiefChallenge(uint256 templateId) external whenNotPaused {
+    function chiefChallenge() external whenNotPaused {
         require(chief.votes(msg.sender) != 0x00,"MakerBadges: caller is not voting in an executive spell");
-        if (!redeemers[templateId].contains(msg.sender)) {
-            require(redeemers[templateId].add(msg.sender));
+        if (!redeemers[chiefId].contains(msg.sender)) {
+            require(redeemers[chiefId].add(msg.sender));
         }
         emit DSChiefChecked(msg.sender);
     }
 
     /// @notice Robot Challenge
     /// @dev Keeps track of the address of the caller if successful
-    function robotChallenge(uint256 templateId, address _proxy) external whenNotPaused {
+    function robotChallenge(address _proxy) external whenNotPaused {
         proxy = VoteProxyLike(_proxy);
         require(
             chief.votes(_proxy)!= 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
             "MakerBadges: caller is not voting via proxy in an executive spell"
         );
-        if (!redeemers[templateId].contains(msg.sender)) {
-            require(redeemers[templateId].add(msg.sender));
+        if (!redeemers[robotId].contains(msg.sender)) {
+            require(redeemers[robotId].add(msg.sender));
         }
         emit RobotChecked(msg.sender);
     }
@@ -134,13 +139,13 @@ contract MakerBadges is AccessControl, Pausable {
     /// @notice Flipper Challenge
     /// @dev Keeps track of the address of the caller if successful
     /// @dev guy, high bidder
-    function flipperChallenge(uint256 templateId, uint256 bidId) external whenNotPaused {
+    function flipperChallenge(uint256 bidId) external whenNotPaused {
         require(
             flipper.bids(bidId).guy == msg.sender,
             "MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions"
         );
-        if (!redeemers[templateId].contains(msg.sender)) {
-            require(redeemers[templateId].add(msg.sender));
+        if (!redeemers[flipperId].contains(msg.sender)) {
+            require(redeemers[flipperId].add(msg.sender));
         }
         emit FlipperChecked(msg.sender);
     }
