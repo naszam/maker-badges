@@ -39,7 +39,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
 
     Counters.Counter private _templateIdTracker;
 
-    bytes32[] public roots;
+    bytes32[] private roots;
 
     struct BadgeTemplate {
         string name;
