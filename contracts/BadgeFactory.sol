@@ -240,7 +240,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param tokenURI an <ipfs-hash>.json filename
     /// @return True if the new token is minted
     function _mintWithTokenURI(address to, uint256 templateId, string calldata tokenURI) private returns (bool) {
-        uint _tokenId = _getTokenId(to, templateId);
+        uint256 _tokenId = _getTokenId(to, templateId);
         _mint(to, _tokenId);
         _setTokenURI(_tokenId, tokenURI);
         return true;
