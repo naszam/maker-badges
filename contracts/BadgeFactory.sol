@@ -47,7 +47,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         string image;
     }
 
-    mapping (uint256 => BadgeTemplate) private templates;
+    mapping(uint256 => BadgeTemplate) private templates;
     mapping(uint256 => uint256) private _templateQuantities;
 
     /// @dev Events
