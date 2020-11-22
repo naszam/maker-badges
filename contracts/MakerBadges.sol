@@ -21,7 +21,6 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 
 interface ChaiLike {
@@ -55,7 +54,6 @@ interface VoteProxyLike {
 contract MakerBadges is AccessControl, Pausable {
 
     /// @dev Libraries
-    using SafeMath for uint256;
     using EnumerableSet for EnumerableSet.AddressSet;
 
     /// @dev Data
