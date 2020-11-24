@@ -214,7 +214,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param templateId Template Id
     /// @param _tokenId Token Id
     function _getTokenId(address redeemer, uint256 templateId) private pure returns (uint256 _tokenId) {
-        bytes memory _tokenIdBytes = abi.encodePacked(redeemer, uint8(templateId));
+        bytes memory _tokenIdBytes = abi.encodePacked(redeemer, uint96(templateId));
         assembly {
             _tokenId := mload(add(_tokenIdBytes, add(0x20, 0)))
         }
@@ -227,7 +227,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     function _unpackTokenId(uint256 tokenId) private pure returns (address redeemer, uint256 templateId) {
         assembly {
             redeemer := shr(96,  and(tokenId, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000))
-            templateId := shr(88, and(tokenId, 0x0000000000000000000000000000000000000000FF0000000000000000000000))
+            templateId := and(tokenId, 0x0000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF)
         }
     }
 
