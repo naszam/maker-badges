@@ -207,4 +207,6 @@ About
 
 Project created by [Nazzareno Massari](https://nazzarenomassari.com) and Scott Herren.  
 Team MetaBadges from HackMoney ETHGlobal Virtual Hackathon.  
+A special thanks for support to [Gonzalo Balabasquer](https://github.com/gbalabasquer).  
+Security Check by [Scott Bigelow](https://github.com/epheph)  
 MakerDAO Badge Illustrations by [Richard Rosa](https://www.artstation.com/artwork/oAJeVq)
