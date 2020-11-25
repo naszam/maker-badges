@@ -51,9 +51,9 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     mapping(uint256 => uint256) private _templateQuantities;
 
     /// @dev Events
-    event NewTemplate(uint256 templateId, string name, string description, string image);
-    event TemplateUpdated(uint256 templateId, string name, string description, string image);
-    event BadgeActivated(address redeemer, uint256 templateId, string tokenURI);
+    event NewTemplate(uint256 indexed templateId, string name, string description, string image);
+    event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
+    event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId, string tokenURI);
 
     constructor(address maker_)
         public
@@ -164,12 +164,14 @@ contract BadgeFactory is BadgeRoles, ERC721 {
             "BadgeFactory: caller is not a redeemer"
         );
 
+        uint256 _tokenId = _getTokenId(msg.sender, templateId);
+
         /// @dev Increase the quantities
         _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
 
-        require(_mintWithTokenURI(msg.sender, templateId, tokenURI), "BadgeFactory: badge not minted");
+        require(_mintWithTokenURI(msg.sender, _tokenId, tokenURI), "BadgeFactory: badge not minted");
 
-        emit BadgeActivated(msg.sender, templateId, tokenURI);
+        emit BadgeActivated(_tokenId, templateId, tokenURI);
         return true;
     }
 
@@ -233,14 +235,14 @@ contract BadgeFactory is BadgeRoles, ERC721 {
 
     /// @notice Mint new token with tokenURI
     /// @dev Use an auto-generated tokenId
-    /// @dev automatically concatenate baseURI with tokenURI via abi.encodePacked
-    /// @param to owner of the new token
-    /// @param tokenURI an <ipfs-hash>.json filename
+    /// @dev Automatically concatenate baseURI with tokenURI via abi.encodePacked
+    /// @param to Owner of the new token
+    /// @param tokenId Token Id of the Baddge
+    /// @param tokenURI An <ipfs-hash>.json filename
     /// @return True if the new token is minted
-    function _mintWithTokenURI(address to, uint256 templateId, string calldata tokenURI) private returns (bool) {
-        uint256 _tokenId = _getTokenId(to, templateId);
-        _mint(to, _tokenId);
-        _setTokenURI(_tokenId, tokenURI);
+    function _mintWithTokenURI(address to, uint256 tokenId, string calldata tokenURI) private returns (bool) {
+        _mint(to, tokenId);
+        _setTokenURI(tokenId, tokenURI);
         return true;
     }
 }
