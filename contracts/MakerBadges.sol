@@ -95,7 +95,7 @@ contract MakerBadges is AccessControl, Pausable {
     /// @notice Fallback function
     /// @dev Added not payable to revert transactions not matching any other function which send value
     fallback() external {
-        revert();
+        revert("MakerBadges: function not matching any other");
     }
 
     /// @notice Chai Challenge
