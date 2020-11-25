@@ -31,6 +31,11 @@ interface DSChiefLike {
     function votes(address) external view returns (bytes32);
 }
 
+interface VoteProxyLike {
+    function cold() external view returns (address);
+    function hot() external view returns (address);
+}
+
 interface FlipperLike {
     struct Bid {
         uint256 bid;
@@ -44,11 +49,6 @@ interface FlipperLike {
     }
 
     function bids(uint256) external view returns (Bid memory);
-}
-
-interface VoteProxyLike {
-    function cold() external view returns (address);
-    function hot() external view returns (address);
 }
 
 contract MakerBadges is AccessControl, Pausable {
