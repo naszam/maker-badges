@@ -66,7 +66,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @notice Fallback function
     /// @dev Added not payable to revert transactions not matching any other function which send value
     fallback() external {
-        revert();
+        revert("BadgeFactory: function not matching any other");
     }
 
     /// @notice Set the baseURI
