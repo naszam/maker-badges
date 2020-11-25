@@ -211,7 +211,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     }
 
     /// @notice Generate tokenId
-    /// @dev Augur twist by cat redeemer and templateId
+    /// @dev Augur twist by concatenate redeemer and templateId
     /// @param redeemer Redeemer Address
     /// @param templateId Template Id
     /// @param _tokenId Token Id
