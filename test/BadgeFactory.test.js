@@ -260,7 +260,7 @@ const bidId = 52;
       it('should emit the appropriate event when a badge is activated', async function () {
         const receipt = await factory.activateBadge(proof, offchainId, tokenURI, { from: redeemer });
         const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
-        expectEvent(receipt, 'BadgeActivated', { redeemer: redeemer, templateId: offchainId, tokenURI: tokenURI });
+        expectEvent(receipt, 'BadgeActivated', { tokenId: tokenId, templateId: offchainId, tokenURI: tokenURI });
         expectEvent(receipt, 'Transfer', { from: ZERO_ADDRESS, to: redeemer, tokenId: tokenId });
       });
 
