@@ -72,10 +72,10 @@ contract MakerBadges is AccessControl, Pausable {
     uint256 private constant flipperId = 3;
 
     /// @dev Events
-    event ChaiChecked(address usr);
-    event DSChiefChecked(address guy);
-    event RobotChecked(address guy);
-    event FlipperChecked(address guy);
+    event ChaiChecked(address indexed usr);
+    event DSChiefChecked(address indexed guy);
+    event RobotChecked(address indexed guy);
+    event FlipperChecked(address indexed guy);
 
     constructor(address chai_, address chief_, address flipper_) public {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
