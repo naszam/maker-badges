@@ -35,6 +35,7 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @param account Address of the new Admin
     function addAdmin(address account) external {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
+        require(account != address(0), "BadgeFactory: account is the zero address");
         grantRole(ADMIN_ROLE, account);
     }
 
@@ -48,18 +49,19 @@ contract BadgeRoles is AccessControl, Pausable {
 
     /// @notice Add a new Templater
     /// @dev Access restricted only to Default Admin
-    /// @param guy Address of the new Templater
-    function addTemplater(address guy) external {
+    /// @param account Address of the new Templater
+    function addTemplater(address account) external {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
-        grantRole(TEMPLATER_ROLE, guy);
+        require(account != address(0), "BadgeFactory: account is the zero address");
+        grantRole(TEMPLATER_ROLE, account);
     }
 
     /// @notice Remove a Templater
     /// @dev Access restricted only to Default Admin
-    /// @param guy Address of the Templater
-    function removeTemplater(address guy) external {
+    /// @param account Address of the Templater
+    function removeTemplater(address account) external {
       require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
-      revokeRole(TEMPLATER_ROLE, guy);
+      revokeRole(TEMPLATER_ROLE, account);
     }
 
     /// @notice Pause all the functions
