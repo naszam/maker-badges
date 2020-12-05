@@ -73,9 +73,15 @@ A Merkle Tree is generated for every Template and the root hash is updated by th
 
 BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template via **createTemplate** specifying name, description and image. A Templater can also update the template info via **updateTemplate**.
 
+Getter functions are implemented to get template metadata via **getTemplate** and the current number of templates via **getTemplateCount**.
+
 It also inherits ERC721, where the **_transfer** has been overridden to implement the non-transferable feature, allowing redeemers checked on-chain/offchain to redeem a Badge for a specific activity on MakerDAO ecosystem via **activateBadge** that will verify if the caller is a redeemer and then will allow the caller to mint a new Non-transferable Badge with tokenURI stored on IPFS (eg. "ipfs.json").  
 
+**getBadgeTemplateQuantity** getter function is implemented to get the number of badges activated for each template.
+
 To avoid that a redeemer could activate the same Badge twice, the **tokenId** is generated via **_getTokenId"** that concatenates the **redeemer** and the **templateId** to get a unique hard-coded identifier. The **_mint** function will check then if the tokenId already exists (= already minted) and if not mint a new Badge.  
+
+**getBadgeRedeemer** and **getBadgeTemplate** getter functions are implemented to get the redeemer address and **templateId** hard-coded inside the specified **tokenId**.
 
 Finally **setBaseURI** is added to allow the admin to set a new baseURI.  
 
