@@ -3,7 +3,7 @@
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![built-with openzeppelin](https://img.shields.io/badge/built%20with-OpenZeppelin-3677FF?style=plastic)](https://docs.openzeppelin.com/)
 [![#solc 0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
-[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](#project-deployed-on-kovan)
+[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](#development-deployments)
 
 [![#ETHGlobal HackMoney](https://img.shields.io/badge/ETHGlobal-HackMoney-blueviolet?style=for-the-badge&logo=atom&labelColor=5fc5a6)](https://hackathon.money/)
 
@@ -184,9 +184,9 @@ Deploy
    $ truffle run verify MakerBadges BadgeFactory --network kovan
    ```
 
-## Project deployed on Kovan
-[MakerBadges](https://kovan.etherscan.io/address/0xF64510B7aDa1E0De35C243984957cB6c547D6C47)  
-[BadgeFactory](https://kovan.etherscan.io/address/0x9f00d92d8858D1d1E42EA4aD7333a2BE3f1C8997)    
+## Development Deployments
+**MakerBadges 0.8.0 (Kovan):** [0xe911636C3105FaDE74F1986c04e8859BC15d03Ed](https://kovan.etherscan.io/address/0xe911636C3105FaDE74F1986c04e8859BC15d03Ed)    
+**BadgeFactory 0.8.0 (Kovan):** [0xed3B09C5946d5fb2A2EA0dA18a151312668573eb](https://kovan.etherscan.io/address/0xed3B09C5946d5fb2A2EA0dA18a151312668573eb)    
 
 Interface
 ============
