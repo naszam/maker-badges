@@ -83,7 +83,7 @@ To avoid that a redeemer could activate the same Badge twice, the **tokenId** is
 
 **getBadgeRedeemer** and **getBadgeTemplate** getter functions are implemented to get the redeemer address and **templateId** hard-coded inside the specified **tokenId**.
 
-Finally **setBaseURI** is added to allow the admin to set a new baseURI.  
+Finally **setBaseURI** is added to allow the default admin to set a new baseURI.  
 
 During deployment the contract sets the following ERC721 metadata:
 - name: "MakerBadges"
