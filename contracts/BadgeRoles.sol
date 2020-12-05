@@ -33,35 +33,43 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @notice Add a new Admin
     /// @dev Access restricted only to Default Admin
     /// @param account Address of the new Admin
-    function addAdmin(address account) external {
+    /// @return True if account is added as Admin
+    function addAdmin(address account) external returns (bool) {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
         require(account != address(0), "BadgeFactory: account is the zero address");
         grantRole(ADMIN_ROLE, account);
+        return true;
     }
 
     /// @notice Remove an Admin
     /// @dev Access restricted only to Default Admin
     /// @param account Address of the Admin
-    function removeAdmin(address account) external {
+    /// @return True if account is removed as Admin
+    function removeAdmin(address account) external returns (bool) {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
         revokeRole(ADMIN_ROLE, account);
+        return true;
     }
 
     /// @notice Add a new Templater
     /// @dev Access restricted only to Default Admin
     /// @param account Address of the new Templater
-    function addTemplater(address account) external {
+    /// @return True if account is added as Templater
+    function addTemplater(address account) external returns (bool) {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
         require(account != address(0), "BadgeFactory: account is the zero address");
         grantRole(TEMPLATER_ROLE, account);
+        return true;
     }
 
     /// @notice Remove a Templater
     /// @dev Access restricted only to Default Admin
     /// @param account Address of the Templater
-    function removeTemplater(address account) external {
+    /// @return True if account is removed as Templater
+    function removeTemplater(address account) external returns (bool) {
       require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
       revokeRole(TEMPLATER_ROLE, account);
+      return true;
     }
 
     /// @notice Pause all the functions
