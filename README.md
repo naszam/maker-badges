@@ -97,6 +97,7 @@ Clone this GitHub repository.
     - OpenZeppelin Contracts 
     - Truffle HD Wallet Provider
     - Truffle-Flattener
+    - Truffle-Plugin-Verify
     - Solhint
     ```sh
     $ yarn
@@ -177,6 +178,10 @@ Deploy
  - Deploy the smart contract using Truffle & Infura with the following command (global dependency):
    ```sh
    $ truffle migrate --network kovan
+   ```
+ - Verify Contracts on Kovan via Truffle Plugin Verify:
+   ```sh
+   $ truffle run verify MakerBadges BadgeFactory --network kovan
    ```
 
 ## Project deployed on Kovan
