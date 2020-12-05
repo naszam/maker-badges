@@ -100,7 +100,7 @@ Clone this GitHub repository.
     - Truffle-Plugin-Verify
     - Solhint
     ```sh
-    $ yarn
+    $ npm i
     ```
   - Global dependencies:
     - Truffle (recommended):
