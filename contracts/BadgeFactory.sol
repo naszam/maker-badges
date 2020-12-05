@@ -97,13 +97,15 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         whenNotPaused
     {
         require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
-        templates[_templateIdTracker.current()].name = name;
-        templates[_templateIdTracker.current()].description = description;
-        templates[_templateIdTracker.current()].image = image;
+
+        uint256 templateId = _templateIdTracker.current();
+
+        templates[templateId].name = name;
+        templates[templateId].description = description;
+        templates[templateId].image = image;
 
         _templateIdTracker.increment();
-        uint256 _templateId = _templateIdTracker.current().sub(1);
-        emit NewTemplate(_templateId, name, description, image);
+        emit NewTemplate(templateId, name, description, image);
     }
 
     /// @notice Update a template
@@ -151,7 +153,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @dev Verify if the caller is a redeemer
     /// @param proof Merkle Proof
     /// @param templateId Template Id
-    /// @param tokenURI Token URI
+    /// @param tokenURI An <ipfs-hash>.json filename
     /// @return True If the new Badge is Activated
     function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI)
         external
@@ -234,7 +236,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     }
 
     /// @notice Mint new token with tokenURI
-    /// @dev Use an auto-generated tokenId
     /// @dev Automatically concatenate baseURI with tokenURI via abi.encodePacked
     /// @param to Owner of the new token
     /// @param tokenId Token Id of the Baddge
