@@ -18,7 +18,6 @@
     "serialize-javascript": "^4.0.0",
     "solhint": "^3.3.2",
     "truffle": "^5.1.56",
-    "truffle-flattener": "^1.5.0",
     "truffle-plugin-verify": "^0.5.2"
   },
   "devDependencies": {
