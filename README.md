@@ -96,7 +96,6 @@ Clone this GitHub repository.
     - Ganache CLI
     - OpenZeppelin Contracts 
     - Truffle HD Wallet Provider
-    - Truffle-Flattener
     - Truffle-Plugin-Verify
     - Solhint
     ```sh
