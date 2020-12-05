@@ -79,7 +79,7 @@ It also inherits ERC721, where the **_transfer** has been overridden to implemen
 
 **getBadgeTemplateQuantity** getter function is implemented to get the number of badges activated for each template.
 
-To avoid that a redeemer could activate the same Badge twice, the **tokenId** is generated via **_getTokenId"** that concatenates the **redeemer** and the **templateId** to get a unique hard-coded identifier. The **_mint** function will check then if the tokenId already exists (= already minted) and if not mint a new Badge.  
+To avoid that a redeemer could activate the same Badge twice, the **tokenId** is generated via **_getTokenId"** that concatenates the **redeemer** address and the **templateId** to get a unique hard-coded identifier. The **_mint** function will check then if the tokenId already exists (= already minted) and if not mint a new Badge.  
 
 **getBadgeRedeemer** and **getBadgeTemplate** getter functions are implemented to get the redeemer address and **templateId** hard-coded inside the specified **tokenId**.
 
