@@ -49,16 +49,18 @@ const tokenURI = 'ipfs.js';
 const chai = '0x06AF07097C9Eeb7fD685c692751D5C66dB49c215';
 
 // https://changelog.makerdao.com/releases/mainnet/1.1.1/contracts.json
-const chief = '0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5';
+const chief = '0x0a3f6849f78076aefaDf113F5BED87720274dDC0';
 const flipper = '0xF32836B9E1f47a0515c6Ec431592D5EbC276407f';
-const proxy = '0x0b65234703A6c2957fCFaff30531ABBabF581C8e';
-const proxy2 = '0x5F0976545aA52dC18e6d07b14Edae2D811708105';
+
+// https://vote.makerdao.com/executive/increase-eth-a-usdc-a-psm-usdc-a-debt-ceilings?network=mainnet#proposal-detail
+const proxy = '0xb78fe03167d68Adc890B91D67BA21DE02265CE15';
+const proxy2 = '0xC54C3691419c2996eB6e76B421E7f1132ab0Ee7A';
 
 // mainnet redeemer addresses
 const usr = '0xA25e31D8e4ED3e959898a089Dc2624F14a7fB738';
-const exec = '0x7A74Fb6BD364b9b5ef69605a3D28327dA8087AA0';
-const exec_proxy = '0xB190BC922e8fbEc4DD673deE6C0D86F0e4B73f09';
-const exec_proxy2 = '0xAc75b73394C329376c214663D92156AfA864a77f';
+const exec = '0x1eaD7050c94C8A1f08071ddBb28b01b3eB1B3D38';
+const exec_proxy = '0x6a3000945173AD8905C70FdA700EbBE1C41EAB40';
+const exec_proxy2 = '0xa6055F63ea1Cf238e6FD00e4D3810141ebF3ec2D';
 const flip = '0xF3d18dB1B4900bAd51b6106F757515d1650A5894';
 
 const chaiId = '0';
