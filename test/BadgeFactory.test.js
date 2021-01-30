@@ -16,7 +16,9 @@ let factory;
 let maker;
 
 describe('BadgeFactory', function () {
+
 const [ owner, templater, redeemer, random ] = accounts;
+//accounts.push('0xF5f7393dbE345f566b5A6580c2455Bdcdd134A95');
 
 const merkleTree = new MerkleTree(accounts);
 const root = merkleTree.getHexRoot();
