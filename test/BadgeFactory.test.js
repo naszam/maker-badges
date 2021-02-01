@@ -213,7 +213,7 @@ const bidId = 52;
         const tokenId = await factory.tokenOfOwnerByIndex(usr, index1, { from: random });
         expect(await factory.getBadgeRedeemer(tokenId), {from: random }).to.be.bignumber.equal(usr);
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(chaiId);
-        expect(await factory.getBadgeTemplateQuantity(chaiId, { from: random })).to.be.bignumber.equal('1');
+        expect(await factory.templateQuantities(chaiId, { from: random })).to.be.bignumber.equal('1');
       });
 
       it('should allow redeemers checked onchain for chief to activate a badge', async function () {
@@ -222,7 +222,7 @@ const bidId = 52;
         const tokenId = await factory.tokenOfOwnerByIndex(exec, index1, { from: random });
         expect(await factory.getBadgeRedeemer(tokenId), {from: random }).to.be.bignumber.equal(exec);
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(chiefId);
-        expect(await factory.getBadgeTemplateQuantity(chiefId, { from: random })).to.be.bignumber.equal('1');
+        expect(await factory.templateQuantities(chiefId, { from: random })).to.be.bignumber.equal('1');
       });
 
       it('should allow redeemers checked onchain for robot via proxy to activate a badge', async function () {
@@ -231,7 +231,7 @@ const bidId = 52;
         const tokenId = await factory.tokenOfOwnerByIndex(exec_proxy, index1, { from: random });
         expect(await factory.getBadgeRedeemer(tokenId), {from: random }).to.be.bignumber.equal(exec_proxy);
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(robotId);
-        expect(await factory.getBadgeTemplateQuantity(robotId, { from: random })).to.be.bignumber.equal('1');
+        expect(await factory.templateQuantities(robotId, { from: random })).to.be.bignumber.equal('1');
       });
 
       it('should allow redeemers checked onchain for robot via proxy2 to activate a badge', async function () {
@@ -240,7 +240,7 @@ const bidId = 52;
         const tokenId = await factory.tokenOfOwnerByIndex(exec_proxy2, index1, { from: random });
         expect(await factory.getBadgeRedeemer(tokenId), {from: random }).to.be.bignumber.equal(exec_proxy2);
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(robotId);
-        expect(await factory.getBadgeTemplateQuantity(robotId, { from: random })).to.be.bignumber.equal('1');
+        expect(await factory.templateQuantities(robotId, { from: random })).to.be.bignumber.equal('1');
       });
 
 /* In order to test flipper check https://changelog.makerdao.com/releases/mainnet/latest/ and set bidId to last kick (before deal) and unlock high bidder (guy) address
@@ -250,7 +250,7 @@ const bidId = 52;
         const tokenId = await factory.tokenOfOwnerByIndex(flip, index1, { from: random });
         expect(await factory.getBadgeRedeemer(tokenId), {from: random }).to.be.bignumber.equal(flip);
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(flipperId);
-        expect(await factory.getBadgeTemplateQuantity(flipperId, { from: random })).to.be.bignumber.equal('1');
+        expect(await factory.templateQuantities(flipperId, { from: random })).to.be.bignumber.equal('1');
       });
 */
       it('should allow redeemers checked offchain to activate a badge', async function () {
@@ -258,7 +258,7 @@ const bidId = 52;
         const tokenId = await factory.tokenOfOwnerByIndex(redeemer, index1, { from: random });
         expect(await factory.getBadgeRedeemer(tokenId), {from: random }).to.be.bignumber.equal(redeemer);
         expect(await factory.getBadgeTemplate(tokenId), {from: random }).to.be.bignumber.equal(offchainId);
-        expect(await factory.getBadgeTemplateQuantity(offchainId, { from: random })).to.be.bignumber.equal('1');
+        expect(await factory.templateQuantities(offchainId, { from: random })).to.be.bignumber.equal('1');
       });
 
       it('should emit the appropriate event when a badge is activated', async function () {
