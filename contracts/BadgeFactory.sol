@@ -55,9 +55,10 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
     event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId, string tokenURI);
 
-    constructor(address maker_)
+    constructor(address forwarder_, address maker_)
         public
         ERC721("MakerBadges", "MAKER")
+        BadgeRoles(forwarder_)
     {
         _setBaseURI("https://badges.makerdao.com/token/");
         maker = MakerBadgesLike(maker_);
@@ -73,7 +74,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @dev Update the baseURI specified in the constructor
     /// @param baseURI New baseURI
     function setBaseURI(string calldata baseURI) external {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not the default admin");
         _setBaseURI(baseURI);
     }
 
@@ -81,7 +82,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @dev Called by admin to update roots for different address batches by templateId
     /// @param _roots Root hashes of the Merkle Trees by templateId
     function setRootHashes(bytes32[] calldata _roots) external whenNotPaused {
-        require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
+        require(hasRole(ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not an admin");
         roots = _roots;
     }
 
@@ -96,7 +97,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         external
         whenNotPaused
     {
-        require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
+        require(hasRole(TEMPLATER_ROLE, _msgSender()), "BadgeFactory: caller is not a template owner");
 
         uint256 templateId = _templateIdTracker.current();
 
@@ -118,7 +119,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         external
         whenNotPaused
     {
-        require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
+        require(hasRole(TEMPLATER_ROLE, _msgSender()), "BadgeFactory: caller is not a template owner");
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         templates[templateId].name = name;
         templates[templateId].description = description;
@@ -148,16 +149,16 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     {
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         require(
-            maker.verify(templateId, msg.sender) || proof.verify(roots[templateId], keccak256(abi.encodePacked(msg.sender))),
+            maker.verify(templateId, _msgSender()) || proof.verify(roots[templateId], keccak256(abi.encodePacked(_msgSender()))),
             "BadgeFactory: caller is not a redeemer"
         );
 
-        uint256 _tokenId = _getTokenId(msg.sender, templateId);
+        uint256 _tokenId = _getTokenId(_msgSender(), templateId);
 
         /// @dev Increase the quantities
         templateQuantities[templateId] = templateQuantities[templateId].add(1);
 
-        require(_mintWithTokenURI(msg.sender, _tokenId, tokenURI), "BadgeFactory: badge not minted");
+        require(_mintWithTokenURI(_msgSender(), _tokenId, tokenURI), "BadgeFactory: badge not minted");
 
         emit BadgeActivated(_tokenId, templateId, tokenURI);
         return true;
@@ -187,6 +188,20 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     function _transfer(address from, address to, uint256 tokenId) internal override {
         require(false, "BadgeFactory: badge transfer disabled");
         super._transfer(from, to, tokenId);
+    }
+
+    /// @notice OpenGSN _msgSender()
+    /// @dev override _msgSender() in OZ Context.sol and BadgeRoles.sol
+    /// @return _msgSender() after relay call
+    function _msgSender() internal view override(Context, BadgeRoles) returns (address payable) {
+        return BaseRelayRecipient._msgSender();
+    }
+
+    /// @notice OpenGSN _msgData()
+    /// @dev override _msgData() in OZ Context.sol and BadgeRoles.sol
+    /// @return _msgData() after relay call
+    function _msgData() internal view override(Context, BadgeRoles) returns (bytes memory) {
+        return BaseRelayRecipient._msgData();
     }
 
     /// @notice Generate tokenId
