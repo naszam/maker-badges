@@ -148,7 +148,7 @@ const bidId = 52;
 
       it('templater should be able to create a template', async function () {
         await factory.createTemplate(template_name, template_description, template_image, { from: owner });
-        const receipt = await factory.getTemplate(templateId, { from: random });
+        const receipt = await factory.templates(templateId, { from: random });
         expect(receipt[0]).equal(template_name);
         expect(receipt[1]).equal(template_description);
         expect(receipt[2]).equal(template_image);
@@ -176,7 +176,7 @@ const bidId = 52;
 
       it('templaters should be able to update a template', async function () {
         await factory.updateTemplate(templateId, template_name2, template_description2, template_image2, { from: owner });
-        const receipt = await factory.getTemplate(templateId, { from: random });
+        const receipt = await factory.templates(templateId, { from: random });
         expect(receipt[0]).equal(template_name2);
         expect(receipt[1]).equal(template_description2);
         expect(receipt[2]).equal(template_image2);
