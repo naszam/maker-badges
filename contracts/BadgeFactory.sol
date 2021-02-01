@@ -48,7 +48,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     }
 
     mapping(uint256 => BadgeTemplate) public templates;
-    mapping(uint256 => uint256) private _templateQuantities;
+    mapping(uint256 => uint256) public templateQuantities;
 
     /// @dev Events
     event NewTemplate(uint256 indexed templateId, string name, string description, string image);
@@ -155,7 +155,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         uint256 _tokenId = _getTokenId(msg.sender, templateId);
 
         /// @dev Increase the quantities
-        _templateQuantities[templateId] = _templateQuantities[templateId].add(1);
+        templateQuantities[templateId] = templateQuantities[templateId].add(1);
 
         require(_mintWithTokenURI(msg.sender, _tokenId, tokenURI), "BadgeFactory: badge not minted");
 
@@ -179,15 +179,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256 templateId) {
         require(_exists(tokenId), "BadgeFactory: no token with that id");
         (,templateId) = _unpackTokenId(tokenId);
-    }
-
-    /// @notice Getter function for number of badges associated with templateId
-    /// @dev Check if the template Id exists
-    /// @param templateId Template Id
-    /// @return Quantity of Badges associated with templateId
-    function getBadgeTemplateQuantity(uint256 templateId) external view whenNotPaused returns (uint256) {
-        require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
-        return _templateQuantities[templateId];
     }
 
     /// @notice ERC721 _transfer() Disabled
