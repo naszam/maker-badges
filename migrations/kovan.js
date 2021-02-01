@@ -1,7 +1,15 @@
 // This file contains MakerDAO Kovan Addresses
 
 module.exports = {
+
+biconomy: {
+
+  /// BiconomyForwarder https://docs.biconomy.io/misc/contract-addresses
+  forwarder: '0xE8Df44bcaedD41586cE73eB85e409bcaa834497B'
+},
+
 maker: {
+
   // CHAI Kovan Address https://kovan.etherscan.io/address/0x623f148dabd40dd221807c5e98235bc40e54a106#code
   chai: '0x623f148dAbD40dd221807c5e98235bC40E54a106',
 
