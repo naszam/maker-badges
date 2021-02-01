@@ -12,8 +12,9 @@ contract CryticInterface{
 
 contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
 
-    constructor ()
+    constructor (address forwarder_)
         public
+        BadgeRoles(forwarder_)
     {
       _setupRole(DEFAULT_ADMIN_ROLE, crytic_owner);
       _setupRole(ADMIN_ROLE, crytic_owner);
