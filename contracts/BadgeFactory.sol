@@ -47,7 +47,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         string image;
     }
 
-    mapping(uint256 => BadgeTemplate) private templates;
+    mapping(uint256 => BadgeTemplate) public templates;
     mapping(uint256 => uint256) private _templateQuantities;
 
     /// @dev Events
@@ -124,20 +124,6 @@ contract BadgeFactory is BadgeRoles, ERC721 {
         templates[templateId].description = description;
         templates[templateId].image = image;
         emit TemplateUpdated(templateId, name, description, image);
-    }
-
-    /// @notice Getter function for templates
-    /// @dev Check if templateId exists
-    /// @param templateId Template Id of the template to return
-    /// @return name description image Of the specified templateId
-    function getTemplate(uint256 templateId)
-        external
-        view
-        whenNotPaused
-        returns (string memory name, string memory description, string memory image)
-    {
-        require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
-        return (templates[templateId].name, templates[templateId].description, templates[templateId].image);
     }
 
     /// @notice Getter function for templates count
