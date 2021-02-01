@@ -22,6 +22,7 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
+import "@opengsn/gsn/contracts/BaseRelayRecipient.sol";
 
 interface ChaiLike {
     function dai(address usr) external returns (uint256);
@@ -51,7 +52,7 @@ interface FlipperLike {
     function bids(uint256) external view returns (Bid memory);
 }
 
-contract MakerBadges is AccessControl, Pausable {
+contract MakerBadges is AccessControl, Pausable, BaseRelayRecipient {
 
     /// @dev Libraries
     using EnumerableSet for EnumerableSet.AddressSet;
@@ -77,10 +78,10 @@ contract MakerBadges is AccessControl, Pausable {
     event RobotChecked(address indexed guy);
     event FlipperChecked(address indexed guy);
 
-    constructor(address chai_, address chief_, address flipper_) public {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+    constructor(address forwarder_, address chai_, address chief_, address flipper_) public {
+        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
-        _setupRole(PAUSER_ROLE, msg.sender);
+        _setupRole(PAUSER_ROLE, _msgSender());
 
         /// @dev CHAI Address
         chai = ChaiLike(chai_);
@@ -90,6 +91,9 @@ contract MakerBadges is AccessControl, Pausable {
 
         /// @dev MCD_FLIP_ETH_A Address
         flipper = FlipperLike(flipper_);
+
+        /// @dev Biconomy Trusted Forwarder
+        trustedForwarder = forwarder_;
     }
 
     /// @notice Fallback function
@@ -101,18 +105,18 @@ contract MakerBadges is AccessControl, Pausable {
     /// @notice Chai Challenge
     /// @dev Keeps track of the address of the caller if successful
     function chaiChallenge() external whenNotPaused {
-        require(redeemers[chaiId].add(msg.sender), "MakerBadges: caller already checked for chai");
-        emit ChaiChecked(msg.sender);
-        require(chai.dai(msg.sender) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
+        require(redeemers[chaiId].add(_msgSender()), "MakerBadges: caller already checked for chai");
+        emit ChaiChecked(_msgSender());
+        require(chai.dai(_msgSender()) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
     }
 
 
     /// @notice DSChief Challenge
     /// @dev Keeps track of the address of the caller if successful
     function chiefChallenge() external whenNotPaused {
-        require(chief.votes(msg.sender) != 0x00,"MakerBadges: caller is not voting in an executive spell");
-        require(redeemers[chiefId].add(msg.sender), "MakerBadges: caller already checked for chief");
-        emit DSChiefChecked(msg.sender);
+        require(chief.votes(_msgSender()) != 0x00,"MakerBadges: caller is not voting in an executive spell");
+        require(redeemers[chiefId].add(_msgSender()), "MakerBadges: caller already checked for chief");
+        emit DSChiefChecked(_msgSender());
     }
 
     /// @notice Robot Challenge
@@ -120,11 +124,11 @@ contract MakerBadges is AccessControl, Pausable {
     function robotChallenge(address _proxy) external whenNotPaused {
         proxy = VoteProxyLike(_proxy);
         require(
-            chief.votes(_proxy)!= 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
+            chief.votes(_proxy)!= 0x00 && (proxy.cold() == _msgSender() || proxy.hot() == _msgSender()),
             "MakerBadges: caller is not voting via proxy in an executive spell"
         );
-        require(redeemers[robotId].add(msg.sender), "MakerBadges: caller already checked for robot");
-        emit RobotChecked(msg.sender);
+        require(redeemers[robotId].add(_msgSender()), "MakerBadges: caller already checked for robot");
+        emit RobotChecked(_msgSender());
     }
 
 
@@ -133,11 +137,11 @@ contract MakerBadges is AccessControl, Pausable {
     /// @dev guy, high bidder
     function flipperChallenge(uint256 bidId) external whenNotPaused {
         require(
-            flipper.bids(bidId).guy == msg.sender,
+            flipper.bids(bidId).guy == _msgSender(),
             "MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions"
         );
-        require(redeemers[flipperId].add(msg.sender), "MakerBadges: caller already checked for flipper");
-        emit FlipperChecked(msg.sender);
+        require(redeemers[flipperId].add(_msgSender()), "MakerBadges: caller already checked for flipper");
+        emit FlipperChecked(_msgSender());
     }
 
     /// @notice Check if guy is a redeemer
@@ -151,14 +155,36 @@ contract MakerBadges is AccessControl, Pausable {
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to pause");
+        require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges: must have pauser role to pause");
         _pause();
     }
 
     /// @notice Unpause all the functions
     /// @dev The caller must have the 'PAUSER_ROLE'
     function unpause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges: must have pauser role to unpause");
         _unpause();
+    }
+
+    function versionRecipient() external virtual view override returns (string memory) {
+        return "0.9.0";
+    }
+
+    function getTrustedForwarder() external view returns (address) {
+        return trustedForwarder;
+    }
+
+    /// @notice OpenGSN _msgSender()
+    /// @dev override _msgSender() in OZ Context.sol and BaseRelayRecipient.sol
+    /// @return _msgSender() after relay call
+    function _msgSender() internal view override(Context, BaseRelayRecipient) returns (address payable) {
+        return BaseRelayRecipient._msgSender();
+    }
+
+    /// @notice OpenGSN _msgData()
+    /// @dev override _msgData() in OZ Context.sol and BaseRelayRecipient.sol
+    /// @return _msgData() after relay call
+    function _msgData() internal view override(Context, BaseRelayRecipient) returns (bytes memory) {
+        return BaseRelayRecipient._msgData();
     }
 }
