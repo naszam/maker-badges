@@ -17,7 +17,7 @@ let maker;
 
 describe('BadgeFactory', function () {
 
-const [ owner, templater, redeemer, random ] = accounts;
+const [ owner, templater, redeemer, random, forwarder ] = accounts;
 //accounts.push('0xF5f7393dbE345f566b5A6580c2455Bdcdd134A95');
 
 const merkleTree = new MerkleTree(accounts);
@@ -73,8 +73,8 @@ const offchainId = '4';
 const bidId = 52;
 
   beforeEach(async function () {
-    maker = await MakerBadges.new(chai, chief, flipper, { from: owner });
-    factory = await BadgeFactory.new(maker.address, { from: owner });
+    maker = await MakerBadges.new(forwarder, chai, chief, flipper, { from: owner });
+    factory = await BadgeFactory.new(forwarder, maker.address, { from: owner });
   });
 
   // Check that the owner is set as the deploying address

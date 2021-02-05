@@ -11,7 +11,7 @@ const BadgeRoles = contract.fromArtifact('BadgeRoles');
 let roles;
 
 describe('BadgeRoles', function () {
-const [ owner, templater, admin, random ] = accounts;
+const [ owner, templater, admin, random, forwarder ] = accounts;
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const ADMIN_ROLE = web3.utils.soliditySha3('ADMIN_ROLE');
@@ -23,7 +23,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
   // Check that the owner is set as the only templater when the contract is deployed
   // Check that the owner is set as the only pauser when the contract is deployed
   beforeEach(async function () {
-    roles = await BadgeRoles.new({ from: owner });
+    roles = await BadgeRoles.new(forwarder, { from: owner });
   });
 
   describe('Setup', async function () {

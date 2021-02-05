@@ -13,7 +13,7 @@ const MakerBadges = contract.fromArtifact('MakerBadges');
 let maker;
 
 describe('MakerBadges', function () {
-const [ owner, redeemer, random ] = accounts;
+const [ owner, redeemer, random, forwarder ] = accounts;
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
@@ -47,7 +47,7 @@ const bidId = 52;
   // Check that the owner is set as the only templater when the contract is deployed
   // Check that the owner is set as the only pauser when the contract is deployed
   beforeEach(async function () {
-    maker = await MakerBadges.new(chai, chief, flipper, { from: owner });
+    maker = await MakerBadges.new(forwarder, chai, chief, flipper, { from: owner });
   });
 
   describe('Setup', async function () {
