@@ -190,8 +190,8 @@ Deploy
    ```
 
 ## Development Deployments
-**MakerBadges 0.8.0 (Kovan):** [0xe911636C3105FaDE74F1986c04e8859BC15d03Ed](https://kovan.etherscan.io/address/0xe911636C3105FaDE74F1986c04e8859BC15d03Ed)    
-**BadgeFactory 0.8.0 (Kovan):** [0xed3B09C5946d5fb2A2EA0dA18a151312668573eb](https://kovan.etherscan.io/address/0xed3B09C5946d5fb2A2EA0dA18a151312668573eb)    
+**MakerBadges 0.9.0 (Kovan):** [0x3237066162023416C1C4eD19c64b8c6956599bCA](https://kovan.etherscan.io/address/0x3237066162023416C1C4eD19c64b8c6956599bCA)    
+**BadgeFactory 0.9.0 (Kovan):** [0xdb535Ac94F0e12737f8685667d75a1d740d98599](https://kovan.etherscan.io/address/0xdb535Ac94F0e12737f8685667d75a1d740d98599)    
 
 Interface
 ============
