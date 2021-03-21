@@ -4,5 +4,5 @@
     "compiler-version": "off",
     "reason-string": "off",
     "payable-fallback": "off"
-   }
+  }
 }

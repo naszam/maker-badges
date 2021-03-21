@@ -17,8 +17,6 @@ pragma solidity 0.6.12;
 ██      ██ ██   ██ ██   ██ ███████ ██   ██ 
 */
 
-
-
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -29,7 +27,6 @@ interface MakerBadgesLike {
 }
 
 contract BadgeFactory is BadgeRoles, ERC721 {
-
     /// @dev Libraries
     using SafeMath for uint256;
     using Counters for Counters.Counter;
@@ -55,10 +52,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
     event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId, string tokenURI);
 
-    constructor(address maker_)
-        public
-        ERC721("MakerBadges", "MAKER")
-    {
+    constructor(address maker_) public ERC721("MakerBadges", "MAKER") {
         _setBaseURI("https://badges.makerdao.com/token/");
         maker = MakerBadgesLike(maker_);
     }
@@ -92,10 +86,11 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param name The name of the new template
     /// @param description A description of the new template
     /// @param image A filename of the new template
-    function createTemplate(string calldata name, string calldata description, string calldata image)
-        external
-        whenNotPaused
-    {
+    function createTemplate(
+        string calldata name,
+        string calldata description,
+        string calldata image
+    ) external whenNotPaused {
         require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
 
         uint256 templateId = _templateIdTracker.current();
@@ -114,10 +109,12 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param name The name of the template
     /// @param description The description of the template
     /// @param image The filename of the template
-    function updateTemplate(uint256 templateId, string calldata name, string calldata description, string calldata image)
-        external
-        whenNotPaused
-    {
+    function updateTemplate(
+        uint256 templateId,
+        string calldata name,
+        string calldata description,
+        string calldata image
+    ) external whenNotPaused {
         require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         templates[templateId].name = name;
@@ -141,14 +138,15 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param templateId Template Id
     /// @param tokenURI An <ipfs-hash>.json filename
     /// @return True If the new Badge is Activated
-    function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI)
-        external
-        whenNotPaused
-        returns (bool)
-    {
+    function activateBadge(
+        bytes32[] calldata proof,
+        uint256 templateId,
+        string calldata tokenURI
+    ) external whenNotPaused returns (bool) {
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         require(
-            maker.verify(templateId, msg.sender) || proof.verify(roots[templateId], keccak256(abi.encodePacked(msg.sender))),
+            maker.verify(templateId, msg.sender) ||
+                proof.verify(roots[templateId], keccak256(abi.encodePacked(msg.sender))),
             "BadgeFactory: caller is not a redeemer"
         );
 
@@ -169,7 +167,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @return redeemer Redeemer address associated with the tokenId
     function getBadgeRedeemer(uint256 tokenId) external view whenNotPaused returns (address redeemer) {
         require(_exists(tokenId), "BadgeFactory: no token with that id");
-        (redeemer,) = _unpackTokenId(tokenId);
+        (redeemer, ) = _unpackTokenId(tokenId);
     }
 
     /// @notice Getter function for templateId associated with the tokenId
@@ -178,13 +176,17 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @return templateId Template Id associated with the tokenId
     function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256 templateId) {
         require(_exists(tokenId), "BadgeFactory: no token with that id");
-        (,templateId) = _unpackTokenId(tokenId);
+        (, templateId) = _unpackTokenId(tokenId);
     }
 
     /// @notice ERC721 _transfer() Disabled
     /// @dev _transfer() has been overriden
     /// @dev reverts on transferFrom() and safeTransferFrom()
-    function _transfer(address from, address to, uint256 tokenId) internal override {
+    function _transfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal override {
         require(false, "BadgeFactory: badge transfer disabled");
         super._transfer(from, to, tokenId);
     }
@@ -207,7 +209,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @return templateId Template Id
     function _unpackTokenId(uint256 tokenId) private pure returns (address redeemer, uint256 templateId) {
         assembly {
-            redeemer := shr(96,  and(tokenId, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000))
+            redeemer := shr(96, and(tokenId, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000))
             templateId := and(tokenId, 0x0000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF)
         }
     }
@@ -218,7 +220,11 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     /// @param tokenId Token Id of the Baddge
     /// @param tokenURI An <ipfs-hash>.json filename
     /// @return True if the new token is minted
-    function _mintWithTokenURI(address to, uint256 tokenId, string calldata tokenURI) private returns (bool) {
+    function _mintWithTokenURI(
+        address to,
+        uint256 tokenId,
+        string calldata tokenURI
+    ) private returns (bool) {
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
         return true;

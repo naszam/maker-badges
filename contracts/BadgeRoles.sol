@@ -13,7 +13,6 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
 contract BadgeRoles is AccessControl, Pausable {
-
     /// @dev Roles
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
@@ -25,7 +24,6 @@ contract BadgeRoles is AccessControl, Pausable {
         _setupRole(ADMIN_ROLE, msg.sender);
         _setupRole(TEMPLATER_ROLE, msg.sender);
         _setupRole(PAUSER_ROLE, msg.sender);
-
     }
 
     /// @dev Functions
@@ -67,9 +65,9 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @param account Address of the Templater
     /// @return True if account is removed as Templater
     function removeTemplater(address account) external returns (bool) {
-      require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
-      revokeRole(TEMPLATER_ROLE, account);
-      return true;
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "BadgeFactory: caller is not the default admin");
+        revokeRole(TEMPLATER_ROLE, account);
+        return true;
     }
 
     /// @notice Pause all the functions

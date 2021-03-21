@@ -2,7 +2,6 @@
 pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
-
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29
 /// @author Nazzareno Massari @naszam
 /// @notice MakerBadges to check on-chain for activities on maker ecosystem and keep track of redeemers
@@ -33,6 +32,7 @@ interface DSChiefLike {
 
 interface VoteProxyLike {
     function cold() external view returns (address);
+
     function hot() external view returns (address);
 }
 
@@ -41,8 +41,8 @@ interface FlipperLike {
         uint256 bid;
         uint256 lot;
         address guy;
-        uint48  tic;
-        uint48  end;
+        uint48 tic;
+        uint48 end;
         address usr;
         address gal;
         uint256 tab;
@@ -52,12 +52,11 @@ interface FlipperLike {
 }
 
 contract MakerBadges is AccessControl, Pausable {
-
     /// @dev Libraries
     using EnumerableSet for EnumerableSet.AddressSet;
 
     /// @dev Data
-    ChaiLike  internal immutable chai;
+    ChaiLike internal immutable chai;
     DSChiefLike internal immutable chief;
     FlipperLike internal immutable flipper;
     VoteProxyLike internal proxy;
@@ -77,7 +76,11 @@ contract MakerBadges is AccessControl, Pausable {
     event RobotChecked(address indexed guy);
     event FlipperChecked(address indexed guy);
 
-    constructor(address chai_, address chief_, address flipper_) public {
+    constructor(
+        address chai_,
+        address chief_,
+        address flipper_
+    ) public {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
         _setupRole(PAUSER_ROLE, msg.sender);
@@ -106,11 +109,10 @@ contract MakerBadges is AccessControl, Pausable {
         require(chai.dai(msg.sender) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
     }
 
-
     /// @notice DSChief Challenge
     /// @dev Keeps track of the address of the caller if successful
     function chiefChallenge() external whenNotPaused {
-        require(chief.votes(msg.sender) != 0x00,"MakerBadges: caller is not voting in an executive spell");
+        require(chief.votes(msg.sender) != 0x00, "MakerBadges: caller is not voting in an executive spell");
         require(redeemers[chiefId].add(msg.sender), "MakerBadges: caller already checked for chief");
         emit DSChiefChecked(msg.sender);
     }
@@ -120,13 +122,12 @@ contract MakerBadges is AccessControl, Pausable {
     function robotChallenge(address _proxy) external whenNotPaused {
         proxy = VoteProxyLike(_proxy);
         require(
-            chief.votes(_proxy)!= 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
+            chief.votes(_proxy) != 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
             "MakerBadges: caller is not voting via proxy in an executive spell"
         );
         require(redeemers[robotId].add(msg.sender), "MakerBadges: caller already checked for robot");
         emit RobotChecked(msg.sender);
     }
-
 
     /// @notice Flipper Challenge
     /// @dev Keeps track of the address of the caller if successful
