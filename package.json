@@ -11,7 +11,8 @@
     "clean": "hardhat clean",
     "coverage": "hardhat coverage",
     "format": "prettier --check \"./**/*.{js,json,md,sol,ts}\"",
-    "format:fix": "prettier --write \"./**/*.{js,json,md,sol,ts}\""
+    "format:fix": "prettier --write \"./**/*.{js,json,md,sol,ts}\"",
+    "lint:sol": "solhint --config ./.solhint.json --max-warnings 0 \"contracts/**/*.sol\""
   },
   "dependencies": {
     "@openzeppelin/contracts": "^3.4.1",
