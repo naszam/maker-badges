@@ -10,13 +10,14 @@
     "build": "hardhat compile",
     "clean": "hardhat clean",
     "coverage": "hardhat coverage",
-    "format": "prettier --check ./test/*.ts",
-    "format:fix": "prettier --write ./test/*.ts"
+    "format": "prettier --check \"./**/*.{js,json,md,sol,ts}\"",
+    "format:fix": "prettier --write \"./**/*.{js,json,md,sol,ts}\""
   },
   "dependencies": {
     "@openzeppelin/contracts": "^3.4.1",
     "hardhat": "^2.1.1",
     "prettier": "^2.2.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.6",
     "solhint": "^3.3.4",
     "solidity-coverage": "^0.7.16"
   }

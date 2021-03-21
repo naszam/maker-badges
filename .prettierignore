@@ -1,0 +1,8 @@
+# folders
+node_modules/
+artifacts/
+cache/
+coverage/
+
+# files
+coverage.json
