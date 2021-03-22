@@ -1,3 +1,4 @@
+import "@typechain/hardhat"
 import "solidity-coverage"
 
 /**
