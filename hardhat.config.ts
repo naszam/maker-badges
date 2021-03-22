@@ -1,4 +1,4 @@
-require("solidity-coverage")
+import "solidity-coverage"
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
