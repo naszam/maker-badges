@@ -3,6 +3,7 @@ node_modules/
 artifacts/
 cache/
 coverage/
+typechain/
 
 # files
 coverage.json
