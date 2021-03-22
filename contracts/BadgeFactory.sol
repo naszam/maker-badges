@@ -22,17 +22,11 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
-interface MakerBadgesLike {
-    function verify(uint256 templateId, address guy) external view returns (bool);
-}
-
 contract BadgeFactory is BadgeRoles, ERC721 {
     /// @dev Libraries
     using SafeMath for uint256;
     using Counters for Counters.Counter;
     using MerkleProof for bytes32[];
-
-    MakerBadgesLike internal immutable maker;
 
     Counters.Counter private _templateIdTracker;
 
@@ -52,9 +46,8 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
     event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId, string tokenURI);
 
-    constructor(address maker_) public ERC721("MakerBadges", "MAKER") {
+    constructor() public ERC721("MakerBadges", "MAKER") {
         _setBaseURI("https://badges.makerdao.com/token/");
-        maker = MakerBadgesLike(maker_);
     }
 
     /// @notice Fallback function
@@ -145,8 +138,7 @@ contract BadgeFactory is BadgeRoles, ERC721 {
     ) external whenNotPaused returns (bool) {
         require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
         require(
-            maker.verify(templateId, msg.sender) ||
-                proof.verify(roots[templateId], keccak256(abi.encodePacked(msg.sender))),
+            proof.verify(roots[templateId], keccak256(abi.encodePacked(msg.sender))),
             "BadgeFactory: caller is not a redeemer"
         );
 
