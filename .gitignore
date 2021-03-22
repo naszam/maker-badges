@@ -8,3 +8,6 @@ cache/
 # coverage
 coverage/
 coverage.json
+
+#typechain
+typechain/
