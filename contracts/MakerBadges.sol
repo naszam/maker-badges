@@ -22,7 +22,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
-contract BadgeFactory is BadgeRoles, ERC721 {
+contract MakerBadges is BadgeRoles, ERC721 {
     /// @dev Libraries
     using SafeMath for uint256;
     using Counters for Counters.Counter;
