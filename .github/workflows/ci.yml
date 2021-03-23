@@ -33,7 +33,7 @@ jobs:
 
       - run: yarn build
       - run: yarn format
-      
+
   test:
     strategy:
       matrix:
