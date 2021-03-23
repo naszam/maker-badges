@@ -94,4 +94,33 @@ describe("MakerBadges", async () => {
       )
     })
   })
+
+  // Check createTemplate() for success when a templater is trying to create a new template
+  // Check createTemplate() for sucessfully emit event when the template is created
+  // Check createTemplate() for failure when a random address try to create a new template
+  describe("createTemplate()", async () => {
+    it("templater should be able to create a template", async () => {
+      await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
+      const receipt = await makerbadges.templates(templateId)
+      receipt[0].should.equal(template_name)
+      receipt[1].should.equal(template_description)
+      receipt[2].should.equal(template_image)
+      const count = await makerbadges.getTemplatesCount()
+      count.toString().should.equal("1")
+    })
+
+    it("should emit the appropriate event when a template is created", async () => {
+      await expect(
+        makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image),
+      )
+        .to.emit(makerbadges, "NewTemplate")
+        .withArgs(templateId, template_name, template_description, template_image)
+    })
+
+    it("should not allow create a new template from random user", async () => {
+      await expect(
+        makerbadges.connect(signers.random).createTemplate(template_name, template_description, template_image),
+      ).to.be.revertedWith("BadgeFactory: caller is not a template owner")
+    })
+  })
 })
