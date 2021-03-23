@@ -7,9 +7,11 @@ import { MakerBadges, MakerBadges__factory } from "../typechain"
 
 import { MerkleTree } from "merkletreejs"
 
+import { keccak256 } from "keccak256"
+
 require("chai").use(require("chai-as-promised")).should()
 
-describe("MakerBadges", () => {
+describe("MakerBadges", async () => {
   let signers: any
   let makerbadges: MakerBadges
 
@@ -27,9 +29,6 @@ describe("MakerBadges", () => {
   const TEMPLATER_ROLE = web3.utils.soliditySha3("TEMPLATER_ROLE")
   const PAUSER_ROLE = web3.utils.soliditySha3("PAUSER_ROLE")
 
-  const name = "MakerBadges"
-  const symbol = "MAKER"
-  const baseURI = "https://badges.makerdao.com/token/"
   const baseURI2 = "https://badegs.com/token/"
   const tokenURI = "ipfs.js"
 
@@ -63,6 +62,36 @@ describe("MakerBadges", () => {
       pauser_count.toString().should.equal("1")
       const pauser = await makerbadges.getRoleMember(PAUSER_ROLE, 0)
       pauser.should.equal(signers.deployer.address)
+    })
+  })
+
+  // Check ERC721 metadata
+  describe("ERC721 metadata", async () => {
+    it("has a name", async () => {
+      const name = await makerbadges.name()
+      name.should.equal("MakerBadges")
+    })
+
+    it("has a symbol", async () => {
+      const symbol = await makerbadges.symbol()
+      symbol.should.equal("MAKER")
+    })
+
+    it("has a baseURI", async () => {
+      const baseURI = await makerbadges.baseURI()
+      baseURI.should.equal("https://badges.makerdao.com/token/")
+    })
+
+    it("return an updated baseURI", async () => {
+      await makerbadges.connect(signers.deployer).setBaseURI(baseURI2)
+      const baseURI = await makerbadges.baseURI()
+      baseURI.should.equal(baseURI2)
+    })
+
+    it("reverts when querying metadata for non existent tokenId", async () => {
+      await expect(makerbadges.connect(signers.random).tokenURI("0")).to.be.revertedWith(
+        "ERC721Metadata: URI query for nonexistent token",
+      )
     })
   })
 })
