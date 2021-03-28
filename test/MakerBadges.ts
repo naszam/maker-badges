@@ -9,8 +9,6 @@ import { MerkleTree } from "merkletreejs"
 
 import { keccak256 } from "keccak256"
 
-require("chai").use(require("chai-as-promised")).should()
-
 describe("MakerBadges", async () => {
   let signers: any
   let makerbadges: MakerBadges
@@ -44,50 +42,34 @@ describe("MakerBadges", async () => {
   // Check that the deployer is set as the only pauser when the contract is deployed
   describe("Setup", async () => {
     it("deployer has the default admin role", async () => {
-      const admin_count = await makerbadges.getRoleMemberCount(DEFAULT_ADMIN_ROLE)
-      admin_count.toString().should.equal("1")
-      const def_admin = await makerbadges.getRoleMember(DEFAULT_ADMIN_ROLE, 0)
-      def_admin.should.equal(signers.deployer.address)
+      expect(await makerbadges.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.eq("1")
+      expect(await makerbadges.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.be.eq(signers.deployer.address)
     })
-
     it("deployer has the templater role", async () => {
-      const templater_count = await makerbadges.getRoleMemberCount(TEMPLATER_ROLE)
-      templater_count.toString().should.equal("1")
-      const templater = await makerbadges.getRoleMember(TEMPLATER_ROLE, 0)
-      templater.should.equal(signers.deployer.address)
+      expect(await makerbadges.getRoleMemberCount(TEMPLATER_ROLE)).to.be.eq("1")
+      expect(await makerbadges.getRoleMember(TEMPLATER_ROLE, 0)).to.be.eq(signers.deployer.address)
     })
-
     it("deployer has the pauser role", async () => {
-      const pauser_count = await makerbadges.getRoleMemberCount(PAUSER_ROLE)
-      pauser_count.toString().should.equal("1")
-      const pauser = await makerbadges.getRoleMember(PAUSER_ROLE, 0)
-      pauser.should.equal(signers.deployer.address)
+      expect(await makerbadges.getRoleMemberCount(PAUSER_ROLE)).to.be.eq("1")
+      expect(await makerbadges.getRoleMember(PAUSER_ROLE, 0)).to.be.eq(signers.deployer.address)
     })
   })
 
   // Check ERC721 metadata
   describe("ERC721 metadata", async () => {
     it("has a name", async () => {
-      const name = await makerbadges.name()
-      name.should.equal("MakerBadges")
+      expect(await makerbadges.name()).to.be.eq("MakerBadges")
     })
-
     it("has a symbol", async () => {
-      const symbol = await makerbadges.symbol()
-      symbol.should.equal("MAKER")
+      expect(await makerbadges.symbol()).to.be.eq("MAKER")
     })
-
     it("has a baseURI", async () => {
-      const baseURI = await makerbadges.baseURI()
-      baseURI.should.equal("https://badges.makerdao.com/token/")
+      expect(await makerbadges.baseURI()).to.be.eq("https://badges.makerdao.com/token/")
     })
-
     it("return an updated baseURI", async () => {
       await makerbadges.connect(signers.deployer).setBaseURI(baseURI2)
-      const baseURI = await makerbadges.baseURI()
-      baseURI.should.equal(baseURI2)
+      expect(await makerbadges.baseURI()).to.be.eq(baseURI2)
     })
-
     it("reverts when querying metadata for non existent tokenId", async () => {
       await expect(makerbadges.connect(signers.random).tokenURI("0")).to.be.revertedWith(
         "ERC721Metadata: URI query for nonexistent token",
@@ -102,13 +84,11 @@ describe("MakerBadges", async () => {
     it("templater should be able to create a template", async () => {
       await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
       const receipt = await makerbadges.templates(templateId)
-      receipt[0].should.equal(template_name)
-      receipt[1].should.equal(template_description)
-      receipt[2].should.equal(template_image)
-      const count = await makerbadges.getTemplatesCount()
-      count.toString().should.equal("1")
+      expect(receipt[0]).to.be.eq(template_name)
+      expect(receipt[1]).to.be.eq(template_description)
+      expect(receipt[2]).to.be.eq(template_image)
+      expect(await makerbadges.getTemplatesCount()).to.be.eq("1")
     })
-
     it("should emit the appropriate event when a template is created", async () => {
       await expect(
         makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image),
@@ -116,7 +96,6 @@ describe("MakerBadges", async () => {
         .to.emit(makerbadges, "NewTemplate")
         .withArgs(templateId, template_name, template_description, template_image)
     })
-
     it("should not allow create a new template from random user", async () => {
       await expect(
         makerbadges.connect(signers.random).createTemplate(template_name, template_description, template_image),
