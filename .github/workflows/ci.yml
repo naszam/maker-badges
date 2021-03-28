@@ -60,7 +60,7 @@ jobs:
 
       - run: yarn build
       - run: yarn test
-      
+
   echidna:
     name: Echidna
     runs-on: ubuntu-latest
