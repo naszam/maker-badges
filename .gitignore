@@ -11,3 +11,6 @@ coverage.json
 
 #typechain
 typechain/
+
+#echidna
+crytic-export/
