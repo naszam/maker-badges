@@ -3,7 +3,7 @@ pragma solidity 0.6.12;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29
 /// @author Nazzareno Massari @naszam
-/// @notice BadgeFactory to manage Templates and activate Non-transferable MakerBadges by redeemers
+/// @notice MakerBadges to manage Templates and activate Non-transferable MakerBadges by redeemers
 /// @dev See https://github.com/makerdao/community/issues/537
 /// @dev See https://github.com/makerdao/community/issues/721
 /// @dev All function calls are currently implemented without side effects through TDD approach
@@ -51,7 +51,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /// @notice Fallback function
     /// @dev Added not payable to revert transactions not matching any other function which send value
     fallback() external {
-        revert("BadgeFactory: function not matching any other");
+        revert("MakerBadges: function not matching any other");
     }
 
     /// @notice Set the baseURI
@@ -82,7 +82,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
         string calldata description,
         string calldata image
     ) external whenNotPaused {
-        require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
+        require(hasRole(TEMPLATER_ROLE, msg.sender), "MakerBadges: caller is not a template owner");
 
         uint256 templateId = _templateIdTracker.current();
 
@@ -106,8 +106,8 @@ contract MakerBadges is BadgeRoles, ERC721 {
         string calldata description,
         string calldata image
     ) external whenNotPaused {
-        require(hasRole(TEMPLATER_ROLE, msg.sender), "BadgeFactory: caller is not a template owner");
-        require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
+        require(hasRole(TEMPLATER_ROLE, msg.sender), "MakerBadges: caller is not a template owner");
+        require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
         templates[templateId].name = name;
         templates[templateId].description = description;
         templates[templateId].image = image;
@@ -134,10 +134,10 @@ contract MakerBadges is BadgeRoles, ERC721 {
         uint256 templateId,
         string calldata tokenURI
     ) external whenNotPaused returns (bool) {
-        require(_templateIdTracker.current() > templateId, "BadgeFactory: no template with that id");
+        require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
         require(
             proof.verify(roots[templateId], keccak256(abi.encodePacked(msg.sender))),
-            "BadgeFactory: caller is not a redeemer"
+            "MakerBadges: caller is not a redeemer"
         );
 
         uint256 _tokenId = _getTokenId(msg.sender, templateId);
@@ -145,7 +145,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
         /// @dev Increase the quantities
         templateQuantities[templateId] = templateQuantities[templateId].add(1);
 
-        require(_mintWithTokenURI(msg.sender, _tokenId, tokenURI), "BadgeFactory: badge not minted");
+        require(_mintWithTokenURI(msg.sender, _tokenId, tokenURI), "MakerBadges: badge not minted");
 
         emit BadgeActivated(_tokenId, templateId, tokenURI);
         return true;
@@ -156,7 +156,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /// @param tokenId Token Id of the Badge
     /// @return redeemer Redeemer address associated with the tokenId
     function getBadgeRedeemer(uint256 tokenId) external view whenNotPaused returns (address redeemer) {
-        require(_exists(tokenId), "BadgeFactory: no token with that id");
+        require(_exists(tokenId), "MakerBadges: no token with that id");
         (redeemer, ) = _unpackTokenId(tokenId);
     }
 
@@ -165,7 +165,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /// @param tokenId Token Id of the Badge
     /// @return templateId Template Id associated with the tokenId
     function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256 templateId) {
-        require(_exists(tokenId), "BadgeFactory: no token with that id");
+        require(_exists(tokenId), "MakerBadges: no token with that id");
         (, templateId) = _unpackTokenId(tokenId);
     }
 
@@ -177,7 +177,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
         address to,
         uint256 tokenId
     ) internal override {
-        require(false, "BadgeFactory: badge transfer disabled");
+        require(false, "MakerBadges: badge transfer disabled");
         super._transfer(from, to, tokenId);
     }
 

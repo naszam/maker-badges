@@ -120,7 +120,7 @@ describe("MakerBadges", async () => {
     it("should not allow create a new template from random user", async () => {
       await expect(
         makerbadges.connect(signers.random).createTemplate(template_name, template_description, template_image),
-      ).to.be.revertedWith("BadgeFactory: caller is not a template owner")
+      ).to.be.revertedWith("MakerBadges: caller is not a template owner")
     })
   })
 })
