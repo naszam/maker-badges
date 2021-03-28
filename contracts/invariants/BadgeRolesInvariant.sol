@@ -4,13 +4,13 @@ pragma solidity 0.6.12;
 
 import "../BadgeRoles.sol";
 
-contract CryticInterface {
+contract EchidnaInterface {
     address internal constant crytic_owner = address(0x41414141);
     //address constant internal crytic_user = address(0x42424242);
     //address constant internal crytic_attacker = address(0x43434343);
 }
 
-contract CryticTestBadgeRoles is CryticInterface, BadgeRoles {
+contract BadgeRolesInvariant is EchidnaInterface, BadgeRoles {
     constructor() public {
         _setupRole(DEFAULT_ADMIN_ROLE, crytic_owner);
         _setupRole(ADMIN_ROLE, crytic_owner);
