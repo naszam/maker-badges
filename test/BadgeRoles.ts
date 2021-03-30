@@ -95,4 +95,30 @@ describe("MakerBadges", () => {
       )
     })
   })
+
+  // Check addTemplater for success when the default admin is adding a new templater
+  // Check addTemplater for sucessfully emit event when the templater is added
+  // Check addTemplater for failure when a random address tries to add a templater
+  // Check addTemplater for failure when account is set to zero address
+  describe("addTemplater", async () => {
+    it("default admin should be able to add a templater", async () => {
+      await badgeroles.connect(signers.deployer).addTemplater(signers.templater.address)
+      expect(await badgeroles.hasRole(TEMPLATER_ROLE, signers.templater.address)).to.equal(true)
+    })
+    it("should emit the appropriate event when a new templater is added", async () => {
+      expect(await badgeroles.connect(signers.deployer).addTemplater(signers.templater.address))
+        .to.emit(badgeroles, "RoleGranted")
+        .withArgs(TEMPLATER_ROLE, signers.templater.address, signers.deployer.address)
+    })
+    it("should not allow to add a templater form random user", async () => {
+      await expect(badgeroles.connect(signers.random).addTemplater(signers.templater.address)).to.be.revertedWith(
+        "MakerBadges: caller is not the default admin",
+      )
+    })
+    it("should revert when account is set to zero address", async () => {
+      await expect(badgeroles.connect(signers.deployer).addTemplater(AddressZero)).to.be.revertedWith(
+        "MakerBadges: account is the zero address",
+      )
+    })
+  })
 })
