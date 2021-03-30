@@ -46,6 +46,7 @@ describe("MakerBadges", () => {
       expect(await badgeroles.getRoleMember(PAUSER_ROLE, 0)).to.be.eq(signers.deployer.address)
     })
   })
+
   // Check addAdmin for success when the default admin is adding a new admin
   // Check addAdmin for sucessfully emit an event when the admin is added
   // Check addAdmin for failure when a random address tries to add a new admin
@@ -68,6 +69,29 @@ describe("MakerBadges", () => {
     it("should revert when account is set to zero address", async () => {
       await expect(badgeroles.connect(signers.deployer)["addAdmin(address)"](AddressZero)).to.be.revertedWith(
         "MakerBadges: account is the zero address",
+      )
+    })
+  })
+
+  // Check removeAdmin for success when the default admin is removing an admin
+  // Check removeAdmin for sucessfully emit event when the admin is removed
+  // Check removeAdmin for failure when a random address tries to remove an admin
+  describe("removeAdmin", async () => {
+    beforeEach(async () => {
+      await badgeroles.connect(signers.deployer).addAdmin(signers.admin.address)
+    })
+    it("default admin should be able to remove an admin", async () => {
+      await badgeroles.connect(signers.deployer).removeAdmin(signers.admin.address)
+      expect(await badgeroles.hasRole(ADMIN_ROLE, signers.admin.address)).to.equal(false)
+    })
+    it("should emit the appropriate event when an admin is removed", async () => {
+      expect(await badgeroles.connect(signers.deployer).removeAdmin(signers.admin.address))
+        .to.emit(badgeroles, "RoleRevoked")
+        .withArgs(ADMIN_ROLE, signers.admin.address, signers.deployer.address)
+    })
+    it("should not allow to remove an admin form random user", async () => {
+      await expect(badgeroles.connect(signers.random).removeAdmin(signers.admin.address)).to.be.revertedWith(
+        "MakerBadges: caller is not the default admin",
       )
     })
   })
