@@ -164,4 +164,27 @@ describe("MakerBadges", () => {
       )
     })
   })
+
+  // Check unpause for success when the pauser is unpausing all the functions
+  // Check unpause for sucessfully emit event when the functions are unpaused
+  // Check unpause for failure when a random address try to unpause all the functions
+  describe("unpause", async () => {
+    beforeEach(async () => {
+      await badgeroles.connect(signers.deployer).pause()
+    })
+    it("deployer can unpause", async () => {
+      await badgeroles.connect(signers.deployer).unpause()
+      expect(await badgeroles.paused()).to.be.eq(false)
+    })
+    it("should emit the appropriate event when the functions are unpaused", async () => {
+      expect(await badgeroles.connect(signers.deployer).unpause())
+        .to.emit(badgeroles, "Unpaused")
+        .withArgs(signers.deployer.address)
+    })
+    it("random accounts cannot unpause", async () => {
+      await expect(badgeroles.connect(signers.random).unpause()).to.be.revertedWith(
+        "MakerBadges: must have pauser role to unpause",
+      )
+    })
+  })
 })
