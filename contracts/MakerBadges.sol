@@ -48,12 +48,6 @@ contract MakerBadges is BadgeRoles, ERC721 {
         _setBaseURI("https://badges.makerdao.com/token/");
     }
 
-    /// @notice Fallback function
-    /// @dev Added not payable to revert transactions not matching any other function which send value
-    fallback() external {
-        revert("MakerBadges: function not matching any other");
-    }
-
     /// @notice Set the baseURI
     /// @dev Update the baseURI specified in the constructor
     /// @param baseURI New baseURI
