@@ -68,24 +68,6 @@ describe("MakerBadges", () => {
     it("has a baseURI", async () => {
       expect(await makerbadges.baseURI()).to.be.eq("https://badges.makerdao.com/token/")
     })
-    it("return a baseURI + tokenURI for tokenId", async () => {
-      const hash0 = soliditySha3(signers.redeemer.address)
-      const hash1 = soliditySha3(signers.deployer.address)
-      const hash2 = soliditySha3(signers.templater.address)
-      const hash3 = soliditySha3(signers.random.address)
-      const leaves = [hash0, hash1, hash2, hash3]
-      const merkleTree = new MerkleTree(leaves, soliditySha3, { sortPairs: true })
-
-      const root = merkleTree.getHexRoot()
-      const rootHashes = [root, HashZero, HashZero, HashZero]
-      const leaf = soliditySha3(signers.redeemer.address)
-      const proof = merkleTree.getHexProof(leaf)
-      await makerbadges.connect(signers.deployer).setRootHashes(rootHashes)
-      await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
-      await makerbadges.connect(signers.redeemer).activateBadge(proof, templateId, tokenURI)
-      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
-      expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenURI)
-    })
     it("return an updated baseURI", async () => {
       await makerbadges.connect(signers.deployer).setBaseURI(baseURI2)
       expect(await makerbadges.baseURI()).to.be.eq(baseURI2)
@@ -122,6 +104,7 @@ describe("MakerBadges", () => {
       ).to.be.revertedWith("MakerBadges: caller is not a template owner")
     })
   })
+
   // Check updateTemplate for success when a templater try to update a template
   // Check updateTemplate for sucessfully emit event when the template is updated
   // Check updateTemplate for failure when a random address try to update a template
@@ -156,6 +139,7 @@ describe("MakerBadges", () => {
       ).to.be.revertedWith("MakerBadges: caller is not a template owner")
     })
   })
+
   // Check activateBadge for success when a redeemer checked offchain activate a badge
   // Check activateBadge for sucessfully emit event when the badge is activated
   // Check activateBadge for failure when a random address try to activate a badge
@@ -192,6 +176,10 @@ describe("MakerBadges", () => {
       await expect(
         makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId + 1, tokenURI),
       ).to.be.revertedWith("MakerBadges: no template with that id")
+    })
+    it("return a baseURI + tokenURI for tokenId", async () => {
+      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+      expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenURI)
     })
     it("should not allow to activate a new badge form random user", async () => {
       await expect(
