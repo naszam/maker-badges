@@ -7,9 +7,9 @@ import { MakerBadges, MakerBadges__factory } from "../typechain"
 
 import { MerkleTree } from "merkletreejs"
 
-import { keccak256 } from "keccak256"
+const { soliditySha3 } = web3.utils
 
-describe("MakerBadges", async () => {
+describe("MakerBadges", () => {
   let signers: any
   let makerbadges: MakerBadges
 
@@ -24,8 +24,8 @@ describe("MakerBadges", async () => {
   const index2 = "1"
 
   const DEFAULT_ADMIN_ROLE = ethers.constants.HashZero
-  const TEMPLATER_ROLE = web3.utils.soliditySha3("TEMPLATER_ROLE")
-  const PAUSER_ROLE = web3.utils.soliditySha3("PAUSER_ROLE")
+  const TEMPLATER_ROLE = soliditySha3("TEMPLATER_ROLE")
+  const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")
 
   const baseURI2 = "https://badegs.com/token/"
   const tokenURI = "ipfs.js"
@@ -66,6 +66,24 @@ describe("MakerBadges", async () => {
     it("has a baseURI", async () => {
       expect(await makerbadges.baseURI()).to.be.eq("https://badges.makerdao.com/token/")
     })
+    it("return a baseURI + tokenURI for tokenId", async () => {
+      const hash0 = soliditySha3(signers.redeemer.address)
+      const hash1 = soliditySha3(signers.deployer.address)
+      const hash2 = soliditySha3(signers.templater.address)
+      const hash3 = soliditySha3(signers.random.address)
+      const leaves = [hash0, hash1, hash2, hash3]
+      const merkleTree = new MerkleTree(leaves, soliditySha3, { sortPairs: true })
+
+      const root = merkleTree.getHexRoot()
+      const rootHashes = [root]
+      const leaf = soliditySha3(signers.redeemer.address)
+      const proof = merkleTree.getHexProof(leaf)
+      await makerbadges.connect(signers.deployer).setRootHashes(rootHashes)
+      await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
+      await makerbadges.connect(signers.redeemer).activateBadge(proof, templateId, tokenURI)
+      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+      expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenURI)
+    })
     it("return an updated baseURI", async () => {
       await makerbadges.connect(signers.deployer).setBaseURI(baseURI2)
       expect(await makerbadges.baseURI()).to.be.eq(baseURI2)
@@ -77,10 +95,10 @@ describe("MakerBadges", async () => {
     })
   })
 
-  // Check createTemplate() for success when a templater is trying to create a new template
-  // Check createTemplate() for sucessfully emit event when the template is created
-  // Check createTemplate() for failure when a random address try to create a new template
-  describe("createTemplate()", async () => {
+  // Check createTemplate for success when a templater is trying to create a new template
+  // Check createTemplate for sucessfully emit event when the template is created
+  // Check createTemplate for failure when a random address try to create a new template
+  describe("createTemplate", async () => {
     it("templater should be able to create a template", async () => {
       await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
       const receipt = await makerbadges.templates(templateId)
