@@ -24,6 +24,7 @@ describe("MakerBadges", () => {
     badgeroles = await BadgeRolesFactory.deploy()
   })
 
+  // Check that the deployer is set as the only default admin when the contract is deployed
   // Check that the deployer is set as the only admin when the contract is deployed
   // Check that the deployer is set as the only templater when the contract is deployed
   // Check that the deployer is set as the only pauser when the contract is deployed
