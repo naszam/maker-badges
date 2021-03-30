@@ -8,30 +8,30 @@ import { MakerBadges, MakerBadges__factory } from "../typechain"
 import { MerkleTree } from "merkletreejs"
 
 const { soliditySha3 } = web3.utils
+const { HashZero } = ethers.constants
 
 describe("MakerBadges", () => {
   let signers: any
   let makerbadges: MakerBadges
 
-  const template_name = "Beginner"
-  const template_description = "Beginner Template"
-  const template_image = "badge.png"
-  const template_name2 = "Intermediate"
-  const template_description2 = "Intermediate Template"
-  const template_image2 = "badge2.png"
+  const template_name = "Accrue 1 Dai from DSR"
+  const template_description = "Accrue 1 Dai from the Dai Savings Rate"
+  const template_image = "https://ipfs.io/ipfs/ipfs_hash"
+  const template_name2 = "Earn in DSR for 3 months"
+  const template_description2 = "Lock 10 Dai in the Dai Savings Rate for 3 months"
+  const template_image2 = "https://ipfs.io/ipfs/ipfs_hash2"
   const templateId = "0"
   const index1 = "0"
-  const index2 = "1"
 
-  const DEFAULT_ADMIN_ROLE = ethers.constants.HashZero
+  const DEFAULT_ADMIN_ROLE = HashZero
   const TEMPLATER_ROLE = soliditySha3("TEMPLATER_ROLE")
   const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")
 
-  const baseURI2 = "https://badegs.com/token/"
-  const tokenURI = "ipfs.js"
+  const baseURI2 = "https://badges.com/token/"
+  const tokenURI = "ipfs_hash"
 
   beforeEach(async () => {
-    const [deployer, owner, templater, redeemer, random] = await ethers.getSigners()
+    const [deployer, templater, redeemer, random] = await ethers.getSigners()
     signers = { deployer, templater, redeemer, random }
     const MakerBadgesFactory = (await ethers.getContractFactory("MakerBadges", deployer)) as MakerBadges__factory
     makerbadges = await MakerBadgesFactory.deploy()
@@ -75,7 +75,7 @@ describe("MakerBadges", () => {
       const merkleTree = new MerkleTree(leaves, soliditySha3, { sortPairs: true })
 
       const root = merkleTree.getHexRoot()
-      const rootHashes = [root]
+      const rootHashes = [root, HashZero, HashZero, HashZero]
       const leaf = soliditySha3(signers.redeemer.address)
       const proof = merkleTree.getHexProof(leaf)
       await makerbadges.connect(signers.deployer).setRootHashes(rootHashes)
@@ -117,6 +117,40 @@ describe("MakerBadges", () => {
     it("should not allow create a new template from random user", async () => {
       await expect(
         makerbadges.connect(signers.random).createTemplate(template_name, template_description, template_image),
+      ).to.be.revertedWith("MakerBadges: caller is not a template owner")
+    })
+  })
+  // Check updateTemplate for success when a templater try to update a template
+  // Check updateTemplate for sucessfully emit event when the template is updated
+  // Check updateTemplate for failure when a random address try to update a template
+  describe("updateTemplate", async () => {
+    beforeEach(async () => {
+      await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
+    })
+    it("templaters should be able to update a template", async () => {
+      await makerbadges
+        .connect(signers.deployer)
+        .updateTemplate(templateId, template_name2, template_description2, template_image2)
+      const receipt = await makerbadges.templates(templateId)
+      expect(receipt[0]).to.be.eq(template_name2)
+      expect(receipt[1]).to.be.eq(template_description2)
+      expect(receipt[2]).to.be.eq(template_image2)
+      expect(await makerbadges.getTemplatesCount()).to.be.eq("1")
+    })
+    it("should emit the appropriate event when a template is updated", async () => {
+      await expect(
+        makerbadges
+          .connect(signers.deployer)
+          .updateTemplate(templateId, template_name2, template_description2, template_image2),
+      )
+        .to.emit(makerbadges, "TemplateUpdated")
+        .withArgs(templateId, template_name2, template_description2, template_image2)
+    })
+    it("should not allow to update a template form random user", async () => {
+      await expect(
+        makerbadges
+          .connect(signers.random)
+          .updateTemplate(templateId, template_name2, template_description2, template_image2),
       ).to.be.revertedWith("MakerBadges: caller is not a template owner")
     })
   })
