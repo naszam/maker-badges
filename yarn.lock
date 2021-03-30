@@ -5123,15 +5123,7 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-keccak256@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/keccak256/-/keccak256-1.0.2.tgz#ee0d38c2d5fb817f39d37c3fef842cab0164a067"
-  integrity sha512-f2EncSgmHmmQOkgxZ+/f2VaWTNkFL6f39VIrpoX+p8cEXJVyyCs/3h9GNz/ViHgwchxvv7oG5mjT2Tk4ZqInag==
-  dependencies:
-    bn.js "^4.11.8"
-    keccak "^3.0.1"
-
-keccak@3.0.1, keccak@^3.0.0, keccak@^3.0.1:
+keccak@3.0.1, keccak@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/keccak/-/keccak-3.0.1.tgz#ae30a0e94dbe43414f741375cff6d64c8bea0bff"
   integrity sha512-epq90L9jlFWCW7+pQa6JOnKn2Xgl2mtI664seYR6MHskvI9agt7AnDqmAlp9TqU4/caMYbA08Hi5DMZAl5zdkA==
@@ -5576,10 +5568,10 @@ merkle-patricia-tree@^2.1.2, merkle-patricia-tree@^2.3.2:
     rlp "^2.0.0"
     semaphore ">=1.0.1"
 
-merkletreejs@^0.2.13:
-  version "0.2.13"
-  resolved "https://registry.yarnpkg.com/merkletreejs/-/merkletreejs-0.2.13.tgz#56ab4cd4dff7fde018815cec0283f454558057e2"
-  integrity sha512-hnM1XX0C+3yfAytRiX7FKC+bYg+GC83aQq7EytAp6nbcUBRdXU6/AVkmNdsAaJJ9IaKZt0w76r0QeWY/Fq+uFw==
+merkletreejs@0.2.15:
+  version "0.2.15"
+  resolved "https://registry.yarnpkg.com/merkletreejs/-/merkletreejs-0.2.15.tgz#db8a2e6ba90d2f98a60b92568f4b745fb226b3d7"
+  integrity sha512-gm10hydsqnArQ7sH+og1LFQRv9MMzS3Vayb66Ly4UAhPq1nvMEni6nrOaM6//7J4QNfx2dTPcuDFCABwjIDh4w==
   dependencies:
     buffer-reverse "^1.0.1"
     crypto-js "^3.1.9-1"
