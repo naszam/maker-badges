@@ -121,4 +121,27 @@ describe("MakerBadges", () => {
       )
     })
   })
+
+  // Check removeTemplater for success when the default admin is removing a new templater
+  // Check removeTemplater for sucessfully emit event when the templater is removed
+  // Check removeTemplater for failure when a random address tries to remove a templater
+  describe("removeTemplater", async () => {
+    beforeEach(async () => {
+      await badgeroles.connect(signers.deployer).addTemplater(signers.templater.address)
+    })
+    it("default admin should be able to remove a templater", async () => {
+      await badgeroles.connect(signers.deployer).removeTemplater(signers.templater.address)
+      expect(await badgeroles.hasRole(TEMPLATER_ROLE, signers.templater.address)).to.equal(false)
+    })
+    it("should emit the appropriate event when a templater is removed", async () => {
+      expect(await badgeroles.connect(signers.deployer).removeTemplater(signers.templater.address))
+        .to.emit(badgeroles, "RoleRevoked")
+        .withArgs(TEMPLATER_ROLE, signers.templater.address, signers.deployer.address)
+    })
+    it("should not allow to remove a templater form random user", async () => {
+      await expect(badgeroles.connect(signers.random).removeTemplater(signers.templater.address)).to.be.revertedWith(
+        "MakerBadges: caller is not the default admin",
+      )
+    })
+  })
 })
