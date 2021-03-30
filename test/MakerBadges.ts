@@ -42,7 +42,7 @@ describe("MakerBadges", () => {
   // Check that the deployer is set as the only admin when the contract is deployed
   // Check that the deployer is set as the only templater when the contract is deployed
   // Check that the deployer is set as the only pauser when the contract is deployed
-  describe("Setup", async () => {
+  describe("setup", async () => {
     it("deployer has the default admin role", async () => {
       expect(await makerbadges.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.eq("1")
       expect(await makerbadges.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.be.eq(signers.deployer.address)
@@ -58,7 +58,7 @@ describe("MakerBadges", () => {
   })
 
   // Check ERC721 metadata
-  describe("ERC721 metadata", async () => {
+  describe("metadata", async () => {
     it("has a name", async () => {
       expect(await makerbadges.name()).to.be.eq("MakerBadges")
     })
@@ -177,10 +177,6 @@ describe("MakerBadges", () => {
         makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId + 1, tokenURI),
       ).to.be.revertedWith("MakerBadges: no template with that id")
     })
-    it("return a baseURI + tokenURI for tokenId", async () => {
-      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
-      expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenURI)
-    })
     it("should not allow to activate a new badge form random user", async () => {
       await expect(
         makerbadges.connect(signers.random).activateBadge(tree.proof, templateId, tokenURI),
@@ -191,20 +187,29 @@ describe("MakerBadges", () => {
         makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId, tokenURI),
       ).to.be.revertedWith("ERC721: token already minted")
     })
-    // Check override _tranfer function
-    it("should revert on transfer with transferFrom", async () => {
-      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
-      await expect(
-        makerbadges.connect(signers.redeemer).transferFrom(signers.redeemer.address, signers.random.address, tokenId),
-      ).to.be.revertedWith("MakerBadges: badge transfer disable")
+    // Check More ERC721 metadata
+    describe("more metadata", async () => {
+      it("return a baseURI + tokenURI for tokenId", async () => {
+        const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+        expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenURI)
+      })
     })
-    it("should revert on transfer with safeTransferFrom", async () => {
-      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
-      await expect(
-        makerbadges
-          .connect(signers.redeemer)
-          ["safeTransferFrom(address,address,uint256)"](signers.redeemer.address, signers.random.address, tokenId),
-      ).to.be.revertedWith("MakerBadges: badge transfer disable")
+    // Check override _tranfer function
+    describe("override _transfer", async () => {
+      it("should revert on transfer with transferFrom", async () => {
+        const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+        await expect(
+          makerbadges.connect(signers.redeemer).transferFrom(signers.redeemer.address, signers.random.address, tokenId),
+        ).to.be.revertedWith("MakerBadges: badge transfer disable")
+      })
+      it("should revert on transfer with safeTransferFrom", async () => {
+        const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+        await expect(
+          makerbadges
+            .connect(signers.redeemer)
+            ["safeTransferFrom(address,address,uint256)"](signers.redeemer.address, signers.random.address, tokenId),
+        ).to.be.revertedWith("MakerBadges: badge transfer disable")
+      })
     })
   })
 })
