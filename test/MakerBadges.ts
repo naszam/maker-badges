@@ -191,5 +191,20 @@ describe("MakerBadges", () => {
         makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId, tokenURI),
       ).to.be.revertedWith("ERC721: token already minted")
     })
+    // Check override _tranfer function
+    it("should revert on transfer with transferFrom", async () => {
+      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+      await expect(
+        makerbadges.connect(signers.redeemer).transferFrom(signers.redeemer.address, signers.random.address, tokenId),
+      ).to.be.revertedWith("MakerBadges: badge transfer disable")
+    })
+    it("should revert on transfer with safeTransferFrom", async () => {
+      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+      await expect(
+        makerbadges
+          .connect(signers.redeemer)
+          ["safeTransferFrom(address,address,uint256)"](signers.redeemer.address, signers.random.address, tokenId),
+      ).to.be.revertedWith("MakerBadges: badge transfer disable")
+    })
   })
 })
