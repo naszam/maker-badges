@@ -8,11 +8,13 @@ import { MakerBadges, MakerBadges__factory } from "../typechain"
 import { MerkleTree } from "merkletreejs"
 
 const { soliditySha3 } = web3.utils
-const { HashZero } = ethers.constants
+const { HashZero, AddressZero } = ethers.constants
 
 describe("MakerBadges", () => {
   let signers: any
   let makerbadges: MakerBadges
+  let logs: any
+  let tree: any
 
   const template_name = "Accrue 1 Dai from DSR"
   const template_description = "Accrue 1 Dai from the Dai Savings Rate"
@@ -152,6 +154,54 @@ describe("MakerBadges", () => {
           .connect(signers.random)
           .updateTemplate(templateId, template_name2, template_description2, template_image2),
       ).to.be.revertedWith("MakerBadges: caller is not a template owner")
+    })
+  })
+  // Check activateBadge for success when a redeemer checked offchain activate a badge
+  // Check activateBadge for sucessfully emit event when the badge is activated
+  // Check activateBadge for failure when a random address try to activate a badge
+  describe("activateBadge", async () => {
+    beforeEach(async () => {
+      const hash0 = soliditySha3(signers.redeemer.address)
+      const hash1 = soliditySha3(signers.deployer.address)
+      const hash2 = soliditySha3(signers.templater.address)
+      const hash3 = soliditySha3(signers.random.address)
+      const leaves = [hash0, hash1, hash2, hash3]
+      const merkleTree = new MerkleTree(leaves, soliditySha3, { sortPairs: true })
+      const root = merkleTree.getHexRoot()
+      const rootHashes = [root, HashZero, HashZero, HashZero]
+      const leaf = soliditySha3(signers.redeemer.address)
+      const proof = merkleTree.getHexProof(leaf)
+      await makerbadges.connect(signers.deployer).setRootHashes(rootHashes)
+      await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
+      const receipt = await makerbadges.connect(signers.redeemer).activateBadge(proof, templateId, tokenURI)
+      tree = { proof }
+      logs = { receipt }
+    })
+    it("should allow redeemers checked offchain to activate a badge", async () => {
+      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+      expect(await makerbadges.getBadgeRedeemer(tokenId)).to.be.eq(signers.redeemer.address)
+      expect(await makerbadges.getBadgeTemplate(tokenId)).to.be.eq(templateId)
+      expect(await makerbadges.templateQuantities(templateId)).to.be.eq("1")
+    })
+    it("should emit the appropriate event when a badge is activated", async () => {
+      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+      expect(logs.receipt).to.emit(makerbadges, "BadgeActivated").withArgs(tokenId, templateId, tokenURI)
+      expect(logs.receipt).to.emit(makerbadges, "Transfer").withArgs(AddressZero, signers.redeemer.address, tokenId)
+    })
+    it("should revert when templeteId does not exist", async () => {
+      await expect(
+        makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId + 1, tokenURI),
+      ).to.be.revertedWith("MakerBadges: no template with that id")
+    })
+    it("should not allow to activate a new badge form random user", async () => {
+      await expect(
+        makerbadges.connect(signers.random).activateBadge(tree.proof, templateId, tokenURI),
+      ).to.be.revertedWith("MakerBadges: caller is not a redeemer")
+    })
+    it("redeemer should not be able to activate the same badge twice", async () => {
+      await expect(
+        makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId, tokenURI),
+      ).to.be.revertedWith("ERC721: token already minted")
     })
   })
 })
