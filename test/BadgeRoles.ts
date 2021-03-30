@@ -144,4 +144,24 @@ describe("MakerBadges", () => {
       )
     })
   })
+
+  // Check pause for success when the pauser is pausing all the functions
+  // Check pause for sucessfully emit event when the functions are paused
+  // Check pause for failure when a random address tries to pause all the functions
+  describe("pause", async () => {
+    it("deployer can pause", async () => {
+      await badgeroles.connect(signers.deployer).pause()
+      expect(await badgeroles.paused()).to.be.eq(true)
+    })
+    it("should emit the appropriate event when the functions are paused", async () => {
+      expect(await badgeroles.connect(signers.deployer).pause())
+        .to.emit(badgeroles, "Paused")
+        .withArgs(signers.deployer.address)
+    })
+    it("random accounts cannot pause", async () => {
+      await expect(badgeroles.connect(signers.random).pause()).to.be.revertedWith(
+        "MakerBadges: must have pauser role to pause",
+      )
+    })
+  })
 })
