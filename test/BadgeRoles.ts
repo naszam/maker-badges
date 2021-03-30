@@ -46,4 +46,29 @@ describe("MakerBadges", () => {
       expect(await badgeroles.getRoleMember(PAUSER_ROLE, 0)).to.be.eq(signers.deployer.address)
     })
   })
+  // Check addAdmin for success when the default admin is adding a new admin
+  // Check addAdmin for sucessfully emit an event when the admin is added
+  // Check addAdmin for failure when a random address tries to add a new admin
+  // Check addAdmin for failure when account is set to zero address
+  describe("addAdmin", async () => {
+    it("default admin should be able to add an admin", async () => {
+      await badgeroles.connect(signers.deployer).addAdmin(signers.admin.address)
+      expect(await badgeroles.hasRole(ADMIN_ROLE, signers.admin.address)).to.equal(true)
+    })
+    it("should emit the appropriate event when a new admin is added", async () => {
+      expect(await badgeroles.connect(signers.deployer).addAdmin(signers.admin.address))
+        .to.emit(badgeroles, "RoleGranted")
+        .withArgs(ADMIN_ROLE, signers.admin.address, signers.deployer.address)
+    })
+    it("should not allow to add an admin form random user", async () => {
+      await expect(badgeroles.connect(signers.random)["addAdmin(address)"](signers.admin.address)).to.be.revertedWith(
+        "MakerBadges: caller is not the default admin",
+      )
+    })
+    it("should revert when account is set to zero address", async () => {
+      await expect(badgeroles.connect(signers.deployer)["addAdmin(address)"](AddressZero)).to.be.revertedWith(
+        "MakerBadges: account is the zero address",
+      )
+    })
+  })
 })
