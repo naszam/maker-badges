@@ -32,6 +32,8 @@ jobs:
       - run: yarn --no-progress --non-interactive --frozen-lockfile
 
       - run: yarn build
+      - run: yarn typecheck
+      - run: yarn lint
       - run: yarn format
 
   test:
