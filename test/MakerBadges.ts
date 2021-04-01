@@ -207,8 +207,7 @@ describe("MakerBadges", () => {
         const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
         await expect(
           makerbadges
-            .connect(signers.redeemer)
-            ["safeTransferFrom(address,address,uint256)"](signers.redeemer.address, signers.random.address, tokenId),
+            .connect(signers.redeemer)["safeTransferFrom(address,address,uint256)"](signers.redeemer.address, signers.random.address, tokenId),
         ).to.be.revertedWith("MakerBadges: badge transfer disable")
       })
     })
