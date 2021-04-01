@@ -10,6 +10,6 @@
     "outDir": "dist"
   },
   "include": ["*.ts", "**/*.ts", "artifacts/*.json"],
-  "files": ["./hardhat.config.ts", "./modules.d.ts"],
+  "files": ["./hardhat.config.ts"],
   "exclude": ["./build", "node_modules"]
 }
