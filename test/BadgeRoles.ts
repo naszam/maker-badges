@@ -8,14 +8,14 @@ import { BadgeRoles, BadgeRoles__factory } from "../typechain"
 const { soliditySha3 } = web3.utils
 const { HashZero, AddressZero } = ethers.constants
 
-describe("MakerBadges", () => {
+describe("BadgeRoles", () => {
   let signers: any
   let badgeroles: BadgeRoles
 
-  const DEFAULT_ADMIN_ROLE = HashZero
-  const ADMIN_ROLE = soliditySha3("ADMIN_ROLE")
-  const TEMPLATER_ROLE = soliditySha3("TEMPLATER_ROLE")
-  const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")
+  const DEFAULT_ADMIN_ROLE = HashZero!
+  const ADMIN_ROLE = soliditySha3("ADMIN_ROLE")!
+  const TEMPLATER_ROLE = soliditySha3("TEMPLATER_ROLE")!
+  const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")!
 
   beforeEach(async () => {
     const [deployer, admin, templater, random] = await ethers.getSigners()
@@ -57,7 +57,7 @@ describe("MakerBadges", () => {
       expect(await badgeroles.hasRole(ADMIN_ROLE, signers.admin.address)).to.equal(true)
     })
     it("should emit the appropriate event when a new admin is added", async () => {
-      expect(await badgeroles.connect(signers.deployer).addAdmin(signers.admin.address))
+      await expect(badgeroles.connect(signers.deployer).addAdmin(signers.admin.address))
         .to.emit(badgeroles, "RoleGranted")
         .withArgs(ADMIN_ROLE, signers.admin.address, signers.deployer.address)
     })
@@ -85,7 +85,7 @@ describe("MakerBadges", () => {
       expect(await badgeroles.hasRole(ADMIN_ROLE, signers.admin.address)).to.equal(false)
     })
     it("should emit the appropriate event when an admin is removed", async () => {
-      expect(await badgeroles.connect(signers.deployer).removeAdmin(signers.admin.address))
+      await expect(badgeroles.connect(signers.deployer).removeAdmin(signers.admin.address))
         .to.emit(badgeroles, "RoleRevoked")
         .withArgs(ADMIN_ROLE, signers.admin.address, signers.deployer.address)
     })
@@ -106,7 +106,7 @@ describe("MakerBadges", () => {
       expect(await badgeroles.hasRole(TEMPLATER_ROLE, signers.templater.address)).to.equal(true)
     })
     it("should emit the appropriate event when a new templater is added", async () => {
-      expect(await badgeroles.connect(signers.deployer).addTemplater(signers.templater.address))
+      await expect(badgeroles.connect(signers.deployer).addTemplater(signers.templater.address))
         .to.emit(badgeroles, "RoleGranted")
         .withArgs(TEMPLATER_ROLE, signers.templater.address, signers.deployer.address)
     })
@@ -134,7 +134,7 @@ describe("MakerBadges", () => {
       expect(await badgeroles.hasRole(TEMPLATER_ROLE, signers.templater.address)).to.equal(false)
     })
     it("should emit the appropriate event when a templater is removed", async () => {
-      expect(await badgeroles.connect(signers.deployer).removeTemplater(signers.templater.address))
+      await expect(badgeroles.connect(signers.deployer).removeTemplater(signers.templater.address))
         .to.emit(badgeroles, "RoleRevoked")
         .withArgs(TEMPLATER_ROLE, signers.templater.address, signers.deployer.address)
     })
@@ -154,7 +154,7 @@ describe("MakerBadges", () => {
       expect(await badgeroles.paused()).to.be.eq(true)
     })
     it("should emit the appropriate event when the functions are paused", async () => {
-      expect(await badgeroles.connect(signers.deployer).pause())
+      await expect(badgeroles.connect(signers.deployer).pause())
         .to.emit(badgeroles, "Paused")
         .withArgs(signers.deployer.address)
     })
@@ -177,7 +177,7 @@ describe("MakerBadges", () => {
       expect(await badgeroles.paused()).to.be.eq(false)
     })
     it("should emit the appropriate event when the functions are unpaused", async () => {
-      expect(await badgeroles.connect(signers.deployer).unpause())
+      await expect(badgeroles.connect(signers.deployer).unpause())
         .to.emit(badgeroles, "Unpaused")
         .withArgs(signers.deployer.address)
     })
