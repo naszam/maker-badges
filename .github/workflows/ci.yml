@@ -10,7 +10,7 @@ jobs:
   lint:
     strategy:
       matrix:
-        node: ["10.x"]
+        node: ["12.x"]
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
@@ -39,9 +39,9 @@ jobs:
   test:
     strategy:
       matrix:
-        node: ["10.x"]
+        node: ["12.x"]
         os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }
 
     steps:
       - uses: actions/checkout@v1
