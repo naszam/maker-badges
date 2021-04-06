@@ -7,61 +7,65 @@ on:
       - "xdai"
 
 jobs:
-  lint:
-    strategy:
-      matrix:
-        node: ["10.x"]
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+  run-linters:
+    name: Run Linters
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 12.x
 
-      - name: Cache YARN dependencies
-        uses: actions/cache@v2
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
         with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.OS }}-${{ matrix.node }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.OS }}-${{ matrix.node }}-yarn-cache-
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-
 
-      - run: yarn --no-progress --non-interactive --frozen-lockfile
+      - name: Install dependencies
+        run: yarn --no-progress --non-interactive --frozen-lockfile
 
       - run: yarn build
       - run: yarn typecheck
       - run: yarn lint
       - run: yarn format
 
-  test:
-    strategy:
-      matrix:
-        node: ["10.x"]
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 12.x
 
-      - name: Cache YARN dependencies
-        uses: actions/cache@v2
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
         with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.OS }}-${{ matrix.node }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.OS }}-${{ matrix.node }}-yarn-cache-
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-
 
-      - run: yarn --no-progress --non-interactive --frozen-lockfile
+      - name: Install dependencies
+        run: yarn --no-progress --non-interactive --frozen-lockfile
 
-      - run: yarn build
-      - run: yarn test
+      # This is required separately from yarn test because it generates the typechain definitions
+      - name: Compile
+        run: yarn build
+
+      - name: Run Unit Tests
+        run: yarn test
 
   echidna:
     name: Echidna
@@ -76,7 +80,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Set up node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 12
 
