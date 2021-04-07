@@ -1,13 +1,14 @@
 import { task, HardhatUserConfig } from "hardhat/config"
 
 import "@nomiclabs/hardhat-solhint"
-import "@nomiclabs/hardhat-ethers"
 import "@nomiclabs/hardhat-waffle"
 import "@nomiclabs/hardhat-web3"
 
 import "@typechain/hardhat"
 import "solidity-coverage"
 import "hardhat-gas-reporter"
+import "hardhat-deploy"
+import "hardhat-deploy-ethers"
 
 task("accounts", "Prints the list of accounts", async (args, hre) => {
   const accounts = await hre.ethers.getSigners()
