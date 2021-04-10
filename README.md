@@ -4,7 +4,9 @@
 [![#solc 0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
 [![#testnet sokol](https://img.shields.io/badge/testnet-Sokol-grey?style=plastic&logo=Ethereum)](#development-deployments)
 
-[![CI](https://github.com/naszam/maker-badges/actions/workflows/ci.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/ci.yml)
+[![Lint](https://github.com/naszam/maker-badges/actions/workflows/lint.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/lint.yml)
+[![Tests](https://github.com/naszam/maker-badges/actions/workflows/tests.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/tests.yml)
+[![Fuzz](https://github.com/naszam/maker-badges/actions/workflows/fuzz.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/fuzz.yml)
 
 [![#ETHGlobal HackMoney](https://img.shields.io/badge/ETHGlobal-HackMoney-blueviolet?style=for-the-badge&logo=atom&labelColor=5fc5a6)](https://hackathon.money/)
 
