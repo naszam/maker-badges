@@ -17,7 +17,9 @@
     "lint:ts": "eslint --ext .ts test",
     "lint:ts:fix": "yarn lint:ts --fix",
     "typecheck": "yarn tsc --noEmit",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "deploy:void": "hardhat deploy",
+    "dev": "hardhat node"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",

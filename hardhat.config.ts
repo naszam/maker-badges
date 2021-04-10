@@ -24,6 +24,9 @@ const config: HardhatUserConfig = {
   solidity: {
     version: "0.6.12",
   },
+  namedAccounts: {
+    deployer: 0,
+  },
   networks: {
     hardhat: {
       blockGasLimit: 10000000,

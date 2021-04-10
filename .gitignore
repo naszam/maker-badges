@@ -14,3 +14,7 @@ typechain/
 
 #echidna
 crytic-export/
+
+#deploy
+deployments/hardhat
+deployments/localhost
