@@ -1,9 +1,12 @@
-[![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
-[![#npm 14.15.1](https://img.shields.io/badge/npm-v14.15.1-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
-[![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
+[![#ubuntu 20.04](https://img.shields.io/badge/ubuntu-v20.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
+[![#node 12](https://img.shields.io/badge/node-v12-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![built-with openzeppelin](https://img.shields.io/badge/built%20with-OpenZeppelin-3677FF?style=plastic)](https://docs.openzeppelin.com/)
 [![#solc 0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
-[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](#development-deployments)
+[![#testnet sokol](https://img.shields.io/badge/testnet-Sokol-grey?style=plastic&logo=Ethereum)](#development-deployments)
+
+[![CI](https://github.com/naszam/maker-badges/actions/workflows/ci.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/ci.yml)
+
+
 
 [![#ETHGlobal HackMoney](https://img.shields.io/badge/ETHGlobal-HackMoney-blueviolet?style=for-the-badge&logo=atom&labelColor=5fc5a6)](https://hackathon.money/)
 
