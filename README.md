@@ -6,8 +6,6 @@
 
 [![CI](https://github.com/naszam/maker-badges/actions/workflows/ci.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/ci.yml)
 
-
-
 [![#ETHGlobal HackMoney](https://img.shields.io/badge/ETHGlobal-HackMoney-blueviolet?style=for-the-badge&logo=atom&labelColor=5fc5a6)](https://hackathon.money/)
 
 <img src="Badges.png" width="30%">
