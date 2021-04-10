@@ -36,10 +36,12 @@ const config: HardhatUserConfig = {
       accounts: accounts(),
     },
     xdai: {
+      chainId: 100,
       url: node_url("xdai"),
       accounts: accounts("xdai"),
     },
     sokol: {
+      chainId: 77,
       url: node_url("sokol"),
       accounts: accounts("sokol"),
     },
