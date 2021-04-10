@@ -18,6 +18,7 @@
     "lint:ts:fix": "yarn lint:ts --fix",
     "typecheck": "yarn tsc --noEmit",
     "test": "hardhat test",
+    "gas": "cross-env REPORT_GAS=true hardhat test",
     "deploy:void": "hardhat deploy",
     "dev": "hardhat node"
   },
@@ -36,6 +37,7 @@
     "@typescript-eslint/parser": "^4.20.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
+    "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "eslint": "^7.23.0",
     "eslint-config-typestrict": "^1.0.1",
