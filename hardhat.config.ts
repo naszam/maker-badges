@@ -1,15 +1,13 @@
 import { task, HardhatUserConfig } from "hardhat/config"
-import { node_url, accounts } from "./utils/network"
 
 import "@nomiclabs/hardhat-solhint"
+import "@nomiclabs/hardhat-ethers"
 import "@nomiclabs/hardhat-waffle"
 import "@nomiclabs/hardhat-web3"
 
 import "@typechain/hardhat"
 import "solidity-coverage"
 import "hardhat-gas-reporter"
-import "hardhat-deploy"
-import "hardhat-deploy-ethers"
 import "dotenv/config"
 
 task("accounts", "Prints the list of accounts", async (args, hre) => {
@@ -24,27 +22,11 @@ const config: HardhatUserConfig = {
   solidity: {
     version: "0.6.12",
   },
-  namedAccounts: {
-    deployer: 0,
-  },
   networks: {
     hardhat: {
       blockGasLimit: 10000000,
     },
-    localhost: {
-      url: node_url("localhost"),
-      accounts: accounts(),
-    },
-    xdai: {
-      chainId: 100,
-      url: node_url("xdai"),
-      accounts: accounts("xdai"),
-    },
-    sokol: {
-      chainId: 77,
-      url: node_url("sokol"),
-      accounts: accounts("sokol"),
-    },
+    localhost: {},
   },
   gasReporter: {
     currency: "USD",
