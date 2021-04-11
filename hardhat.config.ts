@@ -19,6 +19,10 @@ const chainIds = {
   xdai: 100,
 }
 
+// Ensure that we have all the environment variables we need.
+//if (!process.env.MNEMONIC) throw new Error('Please set your MNEMONIC in a .env file');
+//const mnemonic = process.env.MNEMONIC as string;
+
 //if (!process.env.DEPLOYER_ADDRESS) throw new Error("Please set your DEPLOYER_ADDRESS in a .env file")
 
 // Define network configurations
@@ -28,7 +32,7 @@ function createNetworkConfig(network: keyof typeof chainIds): NetworkUserConfig 
     accounts: {
       count: 10,
       initialIndex: 0,
-      mnemonic: process.env.MNEMONIC,
+      mnemonic: "test test test test test test test test test test test junk",
       path: "m/44'/60'/0'/0",
     },
     chainId: chainIds[network],
