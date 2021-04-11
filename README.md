@@ -225,7 +225,7 @@ Clone this GitHub repository.
 ## Authors
 
 Project created by [Nazzareno Massari](https://nazzarenomassari.com) and Scott Herren.  
-MakerDAOx and UI by [Josi Wave](https://github.com/creativeKoder)  
+MakerDAOx and UI by [Josi](https://twitter.com/0xO0O0)  
 A special thanks for support to [Gonzalo Balabasquer](https://github.com/gbalabasquer).  
 Security Check by [Scott Bigelow](https://github.com/epheph)  
 MakerDAO Badge Illustrations by [Richard Rosa](https://www.artstation.com/artwork/oAJeVq)
