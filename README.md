@@ -45,7 +45,8 @@ An incentive protocol to enhance activity on MakerDAO Ecosystem
 
 > Dai GraphQL to check for activities on MakerDAO ecosystem
 
-To enable MakerBadges to check off-chain for activities on MakerDAO ecosystem we're using the following MakerDAO DSS contracts:
+To enable MakerBadges to check off-chain for activities on MakerDAO ecosystem we're using the following MakerDAO DSS
+contracts:
 
 - **Pot**: to check if a user has accrued 1 or more Dai from DSR.
 - **Dai**: to check if a user has sent 10 or 20 Dai.
@@ -65,8 +66,8 @@ as well as to add a Templater via **addTemplater** and remove a Templater via **
 
 > MakerBadges to manage Templates and activate Non-transferable Badges for redeemers
 
-To enable MakerBadges to verify redeemers checked off-chain for activities on MakerDAO ecosystem, when they
-try to redeem their Badge, we query the Dai GraphQL.
+To enable MakerBadges to verify redeemers checked off-chain for activities on MakerDAO ecosystem, when they try to
+redeem their Badge, we query the Dai GraphQL.
 
 In particular, we'll use:
 
@@ -168,8 +169,7 @@ Clone this GitHub repository.
 - Analyze the smart contracts using Echidna with the following command (optional):
   `sh $ echidna-test . --contract BadgeRolesEchidnaTest --config echidna.config.yml `
 
-Deploy
-=======
+# Deploy
 
 ## Deploy on Sokol Testnet
 
@@ -186,6 +186,7 @@ Deploy
 
   //if (!process.env.DEPLOYER_ADDRESS) throw new Error("Please set your DEPLOYER_ADDRESS in a .env file")
   ```
+
 - Deploy MakerBadges on Sokol via the following command:
   ```sh
   $ yarn deploy:sokol
