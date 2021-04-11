@@ -25,6 +25,7 @@
     "deploy:xdai": "yarn hardhat run scripts/deploy.ts --network xdai"
   },
   "dependencies": {
+    "@ethersproject/abstract-signer": "^5.1.0",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-solhint": "^2.0.0",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
