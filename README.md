@@ -14,8 +14,7 @@
 
 # Maker Badges
 
-> Non-transferable Badges for Maker Ecosystem Activity, CDIP [18](https://github.com/makerdao/community/issues/537),
-> [29](https://github.com/makerdao/community/issues/721)
+> Non-transferable Badges for Maker Ecosystem Activity
 
 An incentive protocol to enhance activity on MakerDAO Ecosystem
 
@@ -42,33 +41,17 @@ An incentive protocol to enhance activity on MakerDAO Ecosystem
 
 ![Smart Contracts Flow-Chart](MakerBadges.png)
 
-### [MakerBadges](./contracts/MakerBadges.sol)
+### [Dai GraphQL](https://developer.makerdao.com/dai/1/graphql/)
 
-> MakerBadges to check for activities on MakerDAO ecosystem and keep track of redeemers
+> Dai GraphQL to check for activities on MakerDAO ecosystem
 
-To enable MakerBadges to check on-chain for activities on MakerDAO ecosystem we're using three interface to map the
-functions that we'll use:
+To enable MakerBadges to check off-chain for activities on MakerDAO ecosystem we're using the following MakerDAO DSS contracts:
 
-- **Chai**: to check if a user has accrued 1 or more Dai from DSR (Pot), via **dai** used in Chai contract to return the
-  **wad** or the current accrued Dai interest in DSR.  
-  To check redeemer activities on Pot it uses **chaiChallenge** function.
-- **DSChief**: to check if a user is voting in an Executive Spell via **votes** a getter function to check who is
-  currently voting.  
-  To check redeemer activities on DSChief it uses **chiefChallenge** function.
-- **VoteProxy**: to check if a user is voting in an Executive Spell via **VoteProxy** contract, a proxy identity for
-  cold and hot wallets.  
-  To check redeemer activities on DSChief via proxy it uses **robotChallenge** that requires the proxy address used to
-  vote.
-- **Flipper**: to check for high bidder in the current Bid in Collateral Auctions via **bids** a getter function of
-  current Bid on Flipper to check for **guy** the high bidder.  
-  To check redeemer activities on Flipper it uses **flipperChallenge** function.
-
-The functions to check on-chain for activities on Maker Ecosystem will keep track of the caller address into the
-OpenZeppelin EnumerableSet.AddressSet **redeemers** by templateId that will be verified in BadgeFactory via **verify**
-function linked to it, to allow a redeemer to activate a Non-transferable Badge.
-
-The contract also inherits OpenZeppelic AccessControl.sol, allowing the owner of the contract to be set as Default Admin
-and Pauser to call **pause**, **unpause** functions in case of emergency (Circuit Breaker Design Pattern).
+- **Pot**: to check if a user has accrued 1 or more Dai from DSR.
+- **Dai**: to check if a user has sent 10 or 20 Dai.
+- **Chief**: to check if a user is voting in an Executive Spell or Governance Polls.
+- **Flip**: to check for high bidder in the current Bid in Collateral Auctions.
+- **Cat**: to check if a user have bitten an unsafe vault.
 
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
 
@@ -78,28 +61,28 @@ BadgeRoles inherits the OpenZeppelin AccessControl.sol, allowing the owner of th
 Admin, Pauser and also as Templater, to add an Admin via **addAdmin** and remove an Admin via **removeAdmin** functions
 as well as to add a Templater via **addTemplater** and remove a Templater via **removeTemplater** functions.
 
-### [BadgeFactory](./contracts/BadgeFactory.sol)
+### [MakerBadges](./contracts/MakerBadges.sol)
 
-> BadgeFactory to manage Templates and activate Non-transferable Badges for redeemers
+> MakerBadges to manage Templates and activate Non-transferable Badges for redeemers
 
-To enable BadgeFactory to verify redeemers checked on-chain/off-chain for activities on MakerDAO ecosystem, when they
-try to redeem their Badge, we're using the interface **MakerBadges** to map the function we'll use.
+To enable MakerBadges to verify redeemers checked off-chain for activities on MakerDAO ecosystem, when they
+try to redeem their Badge, we query the Dai GraphQL.
 
 In particular, we'll use:
 
 - **verify** to verify redeemers checked on-chain.
 
-BadgeFactory let the admin to set (via **setRootHashes**) an array of root hashes, called **roots**, ordered by template
+MakerBadges let the admin to set (via **setRootHashes**) an array of root hashes, called **roots**, ordered by template
 Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to
 redeem Badges.
 
 A Merkle Tree is generated for every Template and the root hash is updated by the admin of BadgeFactory daily to allow
 batches of redeemers to be checked and to redeem Badges.
 
-BadgeFactory inherits BadgeRoles, allowing a Templater to create a new template via **createTemplate** specifying name,
+MakerBadges inherits BadgeRoles, allowing a Templater to create a new template via **createTemplate** specifying name,
 description and image. A Templater can also update the template info via **updateTemplate**.
 
-Getter functions are implemented to get template metadata via **getTemplate** and the current number of templates via
+Getter functions are implemented to get template metadata via **templates** and the current number of templates via
 **getTemplateCount**.
 
 It also inherits ERC721, where the **\_transfer** has been overridden to implement the non-transferable feature,
@@ -107,7 +90,7 @@ allowing redeemers checked on-chain/offchain to redeem a Badge for a specific ac
 **activateBadge** that will verify if the caller is a redeemer and then will allow the caller to mint a new
 Non-transferable Badge with tokenURI stored on IPFS (eg. "ipfs.json").
 
-**getBadgeTemplateQuantity** getter function is implemented to get the number of badges activated for each template.
+**templateQuantities** getter function is implemented to get the number of badges activated for each template.
 
 To avoid that a redeemer could activate the same Badge twice, the **tokenId** is generated via **\_getTokenId"** that
 concatenates the **redeemer** address and the **templateId** to get a unique hard-coded identifier. The **\_mint**
@@ -131,24 +114,18 @@ Clone this GitHub repository.
 ## Steps to compile and test
 
 - Local dependencies:
-  - Truffle
-  - Ganache CLI
+  - HardHat
+  - TypeChain
   - OpenZeppelin Contracts
-  - Truffle HD Wallet Provider
-  - Truffle-Plugin-Verify
+  - Ethers
+  - Waffle
   - Solhint
+  - Solcover
+  - Prettier
   ```sh
-  $ npm i
+  $ yarn install
   ```
 - Global dependencies:
-  - Truffle (recommended):
-  ```sh
-  npm install -g truffle
-  ```
-  - Ganache CLI (recommended):
-  ```sh
-  npm install -g ganache-cli
-  ```
   - Slither (optional):
   ```sh
   $ git clone https://github.com/crytic/slither.git && cd slither
@@ -164,19 +141,21 @@ Clone this GitHub repository.
 
 ## Running the project with local test network (ganache-cli)
 
-- Compile the smart contracts using Truffle with the following command (global dependecy):
+- Compile the smart contracts using HardHat with the following command:
   ```sh
-  $ truffle compile
+  $ yarn build
   ```
-- Deploy the smart contracts using Truffle & Ganache with the following command (global dependency):
+- Deploy the smart contracts locally with the following commands:
   ```sh
-  $ truffle migrate
+  $ yarn dev
   ```
-- Test the smart contracts using Mocha & OpenZeppelin Test Environment (Forking Mainnet):
-  - Add Infura Key in `config.js`
-  - Run the following command:
+  in a separate terminal:
   ```sh
-  $ npm test
+  $ yarn deploy:local
+  ```
+- Test the smart contracts using Waffle & Ethers:
+  ```sh
+  $ yarn test
   ```
 - Analyze the smart contracts using Slither with the following command (optional):
   ```sh
@@ -187,47 +166,32 @@ Clone this GitHub repository.
   $ mythx analyze
   ```
 - Analyze the smart contracts using Echidna with the following command (optional):
-  `sh $ echidna-test . --contract CryticTestBadgeRoles --config echidna_crytic_default.yaml ` Deploy ============
+  `sh $ echidna-test . --contract BadgeRolesEchidnaTest --config echidna.config.yml `
 
-## Deploy on Kovan Testnet
+Deploy
+=======
+
+## Deploy on Sokol Testnet
 
 - Get an Ethereum Account on Metamask.
 - On the landing page, click “Get Chrome Extension.”
-- Create a .secret file cointaining the menomic.
-- Get some test ether from a [Kovan's faucet](https://faucet.kovan.network/).
-- Signup [Infura](https://infura.io/).
-- Create new project.
-- Copy the kovan URL into truffle-config.js.
-- Uncomment the following lines in truffle-config.js:
+- Add menmonic to MNEMONIC .env file.
+- Add deployer address to DEPLOYER_ADDRESS .env file.
+- Get some test ether from a [Sokol's faucet](https://faucet.poa.network/).
+- Uncomment the following lines in hardhat.config.ts:
 
   ```
-  // const HDWalletProvider = require("@truffle/hdwallet-provider");
-  // const infuraKey = '...';
-  // const infuraURL = 'https://kovan.infura.io/...';
+  //if (!process.env.MNEMONIC) throw new Error('Please set your MNEMONIC in a .env file');
+  //const mnemonic = process.env.MNEMONIC as string;
 
-  // const fs = require('fs');
-  // const mnemonic = fs.readFileSync(".secret").toString().trim();
+  //if (!process.env.DEPLOYER_ADDRESS) throw new Error("Please set your DEPLOYER_ADDRESS in a .env file")
   ```
-
-- Install Truffle HD Wallet Provider:
+- Deploy MakerBadges on Sokol via the following command:
   ```sh
-  $ npm install @truffle/hdwallet-provider
-  ```
-- Deploy the smart contract using Truffle & Infura with the following command (global dependency):
-  ```sh
-  $ truffle migrate --network kovan
-  ```
-- Verify Contracts on Kovan via Truffle Plugin Verify:
-  ```sh
-  $ truffle run verify MakerBadges BadgeFactory --network kovan
+  $ yarn deploy:sokol
   ```
 
 ## Development Deployments
-
-**MakerBadges 0.8.0 (Kovan):**
-[0xe911636C3105FaDE74F1986c04e8859BC15d03Ed](https://kovan.etherscan.io/address/0xe911636C3105FaDE74F1986c04e8859BC15d03Ed)  
-**BadgeFactory 0.8.0 (Kovan):**
-[0xed3B09C5946d5fb2A2EA0dA18a151312668573eb](https://kovan.etherscan.io/address/0xed3B09C5946d5fb2A2EA0dA18a151312668573eb)
 
 # Interface
 
@@ -249,9 +213,16 @@ Clone this GitHub repository.
 - [Chai](https://chai.money/about.html)
 - [aztec-airdrop](https://github.com/nanexcool/aztec-airdrop)
 
+## CDIPs
+
+- CDIP [18](https://github.com/makerdao/community/issues/537)
+- CDIP [29](https://github.com/makerdao/community/issues/721)
+- CDIP [38](https://github.com/makerdao/community/issues/1180)
+
 ## Authors
 
 Project created by [Nazzareno Massari](https://nazzarenomassari.com) and Scott Herren.  
+MakerDAOx and UI by [Josi Wave](https://github.com/creativeKoder)  
 A special thanks for support to [Gonzalo Balabasquer](https://github.com/gbalabasquer).  
 Security Check by [Scott Bigelow](https://github.com/epheph)  
 MakerDAO Badge Illustrations by [Richard Rosa](https://www.artstation.com/artwork/oAJeVq)
