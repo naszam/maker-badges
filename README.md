@@ -167,7 +167,7 @@ Clone this GitHub repository.
   $ mythx analyze
   ```
 - Analyze the smart contracts using Echidna with the following command (optional):
-  ```sh 
+  ```sh
   $ echidna-test . --contract BadgeRolesEchidnaTest --config echidna.config.yml
   ```
 
