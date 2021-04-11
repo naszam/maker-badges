@@ -1,7 +1,7 @@
 // BadgeRoles.ts
 
 import { expect } from "chai"
-import { ethers, web3 } from "hardhat"
+import { ethers, waffle, web3 } from "hardhat"
 
 import { BadgeRoles, BadgeRoles__factory } from "../typechain"
 
@@ -17,11 +17,15 @@ describe("BadgeRoles", () => {
   const TEMPLATER_ROLE = soliditySha3("TEMPLATER_ROLE")!
   const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")!
 
-  beforeEach(async () => {
+  const fixture = async () => {
     const [deployer, admin, templater, random] = await ethers.getSigners()
     signers = { deployer, admin, templater, random }
-    const BadgeRolesFactory = (await ethers.getContractFactory("BadgeRoles", deployer)) as BadgeRoles__factory
-    badgeroles = await BadgeRolesFactory.deploy()
+    const factory = (await ethers.getContractFactory("BadgeRoles", deployer)) as BadgeRoles__factory
+    return (await factory.deploy()) as BadgeRoles
+  }
+
+  beforeEach("deploy BadgeRoles", async () => {
+    badgeroles = await waffle.loadFixture(fixture)
   })
 
   // Check that the deployer is set as the only default admin when the contract is deployed

@@ -1,7 +1,7 @@
 // MakerBadges.ts
 
 import { expect } from "chai"
-import { ethers, web3 } from "hardhat"
+import { ethers, waffle, web3 } from "hardhat"
 import { MerkleTree } from "merkletreejs"
 
 import { MakerBadges, MakerBadges__factory } from "../typechain"
@@ -31,11 +31,15 @@ describe("MakerBadges", () => {
   const baseURI2 = "https://badges.com/token/"
   const tokenURI = "ipfs_hash"
 
-  beforeEach(async () => {
+  const fixture = async () => {
     const [deployer, templater, redeemer, random] = await ethers.getSigners()
     signers = { deployer, templater, redeemer, random }
-    const MakerBadgesFactory = (await ethers.getContractFactory("MakerBadges", deployer)) as MakerBadges__factory
-    makerbadges = await MakerBadgesFactory.deploy()
+    const factory = (await ethers.getContractFactory("MakerBadges", deployer)) as MakerBadges__factory
+    return (await factory.deploy()) as MakerBadges
+  }
+
+  beforeEach("deploy MakerBadges", async () => {
+    makerbadges = await waffle.loadFixture(fixture)
   })
 
   // Check that the deployer is set as the only default admin when the contract is deployed
