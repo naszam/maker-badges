@@ -140,7 +140,7 @@ Clone this GitHub repository.
   - Echidna (optional):  
     [binaries](https://github.com/crytic/echidna/releases)
 
-## Running the project with local test network (ganache-cli)
+## Running the project with local test network
 
 - Compile the smart contracts using HardHat with the following command:
   ```sh
@@ -167,7 +167,9 @@ Clone this GitHub repository.
   $ mythx analyze
   ```
 - Analyze the smart contracts using Echidna with the following command (optional):
-  `sh $ echidna-test . --contract BadgeRolesEchidnaTest --config echidna.config.yml `
+  ```sh 
+  $ echidna-test . --contract BadgeRolesEchidnaTest --config echidna.config.yml
+  ```
 
 # Deploy
 
