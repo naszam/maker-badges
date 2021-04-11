@@ -18,7 +18,11 @@
     "lint:ts:fix": "yarn lint:ts --fix",
     "typecheck": "yarn tsc --noEmit",
     "test": "hardhat test",
-    "gas": "cross-env REPORT_GAS=true hardhat test"
+    "gas": "cross-env REPORT_GAS=true hardhat test",
+    "dev": "hardhat node",
+    "deploy:local": "yarn hardhat run scripts/deploy.ts --network localhost",
+    "deploy:sokol": "yarn hardhat run scripts/deploy.ts --network sokol",
+    "deploy:xdai": "yarn hardhat run scripts/deploy.ts --network xdai"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
@@ -29,6 +33,7 @@
     "@typechain/ethers-v5": "^6.0.4",
     "@typechain/hardhat": "^1.0.1",
     "@types/chai": "^4.2.15",
+    "@types/fs-extra": "^9.0.10",
     "@types/mocha": "^8.2.2",
     "@types/node": "^14.14.35",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
@@ -41,10 +46,11 @@
     "eslint-config-typestrict": "^1.0.1",
     "eslint-plugin-no-only-tests": "^2.4.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "eslint-plugin-sonarjs": "^0.6.0",
+    "eslint-plugin-sonarjs": "0.6.0",
     "eslint-plugin-unused-imports": "^1.1.1",
     "ethereum-waffle": "^3.3.0",
     "ethers": "^5.1.0",
+    "fs-extra": "^9.1.0",
     "hardhat": "^2.1.1",
     "hardhat-gas-reporter": "^1.0.4",
     "merkletreejs": "0.2.15",
