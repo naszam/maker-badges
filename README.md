@@ -196,6 +196,9 @@ Clone this GitHub repository.
 
 ## Development Deployments
 
+### Sokol
+**MakerBadges:** [0x3715Bd0A4B395e8ee9E534510AABfcED59977213](https://blockscout.com/poa/sokol/address/0x3715Bd0A4B395e8ee9E534510AABfcED59977213/contracts)     
+
 # Interface
 
 - [Frontend](https://github.com/scottrepreneur/maker-badges/tree/master/packages/frontend)
