@@ -46,12 +46,12 @@ An incentive protocol to enhance activity on MakerDAO Ecosystem
 > Dai GraphQL to check for activities on MakerDAO ecosystem
 
 To enable MakerBadges to check off-chain for activities on MakerDAO ecosystem we're using the following MakerDAO DSS
-contracts:
+Contracts:
 
 - **Pot**: to check if a user has accrued 1 or more Dai from DSR.
 - **Dai**: to check if a user has sent 10 or 20 Dai.
-- **Chief**: to check if a user is voting in an Executive Spell or Governance Polls.
-- **Flip**: to check for high bidder in the current Bid in Collateral Auctions.
+- **Chief**: to check if a user has voted in Executive Spells or Governance Polls.
+- **Flip**: to check if a user has bidden or won Collateral Auctions.
 - **Cat**: to check if a user have bitten an unsafe vault.
 
 ### [BadgeRoles](./contracts/BadgeRoles.sol)
@@ -67,18 +67,19 @@ as well as to add a Templater via **addTemplater** and remove a Templater via **
 > MakerBadges to manage Templates and activate Non-transferable Badges for redeemers
 
 To enable MakerBadges to verify redeemers checked off-chain for activities on MakerDAO ecosystem, when they try to
-redeem their Badge, we query the Dai GraphQL.
+redeem their Badge, we query the Dai GraphQL, and we generate a Merkle Tree of off-chain checked redeemers for each
+Badge Template.
 
 In particular, we'll use:
 
-- **verify** to verify redeemers checked on-chain.
+- **verify** to verify redeemers checked off-chain, using a proof (generated from the Merkle Tree for each redeemer).
 
 MakerBadges let the admin to set (via **setRootHashes**) an array of root hashes, called **roots**, ordered by template
-Id to allow redemeers checked off-chain for activities via TheGraph on the front-end, and stored into a Merkle Tree, to
+Id to allow redemeers checked off-chain for activities via TheGraph on the frontend, and stored into a Merkle Tree, to
 redeem Badges.
 
-A Merkle Tree is generated for every Template and the root hash is updated by the admin of BadgeFactory daily to allow
-batches of redeemers to be checked and to redeem Badges.
+A Merkle Tree is generated for every Badge Template and the root hash is then updated by the admin of MakerBadges on a
+weekly/monthly basis to allow batches of redeemers to redeem Badges.
 
 MakerBadges inherits BadgeRoles, allowing a Templater to create a new template via **createTemplate** specifying name,
 description and image. A Templater can also update the template info via **updateTemplate**.
@@ -87,9 +88,9 @@ Getter functions are implemented to get template metadata via **templates** and 
 **getTemplateCount**.
 
 It also inherits ERC721, where the **\_transfer** has been overridden to implement the non-transferable feature,
-allowing redeemers checked on-chain/offchain to redeem a Badge for a specific activity on MakerDAO ecosystem via
+allowing redeemers checked off-chain to redeem a Badge for a specific activity on MakerDAO ecosystem via
 **activateBadge** that will verify if the caller is a redeemer and then will allow the caller to mint a new
-Non-transferable Badge with tokenURI stored on IPFS (eg. "ipfs.json").
+Non-transferable Maker Badge with tokenURI stored on IPFS (eg. "ipfs-hash.json").
 
 **templateQuantities** getter function is implemented to get the number of badges activated for each template.
 
@@ -154,7 +155,7 @@ Clone this GitHub repository.
   ```sh
   $ yarn deploy:local
   ```
-- Test the smart contracts using Waffle & Ethers:
+- Test the smart contracts using Waffle & Ethers with Fixtures:
   ```sh
   $ yarn test
   ```
