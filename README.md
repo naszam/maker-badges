@@ -177,8 +177,9 @@ Clone this GitHub repository.
 
 - Get an Ethereum Account on Metamask.
 - On the landing page, click “Get Chrome Extension.”
-- Add menmonic to MNEMONIC .env file.
+- Add mnemonic to MNEMONIC .env file.
 - Add deployer address to DEPLOYER_ADDRESS .env file.
+- Add Sokol as custom RPC via [Chainlist](https://chainlist.org/)
 - Get some test ether from a [Sokol's faucet](https://faucet.poa.network/).
 - Uncomment the following lines in hardhat.config.ts:
 
@@ -189,9 +190,19 @@ Clone this GitHub repository.
   //if (!process.env.DEPLOYER_ADDRESS) throw new Error("Please set your DEPLOYER_ADDRESS in a .env file")
   ```
 
+- Replace the following with `mnemonic: mnemonic`:
+
+  ```
+  mnemonic: "test test test test test test test test test test test junk"
+  ```
+
 - Deploy MakerBadges on Sokol via the following command:
   ```sh
   $ yarn deploy:sokol
+  ```
+- Flatten MakerBadges to verify on [Blockscout](https://blockscout.com/poa/sokol/):
+  ```
+  hardhat flatten contracts/MakerBadges.sol > MakerBadges_Flatten.sol
   ```
 
 ## Development Deployments
