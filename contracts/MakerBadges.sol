@@ -209,7 +209,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
         uint256 tokenId,
         string calldata tokenURI
     ) private returns (bool) {
-        _safeMint(to, tokenId);
+        _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
         return true;
     }
