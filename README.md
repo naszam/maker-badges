@@ -180,7 +180,7 @@ Clone this GitHub repository.
 - On the landing page, click “Get Chrome Extension.”
 - Add mnemonic to MNEMONIC .env file.
 - Add deployer address to DEPLOYER_ADDRESS .env file.
-- Add Sokol as custom RPC via [Chainlist](https://chainlist.org/)
+- Add Sokol as custom RPC via [Chainlist](https://chainlist.org/).
 - Get some test ether from a [Sokol's faucet](https://faucet.poa.network/).
 - Uncomment the following lines in hardhat.config.ts:
 
