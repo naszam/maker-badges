@@ -1,10 +1,10 @@
 name: Fuzz
 
 on:
-  pull_request:
   push:
     branches:
-      - "xdai"
+      - master
+  pull_request:
 
 jobs:
   echidna:
