@@ -1,164 +1,216 @@
 /// SPDX-License-Identifier: AGPL-3.0-or-later
 pragma solidity 0.6.12;
-pragma experimental ABIEncoderV2;
-
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29
 /// @author Nazzareno Massari @naszam
-/// @notice MakerBadges to check on-chain for activities on maker ecosystem and keep track of redeemers
+/// @notice MakerBadges to manage Templates and activate Non-transferable MakerBadges by redeemers
 /// @dev See https://github.com/makerdao/community/issues/537
 /// @dev See https://github.com/makerdao/community/issues/721
 /// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin Library is used for secure contract development
 
 /*
-███    ███  █████  ██   ██ ███████ ██████ 
-████  ████ ██   ██ ██  ██  ██      ██   ██ 
-██ ████ ██ ███████ █████   █████   ██████  
-██  ██  ██ ██   ██ ██  ██  ██      ██   ██ 
-██      ██ ██   ██ ██   ██ ███████ ██   ██ 
+╔╦╗╔═╗╦╔═╔═╗╦═╗  ╔╗ ╔═╗╔╦╗╔═╗╔═╗╔═╗
+║║║╠═╣╠╩╗║╣ ╠╦╝  ╠╩╗╠═╣ ║║║ ╦║╣ ╚═╗
+╩ ╩╩ ╩╩ ╩╚═╝╩╚═  ╚═╝╩ ╩═╩╝╚═╝╚═╝╚═╝ 
 */
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/utils/Pausable.sol";
-import "@openzeppelin/contracts/utils/EnumerableSet.sol";
+import "./BadgeRoles.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
 
-interface ChaiLike {
-    function dai(address usr) external returns (uint256);
-}
+contract MakerBadges is BadgeRoles, ERC721 {
+    /// @dev Libraries
+    using SafeMath for uint256;
+    using Counters for Counters.Counter;
+    using MerkleProof for bytes32[];
 
-interface DSChiefLike {
-    function votes(address) external view returns (bytes32);
-}
+    Counters.Counter private _templateIdTracker;
 
-interface VoteProxyLike {
-    function cold() external view returns (address);
-    function hot() external view returns (address);
-}
+    bytes32[] private roots;
 
-interface FlipperLike {
-    struct Bid {
-        uint256 bid;
-        uint256 lot;
-        address guy;
-        uint48  tic;
-        uint48  end;
-        address usr;
-        address gal;
-        uint256 tab;
+    struct BadgeTemplate {
+        string name;
+        string description;
+        string image;
     }
 
-    function bids(uint256) external view returns (Bid memory);
-}
-
-contract MakerBadges is AccessControl, Pausable {
-
-    /// @dev Libraries
-    using EnumerableSet for EnumerableSet.AddressSet;
-
-    /// @dev Data
-    ChaiLike  internal immutable chai;
-    DSChiefLike internal immutable chief;
-    FlipperLike internal immutable flipper;
-    VoteProxyLike internal proxy;
-
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-
-    mapping(uint256 => EnumerableSet.AddressSet) private redeemers;
-
-    uint256 public constant chaiId = 0;
-    uint256 public constant chiefId = 1;
-    uint256 public constant robotId = 2;
-    uint256 public constant flipperId = 3;
+    mapping(uint256 => BadgeTemplate) public templates;
+    mapping(uint256 => uint256) public templateQuantities;
 
     /// @dev Events
-    event ChaiChecked(address indexed usr);
-    event DSChiefChecked(address indexed guy);
-    event RobotChecked(address indexed guy);
-    event FlipperChecked(address indexed guy);
+    event NewTemplate(uint256 indexed templateId, string name, string description, string image);
+    event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
+    event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId, string tokenURI);
 
-    constructor(address chai_, address chief_, address flipper_) public {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-
-        _setupRole(PAUSER_ROLE, msg.sender);
-
-        /// @dev CHAI Address
-        chai = ChaiLike(chai_);
-
-        /// @dev MCD_ADM Address
-        chief = DSChiefLike(chief_);
-
-        /// @dev MCD_FLIP_ETH_A Address
-        flipper = FlipperLike(flipper_);
+    constructor() public ERC721("MakerBadges", "MAKER") {
+        _setBaseURI("https://badges.makerdao.com/token/");
     }
 
-    /// @notice Fallback function
-    /// @dev Added not payable to revert transactions not matching any other function which send value
-    fallback() external {
-        revert("MakerBadges: function not matching any other");
+    /// @notice Set the baseURI
+    /// @dev Update the baseURI specified in the constructor
+    /// @param baseURI New baseURI
+    function setBaseURI(string calldata baseURI) external {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
+        _setBaseURI(baseURI);
     }
 
-    /// @notice Chai Challenge
-    /// @dev Keeps track of the address of the caller if successful
-    function chaiChallenge() external whenNotPaused {
-        require(redeemers[chaiId].add(msg.sender), "MakerBadges: caller already checked for chai");
-        emit ChaiChecked(msg.sender);
-        require(chai.dai(msg.sender) >= 1 ether, "MakerBadges: caller has not accrued 1 or more dai interest on pot");
+    /// @notice Set Merkle Tree Root Hashes array
+    /// @dev Called by admin to update roots for different address batches by templateId
+    /// @param _roots Root hashes of the Merkle Trees by templateId
+    function setRootHashes(bytes32[] calldata _roots) external whenNotPaused {
+        require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
+        roots = _roots;
     }
 
+    /// @dev Templates
 
-    /// @notice DSChief Challenge
-    /// @dev Keeps track of the address of the caller if successful
-    function chiefChallenge() external whenNotPaused {
-        require(chief.votes(msg.sender) != 0x00,"MakerBadges: caller is not voting in an executive spell");
-        require(redeemers[chiefId].add(msg.sender), "MakerBadges: caller already checked for chief");
-        emit DSChiefChecked(msg.sender);
+    /// @notice Create a new template
+    /// @dev Access restricted to only Templaters
+    /// @param name The name of the new template
+    /// @param description A description of the new template
+    /// @param image A filename of the new template
+    function createTemplate(
+        string calldata name,
+        string calldata description,
+        string calldata image
+    ) external whenNotPaused {
+        require(hasRole(TEMPLATER_ROLE, msg.sender), "MakerBadges: caller is not a template owner");
+
+        uint256 templateId = _templateIdTracker.current();
+
+        templates[templateId].name = name;
+        templates[templateId].description = description;
+        templates[templateId].image = image;
+
+        _templateIdTracker.increment();
+        emit NewTemplate(templateId, name, description, image);
     }
 
-    /// @notice Robot Challenge
-    /// @dev Keeps track of the address of the caller if successful
-    function robotChallenge(address _proxy) external whenNotPaused {
-        proxy = VoteProxyLike(_proxy);
+    /// @notice Update a template
+    /// @dev Access restricted to only Templaters
+    /// @param templateId Template Id
+    /// @param name The name of the template
+    /// @param description The description of the template
+    /// @param image The filename of the template
+    function updateTemplate(
+        uint256 templateId,
+        string calldata name,
+        string calldata description,
+        string calldata image
+    ) external whenNotPaused {
+        require(hasRole(TEMPLATER_ROLE, msg.sender), "MakerBadges: caller is not a template owner");
+        require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
+        templates[templateId].name = name;
+        templates[templateId].description = description;
+        templates[templateId].image = image;
+        emit TemplateUpdated(templateId, name, description, image);
+    }
+
+    /// @notice Getter function for templates count
+    /// @dev Return lenght of template array
+    /// @return count The current number of templates
+    function getTemplatesCount() external view whenNotPaused returns (uint256 count) {
+        return _templateIdTracker.current();
+    }
+
+    /// @dev Badges
+
+    /// @notice Activate Badge by redeemers
+    /// @dev Verify if the caller is a redeemer
+    /// @param proof Merkle Proof
+    /// @param templateId Template Id
+    /// @param tokenURI An <ipfs-hash>.json filename
+    /// @return True If the new Badge is Activated
+    function activateBadge(
+        bytes32[] calldata proof,
+        uint256 templateId,
+        string calldata tokenURI
+    ) external whenNotPaused returns (bool) {
+        require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
         require(
-            chief.votes(_proxy)!= 0x00 && (proxy.cold() == msg.sender || proxy.hot() == msg.sender),
-            "MakerBadges: caller is not voting via proxy in an executive spell"
+            proof.verify(roots[templateId], keccak256(abi.encodePacked(msg.sender))),
+            "MakerBadges: caller is not a redeemer"
         );
-        require(redeemers[robotId].add(msg.sender), "MakerBadges: caller already checked for robot");
-        emit RobotChecked(msg.sender);
+
+        uint256 _tokenId = _getTokenId(msg.sender, templateId);
+
+        /// @dev Increase the quantities
+        templateQuantities[templateId] = templateQuantities[templateId].add(1);
+
+        require(_mintWithTokenURI(msg.sender, _tokenId, tokenURI), "MakerBadges: badge not minted");
+
+        emit BadgeActivated(_tokenId, templateId, tokenURI);
+        return true;
     }
 
-
-    /// @notice Flipper Challenge
-    /// @dev Keeps track of the address of the caller if successful
-    /// @dev guy, high bidder
-    function flipperChallenge(uint256 bidId) external whenNotPaused {
-        require(
-            flipper.bids(bidId).guy == msg.sender,
-            "MakerBadges: caller is not the high bidder in the current bid in ETH collateral auctions"
-        );
-        require(redeemers[flipperId].add(msg.sender), "MakerBadges: caller already checked for flipper");
-        emit FlipperChecked(msg.sender);
+    /// @notice Getter function for redeemer associated with the tokenId
+    /// @dev Check if the tokenId exists
+    /// @param tokenId Token Id of the Badge
+    /// @return redeemer Redeemer address associated with the tokenId
+    function getBadgeRedeemer(uint256 tokenId) external view whenNotPaused returns (address redeemer) {
+        require(_exists(tokenId), "MakerBadges: no token with that id");
+        (redeemer, ) = _unpackTokenId(tokenId);
     }
 
-    /// @notice Check if guy is a redeemer
-    /// @dev Verify if the address of guy exists
-    /// @param guy Address to verify
-    /// @return True if guy is a redeemer
-    function verify(uint256 templateId, address guy) external view whenNotPaused returns (bool) {
-        return redeemers[templateId].contains(guy);
+    /// @notice Getter function for templateId associated with the tokenId
+    /// @dev Check if the tokenId exists
+    /// @param tokenId Token Id of the Badge
+    /// @return templateId Template Id associated with the tokenId
+    function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256 templateId) {
+        require(_exists(tokenId), "MakerBadges: no token with that id");
+        (, templateId) = _unpackTokenId(tokenId);
     }
 
-    /// @notice Pause all the functions
-    /// @dev the caller must have the 'PAUSER_ROLE'
-    function pause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to pause");
-        _pause();
+    /// @notice ERC721 _transfer() Disabled
+    /// @dev _transfer() has been overriden
+    /// @dev reverts on transferFrom() and safeTransferFrom()
+    function _transfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal override {
+        require(false, "MakerBadges: badge transfer disabled");
+        super._transfer(from, to, tokenId);
     }
 
-    /// @notice Unpause all the functions
-    /// @dev The caller must have the 'PAUSER_ROLE'
-    function unpause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to unpause");
-        _unpause();
+    /// @notice Generate tokenId
+    /// @dev Augur twist by concatenate redeemer and templateId
+    /// @param redeemer Redeemer Address
+    /// @param templateId Template Id
+    /// @param _tokenId Token Id
+    function _getTokenId(address redeemer, uint256 templateId) private pure returns (uint256 _tokenId) {
+        bytes memory _tokenIdBytes = abi.encodePacked(redeemer, uint96(templateId));
+        assembly {
+            _tokenId := mload(add(_tokenIdBytes, add(0x20, 0)))
+        }
+    }
+
+    /// @notice Unpack tokenId
+    /// @param tokenId Token Id of the Badge
+    /// @return redeemer Redeemer Address
+    /// @return templateId Template Id
+    function _unpackTokenId(uint256 tokenId) private pure returns (address redeemer, uint256 templateId) {
+        assembly {
+            redeemer := shr(96, and(tokenId, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000))
+            templateId := and(tokenId, 0x0000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF)
+        }
+    }
+
+    /// @notice Mint new token with tokenURI
+    /// @dev Automatically concatenate baseURI with tokenURI via abi.encodePacked
+    /// @param to Owner of the new token
+    /// @param tokenId Token Id of the Baddge
+    /// @param tokenURI An <ipfs-hash>.json filename
+    /// @return True if the new token is minted
+    function _mintWithTokenURI(
+        address to,
+        uint256 tokenId,
+        string calldata tokenURI
+    ) private returns (bool) {
+        _mint(to, tokenId);
+        _setTokenURI(tokenId, tokenURI);
+        return true;
     }
 }

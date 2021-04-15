@@ -1,3 +1,19 @@
-build/
+# node
 node_modules/
-config.js
+
+# hardhat
+artifacts/
+cache/
+
+# coverage
+coverage/
+coverage.json
+
+#typechain
+typechain/
+
+#echidna
+crytic-export/
+
+#env
+.env

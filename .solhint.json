@@ -1,8 +1,12 @@
 {
   "extends": "solhint:recommended",
+  "plugins": ["prettier"],
   "rules": {
     "compiler-version": "off",
     "reason-string": "off",
-    "payable-fallback": "off"
-   }
+    "payable-fallback": "off",
+    "no-inline-assembly": "off",
+    "const-name-snakecase": "off",
+    "func-name-mixedcase": "off"
+  }
 }
