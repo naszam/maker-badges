@@ -24,7 +24,8 @@
     "dev": "hardhat node",
     "deploy:local": "yarn hardhat run scripts/deploy.ts --network localhost",
     "deploy:sokol": "yarn hardhat run scripts/deploy.ts --network sokol",
-    "deploy:xdai": "yarn hardhat run scripts/deploy.ts --network xdai"
+    "deploy:xdai": "yarn hardhat run scripts/deploy.ts --network xdai",
+    "flatten": "hardhat flatten contracts/MakerBadges.sol > MakerBadges_Flatten.sol"
   },
   "dependencies": {
     "@ethersproject/abstract-signer": "^5.1.0",

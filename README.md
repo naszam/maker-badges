@@ -203,7 +203,7 @@ Clone this GitHub repository.
   ```
 - Flatten MakerBadges to verify on [Blockscout](https://blockscout.com/poa/sokol/):
   ```
-  hardhat flatten contracts/MakerBadges.sol > MakerBadges_Flatten.sol
+  yarn flatten
   ```
 
 ## Development Deployments
