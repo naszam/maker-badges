@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: AGPL-3.0-or-later
-pragma solidity 0.6.12;
+pragma solidity 0.8.0;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29
 /// @author Nazzareno Massari @naszam
@@ -10,7 +10,7 @@ pragma solidity 0.6.12;
 /// @dev OpenZeppelin Library is used for secure contract development
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 
 contract BadgeRoles is AccessControl, Pausable {
     /// @dev Roles
@@ -18,7 +18,7 @@ contract BadgeRoles is AccessControl, Pausable {
     bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    constructor() public {
+    constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
         _setupRole(ADMIN_ROLE, msg.sender);

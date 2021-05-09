@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: AGPL-3.0-or-later
-pragma solidity 0.6.12;
+pragma solidity 0.8.0;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29
 /// @author Nazzareno Massari @naszam
@@ -18,15 +18,16 @@ pragma solidity 0.6.12;
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract MakerBadges is BadgeRoles, ERC721 {
     /// @dev Libraries
-    using SafeMath for uint256;
     using Counters for Counters.Counter;
     using MerkleProof for bytes32[];
 
     Counters.Counter private _templateIdTracker;
+
+    string private _baseTokenURI;
 
     bytes32[] private roots;
 
@@ -42,10 +43,16 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /// @dev Events
     event NewTemplate(uint256 indexed templateId, string name, string description, string image);
     event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
-    event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId, string tokenURI);
+    event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId);
 
-    constructor() public ERC721("MakerBadges", "MAKER") {
-        _setBaseURI("https://badges.makerdao.com/token/");
+    constructor() ERC721("MakerBadges", "MAKER") {
+        _baseTokenURI = "https://badges.makerdao.com/token/";
+    }
+
+    /// @notice Getter function for baseTokenURI
+    /// @dev Override _baseURI()
+    function _baseURI() internal view virtual override returns (string memory) {
+        return _baseTokenURI;
     }
 
     /// @notice Set the baseURI
@@ -53,7 +60,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /// @param baseURI New baseURI
     function setBaseURI(string calldata baseURI) external {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
-        _setBaseURI(baseURI);
+        _baseTokenURI = baseURI;
     }
 
     /// @notice Set Merkle Tree Root Hashes array
@@ -121,13 +128,8 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /// @dev Verify if the caller is a redeemer
     /// @param proof Merkle Proof
     /// @param templateId Template Id
-    /// @param tokenURI An <ipfs-hash>.json filename
     /// @return True If the new Badge is Activated
-    function activateBadge(
-        bytes32[] calldata proof,
-        uint256 templateId,
-        string calldata tokenURI
-    ) external whenNotPaused returns (bool) {
+    function activateBadge(bytes32[] calldata proof, uint256 templateId) external whenNotPaused returns (bool) {
         require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
         require(
             proof.verify(roots[templateId], keccak256(abi.encodePacked(msg.sender))),
@@ -137,11 +139,11 @@ contract MakerBadges is BadgeRoles, ERC721 {
         uint256 _tokenId = _getTokenId(msg.sender, templateId);
 
         /// @dev Increase the quantities
-        templateQuantities[templateId] = templateQuantities[templateId].add(1);
+        templateQuantities[templateId] += 1;
 
-        require(_mintWithTokenURI(msg.sender, _tokenId, tokenURI), "MakerBadges: badge not minted");
+        require(_mintWithTokenURI(msg.sender, _tokenId), "MakerBadges: badge not minted");
 
-        emit BadgeActivated(_tokenId, templateId, tokenURI);
+        emit BadgeActivated(_tokenId, templateId);
         return true;
     }
 
@@ -202,15 +204,16 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /// @dev Automatically concatenate baseURI with tokenURI via abi.encodePacked
     /// @param to Owner of the new token
     /// @param tokenId Token Id of the Baddge
-    /// @param tokenURI An <ipfs-hash>.json filename
     /// @return True if the new token is minted
-    function _mintWithTokenURI(
-        address to,
-        uint256 tokenId,
-        string calldata tokenURI
-    ) private returns (bool) {
+    function _mintWithTokenURI(address to, uint256 tokenId) private returns (bool) {
         _mint(to, tokenId);
-        _setTokenURI(tokenId, tokenURI);
         return true;
+    }
+
+    /**
+     * @dev See {IERC165-supportsInterface}.
+     */
+    function supportsInterface(bytes4 interfaceId) public view virtual override(AccessControl, ERC721) returns (bool) {
+        return super.supportsInterface(interfaceId);
     }
 }

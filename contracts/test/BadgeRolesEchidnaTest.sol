@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-pragma solidity 0.6.12;
+pragma solidity 0.8.0;
 
 import "../BadgeRoles.sol";
 
@@ -11,7 +11,7 @@ contract EchidnaInterface {
 }
 
 contract BadgeRolesEchidnaTest is EchidnaInterface, BadgeRoles {
-    constructor() public {
+    constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, crytic_owner);
         _setupRole(ADMIN_ROLE, crytic_owner);
         _setupRole(TEMPLATER_ROLE, crytic_owner);
