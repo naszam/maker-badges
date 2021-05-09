@@ -193,9 +193,9 @@ describe("MakerBadges", () => {
     })
     // Check More ERC721 metadata
     describe("more metadata", async () => {
-      it("return a baseURI + tokenURI for tokenId", async () => {
+      it("return a baseURI + tokenId for tokenId", async () => {
         const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
-        expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + templateId)
+        expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenId)
       })
     })
     // Check override _tranfer function
