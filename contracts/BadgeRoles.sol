@@ -12,7 +12,7 @@ pragma solidity 0.8.0;
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
-contract BadgeRoles is AccessControl, Pausable {
+contract BadgeRoles is AccessControlEnumerable, Pausable {
     /// @dev Roles
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");

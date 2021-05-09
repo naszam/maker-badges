@@ -217,7 +217,7 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
         public
         view
         virtual
-        override(AccessControl, ERC721Enumerable)
+        override(AccessControlEnumerable, ERC721Enumerable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
