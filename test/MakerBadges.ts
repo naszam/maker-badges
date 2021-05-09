@@ -195,7 +195,7 @@ describe("MakerBadges", () => {
     describe("more metadata", async () => {
       it("return a baseURI + tokenId for tokenId", async () => {
         const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
-        expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenId)
+        expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/${tokenId}")
       })
     })
     // Check override _tranfer function
