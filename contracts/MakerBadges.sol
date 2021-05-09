@@ -17,17 +17,17 @@ pragma solidity 0.8.0;
 
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract MakerBadges is BadgeRoles, ERC721 {
+contract MakerBadges is BadgeRoles, ERC721Enumerable {
     /// @dev Libraries
     using Counters for Counters.Counter;
     using MerkleProof for bytes32[];
 
     Counters.Counter private _templateIdTracker;
 
-    string private _baseTokenURI;
+    string public baseTokenURI;
 
     bytes32[] private roots;
 
@@ -46,13 +46,13 @@ contract MakerBadges is BadgeRoles, ERC721 {
     event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId);
 
     constructor() ERC721("MakerBadges", "MAKER") {
-        _baseTokenURI = "https://badges.makerdao.com/token/";
+        baseTokenURI = "https://badges.makerdao.com/token/";
     }
 
     /// @notice Getter function for baseTokenURI
     /// @dev Override _baseURI()
     function _baseURI() internal view virtual override returns (string memory) {
-        return _baseTokenURI;
+        return baseTokenURI;
     }
 
     /// @notice Set the baseURI
@@ -60,7 +60,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /// @param baseURI New baseURI
     function setBaseURI(string calldata baseURI) external {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
-        _baseTokenURI = baseURI;
+        baseTokenURI = baseURI;
     }
 
     /// @notice Set Merkle Tree Root Hashes array
@@ -213,7 +213,13 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId) public view virtual override(AccessControl, ERC721) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(AccessControl, ERC721Enumerable)
+        returns (bool)
+    {
         return super.supportsInterface(interfaceId);
     }
 }
