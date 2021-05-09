@@ -66,12 +66,12 @@ describe("BadgeRoles", () => {
         .withArgs(ADMIN_ROLE, signers.admin.address, signers.deployer.address)
     })
     it("should not allow to add an admin form random user", async () => {
-      await expect(badgeroles.connect(signers.random)["addAdmin(address)"](signers.admin.address)).to.be.revertedWith(
+      await expect(badgeroles.connect(signers.random).addAdmin(signers.admin.address)).to.be.revertedWith(
         "MakerBadges: caller is not the default admin",
       )
     })
     it("should revert when account is set to zero address", async () => {
-      await expect(badgeroles.connect(signers.deployer)["addAdmin(address)"](AddressZero)).to.be.revertedWith(
+      await expect(badgeroles.connect(signers.deployer).addAdmin(AddressZero)).to.be.revertedWith(
         "MakerBadges: account is the zero address",
       )
     })
