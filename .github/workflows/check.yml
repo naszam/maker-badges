@@ -10,12 +10,6 @@ jobs:
   slither:
     name: Slither
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        testName:
-          - MakerBadges.sol
-          - BadgeRoles.sol
 
     steps:
       - uses: actions/checkout@v2
@@ -51,5 +45,5 @@ jobs:
       - name: Install slither
         run: |
           pip3 install slither-analyzer
-      - name: Run ${{ matrix.testName }}
-        run: slither contracts/${{ matrix.testName }}
+      - name: Run Slither
+        run: slither .
