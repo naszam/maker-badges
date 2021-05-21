@@ -3,6 +3,7 @@
 import { expect } from "chai"
 import { ethers, waffle, web3 } from "hardhat"
 
+import { MinimalForwarder, MinimalForwarder__factory } from "../typechain"
 import { BadgeRoles, BadgeRoles__factory } from "../typechain"
 
 const { soliditySha3 } = web3.utils
@@ -20,8 +21,10 @@ describe("BadgeRoles", () => {
   const fixture = async () => {
     const [deployer, admin, templater, random] = await ethers.getSigners()
     signers = { deployer, admin, templater, random }
-    const factory = (await ethers.getContractFactory("BadgeRoles", deployer)) as BadgeRoles__factory
-    return (await factory.deploy()) as BadgeRoles
+    const forwarderFab = (await ethers.getContractFactory("MinimalForwarder", deployer)) as MinimalForwarder__factory
+    const forwarder = (await forwarderFab.deploy()) as MinimalForwarder
+    const badgeFab = (await ethers.getContractFactory("BadgeRoles", deployer)) as BadgeRoles__factory
+    return (await badgeFab.deploy(forwarder.address)) as BadgeRoles
   }
 
   beforeEach("deploy BadgeRoles", async () => {

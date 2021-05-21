@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { ethers, waffle, web3 } from "hardhat"
 import { MerkleTree } from "merkletreejs"
 
+import { MinimalForwarder, MinimalForwarder__factory } from "../typechain"
 import { MakerBadges, MakerBadges__factory } from "../typechain"
 
 const { soliditySha3 } = web3.utils
@@ -33,8 +34,10 @@ describe("MakerBadges", () => {
   const fixture = async () => {
     const [deployer, templater, redeemer, random] = await ethers.getSigners()
     signers = { deployer, templater, redeemer, random }
-    const factory = (await ethers.getContractFactory("MakerBadges", deployer)) as MakerBadges__factory
-    return (await factory.deploy()) as MakerBadges
+    const forwarderFab = (await ethers.getContractFactory("MinimalForwarder", deployer)) as MinimalForwarder__factory
+    const forwarder = (await forwarderFab.deploy()) as MinimalForwarder
+    const badgeFab = (await ethers.getContractFactory("MakerBadges", deployer)) as MakerBadges__factory
+    return (await badgeFab.deploy(forwarder.address)) as MakerBadges
   }
 
   beforeEach("deploy MakerBadges", async () => {

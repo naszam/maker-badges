@@ -11,7 +11,7 @@ contract EchidnaInterface {
 }
 
 contract BadgeRolesEchidnaTest is EchidnaInterface, BadgeRoles {
-    constructor() {
+    constructor(MinimalForwarder forwarder) BadgeRoles(forwarder) {
         _setupRole(DEFAULT_ADMIN_ROLE, crytic_owner);
         _setupRole(ADMIN_ROLE, crytic_owner);
         _setupRole(TEMPLATER_ROLE, crytic_owner);
