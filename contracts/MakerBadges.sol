@@ -45,21 +45,15 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
     event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
     event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId);
 
-    constructor() ERC721("MakerBadges", "MAKER") {
+    constructor(MinimalForwarder forwarder) ERC721("MakerBadges", "MAKER") BadgeRoles(forwarder) {
         baseTokenURI = "https://badges.makerdao.com/token/";
-    }
-
-    /// @notice Getter function for baseTokenURI
-    /// @dev Override _baseURI()
-    function _baseURI() internal view virtual override returns (string memory) {
-        return baseTokenURI;
     }
 
     /// @notice Set the baseURI
     /// @dev Update the baseURI specified in the constructor
     /// @param baseURI New baseURI
     function setBaseURI(string calldata baseURI) external {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not the default admin");
         baseTokenURI = baseURI;
     }
 
@@ -67,7 +61,7 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
     /// @dev Called by admin to update roots for different address batches by templateId
     /// @param _roots Root hashes of the Merkle Trees by templateId
     function setRootHashes(bytes32[] calldata _roots) external whenNotPaused {
-        require(hasRole(ADMIN_ROLE, msg.sender), "MakerBadges: caller is not an admin");
+        require(hasRole(ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not an admin");
         roots = _roots;
     }
 
@@ -83,7 +77,7 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
         string calldata description,
         string calldata image
     ) external whenNotPaused {
-        require(hasRole(TEMPLATER_ROLE, msg.sender), "MakerBadges: caller is not a template owner");
+        require(hasRole(TEMPLATER_ROLE, _msgSender()), "MakerBadges: caller is not a template owner");
 
         uint256 templateId = _templateIdTracker.current();
 
@@ -107,7 +101,7 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
         string calldata description,
         string calldata image
     ) external whenNotPaused {
-        require(hasRole(TEMPLATER_ROLE, msg.sender), "MakerBadges: caller is not a template owner");
+        require(hasRole(TEMPLATER_ROLE, _msgSender()), "MakerBadges: caller is not a template owner");
         require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
         templates[templateId].name = name;
         templates[templateId].description = description;
@@ -132,16 +126,16 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
     function activateBadge(bytes32[] calldata proof, uint256 templateId) external whenNotPaused returns (bool) {
         require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
         require(
-            proof.verify(roots[templateId], keccak256(abi.encodePacked(msg.sender))),
+            proof.verify(roots[templateId], keccak256(abi.encodePacked(_msgSender()))),
             "MakerBadges: caller is not a redeemer"
         );
 
-        uint256 _tokenId = _getTokenId(msg.sender, templateId);
+        uint256 _tokenId = _getTokenId(_msgSender(), templateId);
 
         /// @dev Increase the quantities
         templateQuantities[templateId] += 1;
 
-        require(_mintWithTokenURI(msg.sender, _tokenId), "MakerBadges: badge not minted");
+        require(_mintWithTokenURI(_msgSender(), _tokenId), "MakerBadges: badge not minted");
 
         emit BadgeActivated(_tokenId, templateId);
         return true;
@@ -210,6 +204,12 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
         return true;
     }
 
+    /// @notice Getter function for baseTokenURI
+    /// @dev Override _baseURI()
+    function _baseURI() internal view virtual override returns (string memory) {
+        return baseTokenURI;
+    }
+
     /**
      * @dev See {IERC165-supportsInterface}.
      */
@@ -221,5 +221,13 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function _msgSender() internal view virtual override(Context, BadgeRoles) returns (address sender) {
+        return super._msgSender();
+    }
+
+    function _msgData() internal view virtual override(Context, BadgeRoles) returns (bytes calldata) {
+        return super._msgData();
     }
 }
