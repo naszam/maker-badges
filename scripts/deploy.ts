@@ -1,9 +1,9 @@
 import hre from "hardhat"
 import { Contract, ContractFactory } from "ethers"
 import { Signer } from "@ethersproject/abstract-signer"
+import fs from "fs"
 
 const { ethers } = hre
-const padding = 25
 
 async function main(): Promise<void> {
   const network = hre.network.name
@@ -26,11 +26,27 @@ async function main(): Promise<void> {
     }
   }
 
+  // Deploy MinimalForwarder
+  const MinimalForwarder: ContractFactory = await ethers.getContractFactory("MinimalForwarder")
+  const forwarder: Contract = await MinimalForwarder.connect(deployer).deploy()
+  await forwarder.deployed()
+
   // Deploy MakerBadges
   const MakerBadges: ContractFactory = await ethers.getContractFactory("MakerBadges")
-  const badges: Contract = await MakerBadges.connect(deployer).deploy()
+  const badges: Contract = await MakerBadges.connect(deployer).deploy(forwarder.address)
   await badges.deployed()
-  console.log("MakerBadges deployed to".padEnd(padding), badges.address)
+  fs.writeFileSync(
+    "deploy.json",
+    JSON.stringify(
+      {
+        MinimalForwarder: forwarder.address,
+        MakerBadges: badges.address,
+      },
+      null,
+      2,
+    ),
+  )
+  console.log(`MinimalForwarder: ${forwarder.address}\nMakerBadges: ${badges.address}`)
 }
 
 main()
