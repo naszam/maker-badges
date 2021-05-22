@@ -7,6 +7,8 @@
     "payable-fallback": "off",
     "no-inline-assembly": "off",
     "const-name-snakecase": "off",
-    "func-name-mixedcase": "off"
+    "func-name-mixedcase": "off",
+    "state-visibility": "off",
+    "func-visibility": ["error", { "ignoreConstructors": true }]
   }
 }

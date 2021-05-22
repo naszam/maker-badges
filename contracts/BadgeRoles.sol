@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: AGPL-3.0-or-later
-pragma solidity 0.6.12;
+pragma solidity 0.8.0;
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29
 /// @author Nazzareno Massari @naszam
@@ -9,21 +9,23 @@ pragma solidity 0.6.12;
 /// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin Library is used for secure contract development
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/utils/Pausable.sol";
+import "./ERC2771Context.sol";
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/metatx/MinimalForwarder.sol";
 
-contract BadgeRoles is AccessControl, Pausable {
+contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     /// @dev Roles
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    constructor() public {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+    constructor(MinimalForwarder forwarder) ERC2771Context(address(forwarder)) {
+        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
-        _setupRole(ADMIN_ROLE, msg.sender);
-        _setupRole(TEMPLATER_ROLE, msg.sender);
-        _setupRole(PAUSER_ROLE, msg.sender);
+        _setupRole(ADMIN_ROLE, _msgSender());
+        _setupRole(TEMPLATER_ROLE, _msgSender());
+        _setupRole(PAUSER_ROLE, _msgSender());
     }
 
     /// @dev Functions
@@ -33,7 +35,7 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @param account Address of the new Admin
     /// @return True if account is added as Admin
     function addAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not the default admin");
         require(account != address(0), "MakerBadges: account is the zero address");
         grantRole(ADMIN_ROLE, account);
         return true;
@@ -44,7 +46,7 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @param account Address of the Admin
     /// @return True if account is removed as Admin
     function removeAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not the default admin");
         revokeRole(ADMIN_ROLE, account);
         return true;
     }
@@ -54,7 +56,7 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @param account Address of the new Templater
     /// @return True if account is added as Templater
     function addTemplater(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not the default admin");
         require(account != address(0), "MakerBadges: account is the zero address");
         grantRole(TEMPLATER_ROLE, account);
         return true;
@@ -65,7 +67,7 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @param account Address of the Templater
     /// @return True if account is removed as Templater
     function removeTemplater(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "MakerBadges: caller is not the default admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges: caller is not the default admin");
         revokeRole(TEMPLATER_ROLE, account);
         return true;
     }
@@ -73,14 +75,22 @@ contract BadgeRoles is AccessControl, Pausable {
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to pause");
+        require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges: must have pauser role to pause");
         _pause();
     }
 
     /// @notice Unpause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function unpause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "MakerBadges: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges: must have pauser role to unpause");
         _unpause();
+    }
+
+    function _msgSender() internal view virtual override(Context, ERC2771Context) returns (address sender) {
+        return super._msgSender();
+    }
+
+    function _msgData() internal view virtual override(Context, ERC2771Context) returns (bytes calldata) {
+        return super._msgData();
     }
 }

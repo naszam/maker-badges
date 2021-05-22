@@ -3,6 +3,7 @@
 import { expect } from "chai"
 import { ethers, waffle, web3 } from "hardhat"
 
+import { MinimalForwarder, MinimalForwarder__factory } from "../typechain"
 import { BadgeRoles, BadgeRoles__factory } from "../typechain"
 
 const { soliditySha3 } = web3.utils
@@ -20,8 +21,10 @@ describe("BadgeRoles", () => {
   const fixture = async () => {
     const [deployer, admin, templater, random] = await ethers.getSigners()
     signers = { deployer, admin, templater, random }
-    const factory = (await ethers.getContractFactory("BadgeRoles", deployer)) as BadgeRoles__factory
-    return (await factory.deploy()) as BadgeRoles
+    const forwarderFab = (await ethers.getContractFactory("MinimalForwarder", deployer)) as MinimalForwarder__factory
+    const forwarder = (await forwarderFab.deploy()) as MinimalForwarder
+    const badgeFab = (await ethers.getContractFactory("BadgeRoles", deployer)) as BadgeRoles__factory
+    return (await badgeFab.deploy(forwarder.address)) as BadgeRoles
   }
 
   beforeEach("deploy BadgeRoles", async () => {
@@ -66,12 +69,12 @@ describe("BadgeRoles", () => {
         .withArgs(ADMIN_ROLE, signers.admin.address, signers.deployer.address)
     })
     it("should not allow to add an admin form random user", async () => {
-      await expect(badgeroles.connect(signers.random)["addAdmin(address)"](signers.admin.address)).to.be.revertedWith(
+      await expect(badgeroles.connect(signers.random).addAdmin(signers.admin.address)).to.be.revertedWith(
         "MakerBadges: caller is not the default admin",
       )
     })
     it("should revert when account is set to zero address", async () => {
-      await expect(badgeroles.connect(signers.deployer)["addAdmin(address)"](AddressZero)).to.be.revertedWith(
+      await expect(badgeroles.connect(signers.deployer).addAdmin(AddressZero)).to.be.revertedWith(
         "MakerBadges: account is the zero address",
       )
     })

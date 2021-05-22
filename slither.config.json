@@ -1,6 +1,6 @@
 {
-  "detectors_to_exclude": "assembly,low-level-calls,pragma,naming-convention,solc-version,redundant-statements,shadowing-local,uninitialized-return,empty-functions,external-function,unused-return,race-condition-init",
-  "exclude_informational": false,
+  "detectors_to_exclude": "assembly,low-level-calls,pragma,naming-convention,solc-version,redundant-statements,shadowing-local,uninitialized-return,empty-functions,external-function,unused-return,race-condition-init,too-many-digits,variable-scope,arbitrary-send,uninitialized-state",
+  "exclude_informational": true,
   "exclude_low": false,
   "exclude_medium": false,
   "exclude_high": false,

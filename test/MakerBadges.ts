@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { ethers, waffle, web3 } from "hardhat"
 import { MerkleTree } from "merkletreejs"
 
+import { MinimalForwarder, MinimalForwarder__factory } from "../typechain"
 import { MakerBadges, MakerBadges__factory } from "../typechain"
 
 const { soliditySha3 } = web3.utils
@@ -29,13 +30,14 @@ describe("MakerBadges", () => {
   const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")!
 
   const baseURI2 = "https://badges.com/token/"
-  const tokenURI = "ipfs_hash"
 
   const fixture = async () => {
     const [deployer, templater, redeemer, random] = await ethers.getSigners()
     signers = { deployer, templater, redeemer, random }
-    const factory = (await ethers.getContractFactory("MakerBadges", deployer)) as MakerBadges__factory
-    return (await factory.deploy()) as MakerBadges
+    const forwarderFab = (await ethers.getContractFactory("MinimalForwarder", deployer)) as MinimalForwarder__factory
+    const forwarder = (await forwarderFab.deploy()) as MinimalForwarder
+    const badgeFab = (await ethers.getContractFactory("MakerBadges", deployer)) as MakerBadges__factory
+    return (await badgeFab.deploy(forwarder.address)) as MakerBadges
   }
 
   beforeEach("deploy MakerBadges", async () => {
@@ -69,11 +71,11 @@ describe("MakerBadges", () => {
       expect(await makerbadges.symbol()).to.be.eq("MAKER")
     })
     it("has a baseURI", async () => {
-      expect(await makerbadges.baseURI()).to.be.eq("https://badges.makerdao.com/token/")
+      expect(await makerbadges.baseTokenURI()).to.be.eq("https://badges.makerdao.com/token/")
     })
     it("return an updated baseURI", async () => {
       await makerbadges.connect(signers.deployer).setBaseURI(baseURI2)
-      expect(await makerbadges.baseURI()).to.be.eq(baseURI2)
+      expect(await makerbadges.baseTokenURI()).to.be.eq(baseURI2)
     })
     it("reverts when querying metadata for non existent tokenId", async () => {
       await expect(makerbadges.connect(signers.random).tokenURI("0")).to.be.revertedWith(
@@ -160,7 +162,7 @@ describe("MakerBadges", () => {
       const proof = merkleTree.getHexProof(leaf)
       await makerbadges.connect(signers.deployer).setRootHashes(rootHashes)
       await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
-      const receipt = await makerbadges.connect(signers.redeemer).activateBadge(proof, templateId, tokenURI)
+      const receipt = await makerbadges.connect(signers.redeemer).activateBadge(proof, templateId)
       tree = { proof }
       logs = { receipt }
     })
@@ -172,31 +174,31 @@ describe("MakerBadges", () => {
     })
     it("should emit the appropriate event when a badge is activated", async () => {
       const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
-      void expect(logs.receipt).to.emit(makerbadges, "BadgeActivated").withArgs(tokenId, templateId, tokenURI)
+      void expect(logs.receipt).to.emit(makerbadges, "BadgeActivated").withArgs(tokenId, templateId)
       void expect(logs.receipt)
         .to.emit(makerbadges, "Transfer")
         .withArgs(AddressZero, signers.redeemer.address, tokenId)
     })
     it("should revert when templeteId does not exist", async () => {
       await expect(
-        makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId + "1", tokenURI),
+        makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId + "1"),
       ).to.be.revertedWith("MakerBadges: no template with that id")
     })
     it("should not allow to activate a new badge form random user", async () => {
-      await expect(
-        makerbadges.connect(signers.random).activateBadge(tree.proof, templateId, tokenURI),
-      ).to.be.revertedWith("MakerBadges: caller is not a redeemer")
+      await expect(makerbadges.connect(signers.random).activateBadge(tree.proof, templateId)).to.be.revertedWith(
+        "MakerBadges: caller is not a redeemer",
+      )
     })
     it("redeemer should not be able to activate the same badge twice", async () => {
-      await expect(
-        makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId, tokenURI),
-      ).to.be.revertedWith("ERC721: token already minted")
+      await expect(makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId)).to.be.revertedWith(
+        "ERC721: token already minted",
+      )
     })
     // Check More ERC721 metadata
     describe("more metadata", async () => {
-      it("return a baseURI + tokenURI for tokenId", async () => {
+      it("return a baseURI + tokenId for tokenId", async () => {
         const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
-        expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenURI)
+        expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenId.toString())
       })
     })
     // Check override _tranfer function

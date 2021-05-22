@@ -4,6 +4,7 @@ artifacts/
 cache/
 coverage/
 typechain/
+crytic_export/
 
 # files
 coverage.json

@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up node
+      - name: Set up Node
         uses: actions/setup-node@v2
         with:
           node-version: 12
@@ -28,6 +28,18 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache YARN dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-
 
       - name: Install node dependencies
         run: yarn install --frozen-lockfile
@@ -47,8 +59,8 @@ jobs:
           solc-select use 0.6.12
       - name: Install echidna
         run: |
-          sudo wget -O /tmp/echidna-test.tar.gz https://github.com/crytic/echidna/releases/download/v1.6.0/echidna-test-v1.6.0-Ubuntu-18.04.tar.gz
+          sudo wget -O /tmp/echidna-test.tar.gz https://github.com/crytic/echidna/releases/download/v1.7.1/echidna-test-1.7.1-Ubuntu-18.04.tar.gz
           sudo tar -xf /tmp/echidna-test.tar.gz -C /usr/bin
           sudo chmod +x /usr/bin/echidna-test
       - name: Run ${{ matrix.testName }}
-        run: echidna-test . --contract ${{ matrix.testName }} --config echidna.config.yml
+        run: echidna-test . --contract ${{ matrix.testName }} --config echidna.config.ci.yml --check-asserts
