@@ -8,3 +8,4 @@ crytic_export/
 
 # files
 coverage.json
+slither.db.json
