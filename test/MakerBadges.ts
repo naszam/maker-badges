@@ -167,13 +167,13 @@ describe("MakerBadges", () => {
       logs = { receipt }
     })
     it("should allow redeemers checked offchain to activate a badge", async () => {
-      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+      const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
       expect(await makerbadges.getBadgeRedeemer(tokenId)).to.be.eq(signers.redeemer.address)
       expect(await makerbadges.getBadgeTemplate(tokenId)).to.be.eq(templateId)
       expect(await makerbadges.templateQuantities(templateId)).to.be.eq("1")
     })
     it("should emit the appropriate event when a badge is activated", async () => {
-      const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+      const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
       void expect(logs.receipt).to.emit(makerbadges, "BadgeActivated").withArgs(tokenId, templateId)
       void expect(logs.receipt)
         .to.emit(makerbadges, "Transfer")
@@ -197,20 +197,20 @@ describe("MakerBadges", () => {
     // Check More ERC721 metadata
     describe("more metadata", async () => {
       it("return a baseURI + tokenId for tokenId", async () => {
-        const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+        const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
         expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenId.toString())
       })
     })
     // Check override _tranfer function
     describe("override _transfer", async () => {
       it("should revert on transfer with transferFrom", async () => {
-        const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+        const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
         await expect(
           makerbadges.connect(signers.redeemer).transferFrom(signers.redeemer.address, signers.random.address, tokenId),
         ).to.be.revertedWith("MakerBadges: badge transfer disable")
       })
       it("should revert on transfer with safeTransferFrom", async () => {
-        const tokenId = await makerbadges.tokenOfOwnerByIndex(signers.redeemer.address, index1)
+        const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
         /* eslint-disable no-unexpected-multiline */
         await expect(
           makerbadges
