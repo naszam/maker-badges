@@ -159,6 +159,12 @@ contract MakerBadges is BadgeRoles, ERC721 {
         (, templateId) = _unpackTokenId(tokenId);
     }
 
+    /// @notice Getter function for tokenId associated with redeemer and templateId
+    /// @dev Check if the templateId exists
+    /// @dev Check if the tokenId exists
+    /// @param redeemer Redeemer address
+    /// @param templateId Template Id
+    /// @return tokenId Token Id associated with the redeemer and templateId
     function getTokenId(address redeemer, uint256 templateId) external view whenNotPaused returns (uint256 tokenId) {
         require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
         tokenId = _getTokenId(redeemer, templateId);
