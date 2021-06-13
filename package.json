@@ -10,7 +10,7 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "build": "hardhat compile",
-    "clean": "hardhat clean",
+    "clean": "hardhat clean && rm -rf artifacts cache crytic-export corpus",
     "coverage": "hardhat coverage",
     "format": "prettier --check \"./**/*.{js,json,md,sol,ts}\"",
     "format:fix": "prettier --write \"./**/*.{js,json,md,sol,ts}\"",
