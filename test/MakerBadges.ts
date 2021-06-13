@@ -23,7 +23,6 @@ describe("MakerBadges", () => {
   const template_description2 = "Lock 10 Dai in the Dai Savings Rate for 3 months"
   const template_image2 = "https://ipfs.io/ipfs/ipfs_hash2"
   const templateId = "0"
-  const index1 = "0"
 
   const DEFAULT_ADMIN_ROLE = HashZero!
   const TEMPLATER_ROLE = soliditySha3("TEMPLATER_ROLE")!
