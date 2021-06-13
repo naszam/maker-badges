@@ -210,9 +210,8 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
         return baseTokenURI;
     }
 
-    /**
-     * @dev See {IERC165-supportsInterface}.
-     */
+    /// @notice IERC165 supportsInterface
+    /// @dev supportsInterface has been override
     function supportsInterface(bytes4 interfaceId)
         public
         view
