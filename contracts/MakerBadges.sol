@@ -17,10 +17,10 @@ pragma solidity 0.8.0;
 
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract MakerBadges is BadgeRoles, ERC721Enumerable {
+contract MakerBadges is BadgeRoles, ERC721 {
     /// @dev Libraries
     using Counters for Counters.Counter;
     using MerkleProof for bytes32[];
@@ -159,6 +159,12 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
         (, templateId) = _unpackTokenId(tokenId);
     }
 
+    function getTokenId(address redeemer, uint256 templateId) external view whenNotPaused returns (uint256 tokenId) {
+        require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
+        tokenId = _getTokenId(redeemer, templateId);
+        require(_exists(tokenId), "MakerBadges: no token with that id");
+    }
+
     /// @notice ERC721 _transfer() Disabled
     /// @dev _transfer() has been overriden
     /// @dev reverts on transferFrom() and safeTransferFrom()
@@ -216,7 +222,7 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
         public
         view
         virtual
-        override(AccessControlEnumerable, ERC721Enumerable)
+        override(AccessControlEnumerable, ERC721)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
