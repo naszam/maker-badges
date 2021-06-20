@@ -7,7 +7,7 @@ contract BadgeRolesEchidnaTest {
 
     /// @dev Constructor args
     MinimalForwarder internal forwarder;
-    address internal multisig = address(0x41414141);
+    address internal constant multisig = address(0x41414141);
 
     /// @dev Roles
     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
