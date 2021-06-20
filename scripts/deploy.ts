@@ -6,6 +6,8 @@ import fs from "fs"
 
 const { ethers } = hre
 
+const multisig = "0x163D2aB63E98044a6C7633A7D450D02884FE3eb1" // placeholder (random multisig sokol address)
+
 async function main(): Promise<void> {
   const network = hre.network.name
 
@@ -34,7 +36,7 @@ async function main(): Promise<void> {
 
   // Deploy MakerBadges
   const MakerBadges: MakerBadges__factory = await ethers.getContractFactory("MakerBadges")
-  const badges: Contract = await MakerBadges.connect(deployer).deploy(forwarder.address)
+  const badges: Contract = await MakerBadges.connect(deployer).deploy(forwarder.address, multisig)
   await badges.deployed()
   fs.writeFileSync(
     "deploy.json",

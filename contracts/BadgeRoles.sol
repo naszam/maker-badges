@@ -20,12 +20,12 @@ contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    constructor(MinimalForwarder forwarder) ERC2771Context(address(forwarder)) {
-        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
+    constructor(MinimalForwarder forwarder, address multisig) ERC2771Context(address(forwarder)) {
+        _setupRole(DEFAULT_ADMIN_ROLE, multisig);
 
-        _setupRole(ADMIN_ROLE, _msgSender());
-        _setupRole(TEMPLATER_ROLE, _msgSender());
-        _setupRole(PAUSER_ROLE, _msgSender());
+        _setupRole(ADMIN_ROLE, multisig);
+        _setupRole(TEMPLATER_ROLE, multisig);
+        _setupRole(PAUSER_ROLE, multisig);
     }
 
     /// @dev Functions

@@ -45,7 +45,10 @@ contract MakerBadges is BadgeRoles, ERC721 {
     event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
     event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId);
 
-    constructor(MinimalForwarder forwarder) ERC721("MakerBadges", "MAKER") BadgeRoles(forwarder) {
+    constructor(MinimalForwarder forwarder, address multisig)
+        ERC721("MakerBadges", "MAKER")
+        BadgeRoles(forwarder, multisig)
+    {
         baseTokenURI = "https://badges.makerdao.com/token/";
     }
 

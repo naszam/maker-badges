@@ -31,33 +31,33 @@ describe("MakerBadges", () => {
   const baseURI2 = "https://badges.com/token/"
 
   const fixture = async () => {
-    const [deployer, templater, redeemer, random] = await ethers.getSigners()
-    signers = { deployer, templater, redeemer, random }
+    const [deployer, multisig, templater, redeemer, random] = await ethers.getSigners()
+    signers = { deployer, multisig, templater, redeemer, random }
     const forwarderFab = (await ethers.getContractFactory("MinimalForwarder", deployer)) as MinimalForwarder__factory
     const forwarder = (await forwarderFab.deploy()) as MinimalForwarder
     const badgeFab = (await ethers.getContractFactory("MakerBadges", deployer)) as MakerBadges__factory
-    return (await badgeFab.deploy(forwarder.address)) as MakerBadges
+    return (await badgeFab.deploy(forwarder.address, multisig.address)) as MakerBadges
   }
 
   beforeEach("deploy MakerBadges", async () => {
     makerbadges = await waffle.loadFixture(fixture)
   })
 
-  // Check that the deployer is set as the only default admin when the contract is deployed
-  // Check that the deployer is set as the only templater when the contract is deployed
-  // Check that the deployer is set as the only pauser when the contract is deployed
+  // Check that the multisig is set as the only default admin when the contract is deployed
+  // Check that the multisig is set as the only templater when the contract is deployed
+  // Check that the multisig is set as the only pauser when the contract is deployed
   describe("setup", async () => {
-    it("deployer has the default admin role", async () => {
+    it("multisig has the default admin role", async () => {
       expect(await makerbadges.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.eq("1")
-      expect(await makerbadges.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.be.eq(signers.deployer.address)
+      expect(await makerbadges.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.be.eq(signers.multisig.address)
     })
-    it("deployer has the templater role", async () => {
+    it("multisig has the templater role", async () => {
       expect(await makerbadges.getRoleMemberCount(TEMPLATER_ROLE)).to.be.eq("1")
-      expect(await makerbadges.getRoleMember(TEMPLATER_ROLE, 0)).to.be.eq(signers.deployer.address)
+      expect(await makerbadges.getRoleMember(TEMPLATER_ROLE, 0)).to.be.eq(signers.multisig.address)
     })
-    it("deployer has the pauser role", async () => {
+    it("multisig has the pauser role", async () => {
       expect(await makerbadges.getRoleMemberCount(PAUSER_ROLE)).to.be.eq("1")
-      expect(await makerbadges.getRoleMember(PAUSER_ROLE, 0)).to.be.eq(signers.deployer.address)
+      expect(await makerbadges.getRoleMember(PAUSER_ROLE, 0)).to.be.eq(signers.multisig.address)
     })
   })
 
@@ -73,7 +73,7 @@ describe("MakerBadges", () => {
       expect(await makerbadges.baseTokenURI()).to.be.eq("https://badges.makerdao.com/token/")
     })
     it("return an updated baseURI", async () => {
-      await makerbadges.connect(signers.deployer).setBaseURI(baseURI2)
+      await makerbadges.connect(signers.multisig).setBaseURI(baseURI2)
       expect(await makerbadges.baseTokenURI()).to.be.eq(baseURI2)
     })
     it("reverts when querying metadata for non existent tokenId", async () => {
@@ -88,7 +88,7 @@ describe("MakerBadges", () => {
   // Check createTemplate for failure when a random address try to create a new template
   describe("createTemplate", async () => {
     it("templater should be able to create a template", async () => {
-      await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
+      await makerbadges.connect(signers.multisig).createTemplate(template_name, template_description, template_image)
       const receipt = await makerbadges.templates(templateId)
       expect(receipt[0]).to.be.eq(template_name)
       expect(receipt[1]).to.be.eq(template_description)
@@ -97,7 +97,7 @@ describe("MakerBadges", () => {
     })
     it("should emit the appropriate event when a template is created", async () => {
       await expect(
-        makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image),
+        makerbadges.connect(signers.multisig).createTemplate(template_name, template_description, template_image),
       )
         .to.emit(makerbadges, "NewTemplate")
         .withArgs(templateId, template_name, template_description, template_image)
@@ -114,11 +114,11 @@ describe("MakerBadges", () => {
   // Check updateTemplate for failure when a random address try to update a template
   describe("updateTemplate", async () => {
     beforeEach(async () => {
-      await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
+      await makerbadges.connect(signers.multisig).createTemplate(template_name, template_description, template_image)
     })
     it("templaters should be able to update a template", async () => {
       await makerbadges
-        .connect(signers.deployer)
+        .connect(signers.multisig)
         .updateTemplate(templateId, template_name2, template_description2, template_image2)
       const receipt = await makerbadges.templates(templateId)
       expect(receipt[0]).to.be.eq(template_name2)
@@ -129,7 +129,7 @@ describe("MakerBadges", () => {
     it("should emit the appropriate event when a template is updated", async () => {
       await expect(
         makerbadges
-          .connect(signers.deployer)
+          .connect(signers.multisig)
           .updateTemplate(templateId, template_name2, template_description2, template_image2),
       )
         .to.emit(makerbadges, "TemplateUpdated")
@@ -159,8 +159,8 @@ describe("MakerBadges", () => {
       const rootHashes = [root, HashZero, HashZero, HashZero]
       const leaf = soliditySha3(signers.redeemer.address)!
       const proof = merkleTree.getHexProof(leaf)
-      await makerbadges.connect(signers.deployer).setRootHashes(rootHashes)
-      await makerbadges.connect(signers.deployer).createTemplate(template_name, template_description, template_image)
+      await makerbadges.connect(signers.multisig).setRootHashes(rootHashes)
+      await makerbadges.connect(signers.multisig).createTemplate(template_name, template_description, template_image)
       const receipt = await makerbadges.connect(signers.redeemer).activateBadge(proof, templateId)
       tree = { proof }
       logs = { receipt }
