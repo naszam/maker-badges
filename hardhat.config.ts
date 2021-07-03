@@ -2,6 +2,7 @@ import { HardhatUserConfig } from "hardhat/config"
 import { NetworkUserConfig } from "hardhat/types"
 import "./tasks/accounts"
 import "./tasks/clean"
+import "./tasks/merkle"
 
 import "@nomiclabs/hardhat-solhint"
 import "@nomiclabs/hardhat-ethers"
