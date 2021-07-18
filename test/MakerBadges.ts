@@ -185,14 +185,14 @@ describe("MakerBadges", () => {
       ).to.be.revertedWith("MakerBadges: no template with that id")
     })
     it("should not allow to activate a new badge form random user", async () => {
-      await expect(makerbadges.connect(signers.random).activateBadge(tree.proof, templateId, tokenURI)).to.be.revertedWith(
-        "MakerBadges: caller is not a redeemer",
-      )
+      await expect(
+        makerbadges.connect(signers.random).activateBadge(tree.proof, templateId, tokenURI),
+      ).to.be.revertedWith("MakerBadges: caller is not a redeemer")
     })
     it("redeemer should not be able to activate the same badge twice", async () => {
-      await expect(makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId, tokenURI)).to.be.revertedWith(
-        "ERC721: token already minted",
-      )
+      await expect(
+        makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId, tokenURI),
+      ).to.be.revertedWith("ERC721: token already minted")
     })
     // Check More ERC721 metadata
     describe("more metadata", async () => {

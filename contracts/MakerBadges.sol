@@ -126,7 +126,11 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @param proof Merkle Proof
     /// @param templateId Template Id
     /// @return True If the new Badge is Activated
-    function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI) external whenNotPaused returns (bool) {
+    function activateBadge(
+        bytes32[] calldata proof,
+        uint256 templateId,
+        string calldata tokenURI
+    ) external whenNotPaused returns (bool) {
         require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
         require(
             proof.verify(roots[templateId], keccak256(abi.encodePacked(_msgSender()))),
@@ -214,7 +218,11 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @param to Owner of the new token
     /// @param tokenId Token Id of the Baddge
     /// @return True if the new token is minted
-    function _mintWithTokenURI(address to, uint256 tokenId, string calldata tokenURI) private returns (bool) {
+    function _mintWithTokenURI(
+        address to,
+        uint256 tokenId,
+        string calldata tokenURI
+    ) private returns (bool) {
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
         return true;
