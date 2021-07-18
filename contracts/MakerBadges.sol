@@ -125,6 +125,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Verify if the caller is a redeemer
     /// @param proof Merkle Proof
     /// @param templateId Template Id
+    /// @param tokenURI  Token URI
     /// @return True If the new Badge is Activated
     function activateBadge(
         bytes32[] calldata proof,
@@ -217,6 +218,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Automatically concatenate baseURI with tokenURI via abi.encodePacked
     /// @param to Owner of the new token
     /// @param tokenId Token Id of the Baddge
+    /// @param tokenURI Token URI of the Badge
     /// @return True if the new token is minted
     function _mintWithTokenURI(
         address to,
