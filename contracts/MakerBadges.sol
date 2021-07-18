@@ -17,10 +17,10 @@ pragma solidity 0.8.0;
 
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract MakerBadges is BadgeRoles, ERC721 {
+contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Libraries
     using Counters for Counters.Counter;
     using MerkleProof for bytes32[];
@@ -49,7 +49,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
         ERC721("MakerBadges", "MAKER")
         BadgeRoles(forwarder, multisig)
     {
-        baseTokenURI = "https://badges.makerdao.com/token/";
+        baseTokenURI = "https://ipfs.io/ipfs/";
     }
 
     /// @notice Set the baseURI
@@ -126,7 +126,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /// @param proof Merkle Proof
     /// @param templateId Template Id
     /// @return True If the new Badge is Activated
-    function activateBadge(bytes32[] calldata proof, uint256 templateId) external whenNotPaused returns (bool) {
+    function activateBadge(bytes32[] calldata proof, uint256 templateId, string calldata tokenURI) external whenNotPaused returns (bool) {
         require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
         require(
             proof.verify(roots[templateId], keccak256(abi.encodePacked(_msgSender()))),
@@ -138,7 +138,7 @@ contract MakerBadges is BadgeRoles, ERC721 {
         /// @dev Increase the quantities
         templateQuantities[templateId] += 1;
 
-        require(_mintWithTokenURI(_msgSender(), _tokenId), "MakerBadges: badge not minted");
+        require(_mintWithTokenURI(_msgSender(), _tokenId, tokenURI), "MakerBadges: badge not minted");
 
         emit BadgeActivated(_tokenId, templateId);
         return true;
@@ -214,8 +214,9 @@ contract MakerBadges is BadgeRoles, ERC721 {
     /// @param to Owner of the new token
     /// @param tokenId Token Id of the Baddge
     /// @return True if the new token is minted
-    function _mintWithTokenURI(address to, uint256 tokenId) private returns (bool) {
+    function _mintWithTokenURI(address to, uint256 tokenId, string calldata tokenURI) private returns (bool) {
         _mint(to, tokenId);
+        _setTokenURI(tokenId, tokenURI);
         return true;
     }
 

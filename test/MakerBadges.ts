@@ -29,6 +29,7 @@ describe("MakerBadges", () => {
   const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")!
 
   const baseURI2 = "https://badges.com/token/"
+  const tokenURI = "bafkreidyuzqkhydbktllgifrnpuysikasj6xw2o24l4mwa23pefmv3y4ou"
 
   const fixture = async () => {
     const [deployer, multisig, templater, redeemer, random] = await ethers.getSigners()
@@ -70,7 +71,7 @@ describe("MakerBadges", () => {
       expect(await makerbadges.symbol()).to.be.eq("MAKER")
     })
     it("has a baseURI", async () => {
-      expect(await makerbadges.baseTokenURI()).to.be.eq("https://badges.makerdao.com/token/")
+      expect(await makerbadges.baseTokenURI()).to.be.eq("https://ipfs.io/ipfs/")
     })
     it("return an updated baseURI", async () => {
       await makerbadges.connect(signers.multisig).setBaseURI(baseURI2)
@@ -78,7 +79,7 @@ describe("MakerBadges", () => {
     })
     it("reverts when querying metadata for non existent tokenId", async () => {
       await expect(makerbadges.connect(signers.random).tokenURI("0")).to.be.revertedWith(
-        "ERC721Metadata: URI query for nonexistent token",
+        "ERC721URIStorage: URI query for nonexistent token",
       )
     })
   })
@@ -161,7 +162,7 @@ describe("MakerBadges", () => {
       const proof = merkleTree.getHexProof(leaf)
       await makerbadges.connect(signers.multisig).setRootHashes(rootHashes)
       await makerbadges.connect(signers.multisig).createTemplate(template_name, template_description, template_image)
-      const receipt = await makerbadges.connect(signers.redeemer).activateBadge(proof, templateId)
+      const receipt = await makerbadges.connect(signers.redeemer).activateBadge(proof, templateId, tokenURI)
       tree = { proof }
       logs = { receipt }
     })
@@ -180,16 +181,16 @@ describe("MakerBadges", () => {
     })
     it("should revert when templeteId does not exist", async () => {
       await expect(
-        makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId + "1"),
+        makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId + "1", tokenURI),
       ).to.be.revertedWith("MakerBadges: no template with that id")
     })
     it("should not allow to activate a new badge form random user", async () => {
-      await expect(makerbadges.connect(signers.random).activateBadge(tree.proof, templateId)).to.be.revertedWith(
+      await expect(makerbadges.connect(signers.random).activateBadge(tree.proof, templateId, tokenURI)).to.be.revertedWith(
         "MakerBadges: caller is not a redeemer",
       )
     })
     it("redeemer should not be able to activate the same badge twice", async () => {
-      await expect(makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId)).to.be.revertedWith(
+      await expect(makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId, tokenURI)).to.be.revertedWith(
         "ERC721: token already minted",
       )
     })
@@ -197,7 +198,7 @@ describe("MakerBadges", () => {
     describe("more metadata", async () => {
       it("return a baseURI + tokenId for tokenId", async () => {
         const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
-        expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://badges.makerdao.com/token/" + tokenId.toString())
+        expect(await makerbadges.tokenURI(tokenId)).to.be.eq("https://ipfs.io/ipfs/" + tokenURI)
       })
     })
     // Check override _tranfer function
