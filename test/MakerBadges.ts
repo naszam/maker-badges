@@ -29,7 +29,7 @@ describe("MakerBadges", () => {
   const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")!
 
   const baseURI2 = "https://badges.com/token/"
-  const tokenURI = "bafkreidyuzqkhydbktllgifrnpuysikasj6xw2o24l4mwa23pefmv3y4ou"
+  const tokenURI = "bafkreiezytlcoswltsjjjwvf4xy22puwy67up7pwcr5buzqoizgmpkbxjm"
 
   const fixture = async () => {
     const [deployer, multisig, templater, redeemer, random] = await ethers.getSigners()
