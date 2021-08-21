@@ -9,10 +9,10 @@ pragma solidity 0.8.0;
 /// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin Library is used for secure contract development
 
-import "./ERC2771Context.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/metatx/MinimalForwarder.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     /// @dev Roles
