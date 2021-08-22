@@ -4,7 +4,8 @@ artifacts/
 cache/
 coverage/
 typechain/
-crytic_export/
+crytic-export/
 
 # files
 coverage.json
+slither.db.json

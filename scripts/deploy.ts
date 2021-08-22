@@ -1,9 +1,12 @@
 import hre from "hardhat"
-import { Contract, ContractFactory } from "ethers"
+import { Contract } from "@ethersproject/contracts"
+import { MinimalForwarder__factory, MakerBadges__factory } from "../typechain"
 import { Signer } from "@ethersproject/abstract-signer"
 import fs from "fs"
 
 const { ethers } = hre
+
+const multisig = "0x163D2aB63E98044a6C7633A7D450D02884FE3eb1" // placeholder (random multisig sokol address)
 
 async function main(): Promise<void> {
   const network = hre.network.name
@@ -27,13 +30,13 @@ async function main(): Promise<void> {
   }
 
   // Deploy MinimalForwarder
-  const MinimalForwarder: ContractFactory = await ethers.getContractFactory("MinimalForwarder")
+  const MinimalForwarder: MinimalForwarder__factory = await ethers.getContractFactory("MinimalForwarder")
   const forwarder: Contract = await MinimalForwarder.connect(deployer).deploy()
   await forwarder.deployed()
 
   // Deploy MakerBadges
-  const MakerBadges: ContractFactory = await ethers.getContractFactory("MakerBadges")
-  const badges: Contract = await MakerBadges.connect(deployer).deploy(forwarder.address)
+  const MakerBadges: MakerBadges__factory = await ethers.getContractFactory("MakerBadges")
+  const badges: Contract = await MakerBadges.connect(deployer).deploy(forwarder.address, multisig)
   await badges.deployed()
   fs.writeFileSync(
     "deploy.json",

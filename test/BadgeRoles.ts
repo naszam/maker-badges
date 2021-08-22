@@ -19,38 +19,38 @@ describe("BadgeRoles", () => {
   const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")!
 
   const fixture = async () => {
-    const [deployer, admin, templater, random] = await ethers.getSigners()
-    signers = { deployer, admin, templater, random }
+    const [deployer, multisig, admin, templater, random] = await ethers.getSigners()
+    signers = { deployer, multisig, admin, templater, random }
     const forwarderFab = (await ethers.getContractFactory("MinimalForwarder", deployer)) as MinimalForwarder__factory
     const forwarder = (await forwarderFab.deploy()) as MinimalForwarder
     const badgeFab = (await ethers.getContractFactory("BadgeRoles", deployer)) as BadgeRoles__factory
-    return (await badgeFab.deploy(forwarder.address)) as BadgeRoles
+    return (await badgeFab.deploy(forwarder.address, multisig.address)) as BadgeRoles
   }
 
   beforeEach("deploy BadgeRoles", async () => {
     badgeroles = await waffle.loadFixture(fixture)
   })
 
-  // Check that the deployer is set as the only default admin when the contract is deployed
-  // Check that the deployer is set as the only admin when the contract is deployed
-  // Check that the deployer is set as the only templater when the contract is deployed
-  // Check that the deployer is set as the only pauser when the contract is deployed
+  // Check that the multisig is set as the only default admin when the contract is deployed
+  // Check that the multisig is set as the only admin when the contract is deployed
+  // Check that the multisig is set as the only templater when the contract is deployed
+  // Check that the multisig is set as the only pauser when the contract is deployed
   describe("setup", async () => {
-    it("deployer has the default admin role", async () => {
+    it("multisig has the default admin role", async () => {
       expect(await badgeroles.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.eq("1")
-      expect(await badgeroles.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.be.eq(signers.deployer.address)
+      expect(await badgeroles.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.be.eq(signers.multisig.address)
     })
-    it("deployer has the admin role", async () => {
+    it("multisig has the admin role", async () => {
       expect(await badgeroles.getRoleMemberCount(ADMIN_ROLE)).to.be.eq("1")
-      expect(await badgeroles.getRoleMember(ADMIN_ROLE, 0)).to.be.eq(signers.deployer.address)
+      expect(await badgeroles.getRoleMember(ADMIN_ROLE, 0)).to.be.eq(signers.multisig.address)
     })
-    it("deployer has the templater role", async () => {
+    it("multisig has the templater role", async () => {
       expect(await badgeroles.getRoleMemberCount(TEMPLATER_ROLE)).to.be.eq("1")
-      expect(await badgeroles.getRoleMember(TEMPLATER_ROLE, 0)).to.be.eq(signers.deployer.address)
+      expect(await badgeroles.getRoleMember(TEMPLATER_ROLE, 0)).to.be.eq(signers.multisig.address)
     })
-    it("deployer has the pauser role", async () => {
+    it("multisig has the pauser role", async () => {
       expect(await badgeroles.getRoleMemberCount(PAUSER_ROLE)).to.be.eq("1")
-      expect(await badgeroles.getRoleMember(PAUSER_ROLE, 0)).to.be.eq(signers.deployer.address)
+      expect(await badgeroles.getRoleMember(PAUSER_ROLE, 0)).to.be.eq(signers.multisig.address)
     })
   })
 
@@ -60,13 +60,13 @@ describe("BadgeRoles", () => {
   // Check addAdmin for failure when account is set to zero address
   describe("addAdmin", async () => {
     it("default admin should be able to add an admin", async () => {
-      await badgeroles.connect(signers.deployer).addAdmin(signers.admin.address)
+      await badgeroles.connect(signers.multisig).addAdmin(signers.admin.address)
       expect(await badgeroles.hasRole(ADMIN_ROLE, signers.admin.address)).to.equal(true)
     })
     it("should emit the appropriate event when a new admin is added", async () => {
-      await expect(badgeroles.connect(signers.deployer).addAdmin(signers.admin.address))
+      await expect(badgeroles.connect(signers.multisig).addAdmin(signers.admin.address))
         .to.emit(badgeroles, "RoleGranted")
-        .withArgs(ADMIN_ROLE, signers.admin.address, signers.deployer.address)
+        .withArgs(ADMIN_ROLE, signers.admin.address, signers.multisig.address)
     })
     it("should not allow to add an admin form random user", async () => {
       await expect(badgeroles.connect(signers.random).addAdmin(signers.admin.address)).to.be.revertedWith(
@@ -74,7 +74,7 @@ describe("BadgeRoles", () => {
       )
     })
     it("should revert when account is set to zero address", async () => {
-      await expect(badgeroles.connect(signers.deployer).addAdmin(AddressZero)).to.be.revertedWith(
+      await expect(badgeroles.connect(signers.multisig).addAdmin(AddressZero)).to.be.revertedWith(
         "MakerBadges: account is the zero address",
       )
     })
@@ -85,16 +85,16 @@ describe("BadgeRoles", () => {
   // Check removeAdmin for failure when a random address tries to remove an admin
   describe("removeAdmin", async () => {
     beforeEach(async () => {
-      await badgeroles.connect(signers.deployer).addAdmin(signers.admin.address)
+      await badgeroles.connect(signers.multisig).addAdmin(signers.admin.address)
     })
     it("default admin should be able to remove an admin", async () => {
-      await badgeroles.connect(signers.deployer).removeAdmin(signers.admin.address)
+      await badgeroles.connect(signers.multisig).removeAdmin(signers.admin.address)
       expect(await badgeroles.hasRole(ADMIN_ROLE, signers.admin.address)).to.equal(false)
     })
     it("should emit the appropriate event when an admin is removed", async () => {
-      await expect(badgeroles.connect(signers.deployer).removeAdmin(signers.admin.address))
+      await expect(badgeroles.connect(signers.multisig).removeAdmin(signers.admin.address))
         .to.emit(badgeroles, "RoleRevoked")
-        .withArgs(ADMIN_ROLE, signers.admin.address, signers.deployer.address)
+        .withArgs(ADMIN_ROLE, signers.admin.address, signers.multisig.address)
     })
     it("should not allow to remove an admin form random user", async () => {
       await expect(badgeroles.connect(signers.random).removeAdmin(signers.admin.address)).to.be.revertedWith(
@@ -109,13 +109,13 @@ describe("BadgeRoles", () => {
   // Check addTemplater for failure when account is set to zero address
   describe("addTemplater", async () => {
     it("default admin should be able to add a templater", async () => {
-      await badgeroles.connect(signers.deployer).addTemplater(signers.templater.address)
+      await badgeroles.connect(signers.multisig).addTemplater(signers.templater.address)
       expect(await badgeroles.hasRole(TEMPLATER_ROLE, signers.templater.address)).to.equal(true)
     })
     it("should emit the appropriate event when a new templater is added", async () => {
-      await expect(badgeroles.connect(signers.deployer).addTemplater(signers.templater.address))
+      await expect(badgeroles.connect(signers.multisig).addTemplater(signers.templater.address))
         .to.emit(badgeroles, "RoleGranted")
-        .withArgs(TEMPLATER_ROLE, signers.templater.address, signers.deployer.address)
+        .withArgs(TEMPLATER_ROLE, signers.templater.address, signers.multisig.address)
     })
     it("should not allow to add a templater form random user", async () => {
       await expect(badgeroles.connect(signers.random).addTemplater(signers.templater.address)).to.be.revertedWith(
@@ -123,7 +123,7 @@ describe("BadgeRoles", () => {
       )
     })
     it("should revert when account is set to zero address", async () => {
-      await expect(badgeroles.connect(signers.deployer).addTemplater(AddressZero)).to.be.revertedWith(
+      await expect(badgeroles.connect(signers.multisig).addTemplater(AddressZero)).to.be.revertedWith(
         "MakerBadges: account is the zero address",
       )
     })
@@ -134,16 +134,16 @@ describe("BadgeRoles", () => {
   // Check removeTemplater for failure when a random address tries to remove a templater
   describe("removeTemplater", async () => {
     beforeEach(async () => {
-      await badgeroles.connect(signers.deployer).addTemplater(signers.templater.address)
+      await badgeroles.connect(signers.multisig).addTemplater(signers.templater.address)
     })
     it("default admin should be able to remove a templater", async () => {
-      await badgeroles.connect(signers.deployer).removeTemplater(signers.templater.address)
+      await badgeroles.connect(signers.multisig).removeTemplater(signers.templater.address)
       expect(await badgeroles.hasRole(TEMPLATER_ROLE, signers.templater.address)).to.equal(false)
     })
     it("should emit the appropriate event when a templater is removed", async () => {
-      await expect(badgeroles.connect(signers.deployer).removeTemplater(signers.templater.address))
+      await expect(badgeroles.connect(signers.multisig).removeTemplater(signers.templater.address))
         .to.emit(badgeroles, "RoleRevoked")
-        .withArgs(TEMPLATER_ROLE, signers.templater.address, signers.deployer.address)
+        .withArgs(TEMPLATER_ROLE, signers.templater.address, signers.multisig.address)
     })
     it("should not allow to remove a templater form random user", async () => {
       await expect(badgeroles.connect(signers.random).removeTemplater(signers.templater.address)).to.be.revertedWith(
@@ -156,14 +156,14 @@ describe("BadgeRoles", () => {
   // Check pause for sucessfully emit event when the functions are paused
   // Check pause for failure when a random address tries to pause all the functions
   describe("pause", async () => {
-    it("deployer can pause", async () => {
-      await badgeroles.connect(signers.deployer).pause()
+    it("multisig can pause", async () => {
+      await badgeroles.connect(signers.multisig).pause()
       expect(await badgeroles.paused()).to.be.eq(true)
     })
     it("should emit the appropriate event when the functions are paused", async () => {
-      await expect(badgeroles.connect(signers.deployer).pause())
+      await expect(badgeroles.connect(signers.multisig).pause())
         .to.emit(badgeroles, "Paused")
-        .withArgs(signers.deployer.address)
+        .withArgs(signers.multisig.address)
     })
     it("random accounts cannot pause", async () => {
       await expect(badgeroles.connect(signers.random).pause()).to.be.revertedWith(
@@ -177,16 +177,16 @@ describe("BadgeRoles", () => {
   // Check unpause for failure when a random address try to unpause all the functions
   describe("unpause", async () => {
     beforeEach(async () => {
-      await badgeroles.connect(signers.deployer).pause()
+      await badgeroles.connect(signers.multisig).pause()
     })
-    it("deployer can unpause", async () => {
-      await badgeroles.connect(signers.deployer).unpause()
+    it("multisig can unpause", async () => {
+      await badgeroles.connect(signers.multisig).unpause()
       expect(await badgeroles.paused()).to.be.eq(false)
     })
     it("should emit the appropriate event when the functions are unpaused", async () => {
-      await expect(badgeroles.connect(signers.deployer).unpause())
+      await expect(badgeroles.connect(signers.multisig).unpause())
         .to.emit(badgeroles, "Unpaused")
-        .withArgs(signers.deployer.address)
+        .withArgs(signers.multisig.address)
     })
     it("random accounts cannot unpause", async () => {
       await expect(badgeroles.connect(signers.random).unpause()).to.be.revertedWith(

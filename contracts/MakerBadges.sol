@@ -17,10 +17,10 @@ pragma solidity 0.8.0;
 
 import "./BadgeRoles.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract MakerBadges is BadgeRoles, ERC721Enumerable {
+contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Libraries
     using Counters for Counters.Counter;
     using MerkleProof for bytes32[];
@@ -45,8 +45,11 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
     event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
     event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId);
 
-    constructor(MinimalForwarder forwarder) ERC721("MakerBadges", "MAKER") BadgeRoles(forwarder) {
-        baseTokenURI = "https://badges.makerdao.com/token/";
+    constructor(MinimalForwarder forwarder, address multisig)
+        ERC721("MakerBadges", "MAKER")
+        BadgeRoles(forwarder, multisig)
+    {
+        baseTokenURI = "https://ipfs.io/ipfs/";
     }
 
     /// @notice Set the baseURI
@@ -122,8 +125,13 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
     /// @dev Verify if the caller is a redeemer
     /// @param proof Merkle Proof
     /// @param templateId Template Id
+    /// @param tokenURI  Token URI
     /// @return True If the new Badge is Activated
-    function activateBadge(bytes32[] calldata proof, uint256 templateId) external whenNotPaused returns (bool) {
+    function activateBadge(
+        bytes32[] calldata proof,
+        uint256 templateId,
+        string calldata tokenURI
+    ) external whenNotPaused returns (bool) {
         require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
         require(
             proof.verify(roots[templateId], keccak256(abi.encodePacked(_msgSender()))),
@@ -135,7 +143,7 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
         /// @dev Increase the quantities
         templateQuantities[templateId] += 1;
 
-        require(_mintWithTokenURI(_msgSender(), _tokenId), "MakerBadges: badge not minted");
+        require(_mintWithTokenURI(_msgSender(), _tokenId, tokenURI), "MakerBadges: badge not minted");
 
         emit BadgeActivated(_tokenId, templateId);
         return true;
@@ -157,6 +165,18 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
     function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256 templateId) {
         require(_exists(tokenId), "MakerBadges: no token with that id");
         (, templateId) = _unpackTokenId(tokenId);
+    }
+
+    /// @notice Getter function for tokenId associated with redeemer and templateId
+    /// @dev Check if the templateId exists
+    /// @dev Check if the tokenId exists
+    /// @param redeemer Redeemer address
+    /// @param templateId Template Id
+    /// @return tokenId Token Id associated with the redeemer and templateId
+    function getTokenId(address redeemer, uint256 templateId) external view whenNotPaused returns (uint256 tokenId) {
+        require(_templateIdTracker.current() > templateId, "MakerBadges: no template with that id");
+        tokenId = _getTokenId(redeemer, templateId);
+        require(_exists(tokenId), "MakerBadges: no token with that id");
     }
 
     /// @notice ERC721 _transfer() Disabled
@@ -198,9 +218,15 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
     /// @dev Automatically concatenate baseURI with tokenURI via abi.encodePacked
     /// @param to Owner of the new token
     /// @param tokenId Token Id of the Baddge
+    /// @param tokenURI Token URI of the Badge
     /// @return True if the new token is minted
-    function _mintWithTokenURI(address to, uint256 tokenId) private returns (bool) {
+    function _mintWithTokenURI(
+        address to,
+        uint256 tokenId,
+        string calldata tokenURI
+    ) private returns (bool) {
         _mint(to, tokenId);
+        _setTokenURI(tokenId, tokenURI);
         return true;
     }
 
@@ -210,14 +236,13 @@ contract MakerBadges is BadgeRoles, ERC721Enumerable {
         return baseTokenURI;
     }
 
-    /**
-     * @dev See {IERC165-supportsInterface}.
-     */
+    /// @notice IERC165 supportsInterface
+    /// @dev supportsInterface has been override
     function supportsInterface(bytes4 interfaceId)
         public
         view
         virtual
-        override(AccessControlEnumerable, ERC721Enumerable)
+        override(AccessControlEnumerable, ERC721)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);

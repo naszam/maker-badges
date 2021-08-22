@@ -2,6 +2,7 @@ import { HardhatUserConfig } from "hardhat/config"
 import { NetworkUserConfig } from "hardhat/types"
 import "./tasks/accounts"
 import "./tasks/clean"
+import "./tasks/merkle"
 
 import "@nomiclabs/hardhat-solhint"
 import "@nomiclabs/hardhat-ethers"
@@ -54,7 +55,7 @@ const config: HardhatUserConfig = {
     version: "0.8.0",
     settings: {
       optimizer: {
-        enabled: true,
+        enabled: false,
         runs: 200,
       },
     },

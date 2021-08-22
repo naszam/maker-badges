@@ -211,8 +211,11 @@ Clone this GitHub repository.
 
 ### Sokol
 
+**MinimalForwarder**
+[0xB27bC0B1eCa340a4579642E8ab3D76F6A5815303](https://blockscout.com/poa/sokol/address/0xB27bC0B1eCa340a4579642E8ab3D76F6A5815303/contracts)
+
 **MakerBadges:**
-[0x3715Bd0A4B395e8ee9E534510AABfcED59977213](https://blockscout.com/poa/sokol/address/0x3715Bd0A4B395e8ee9E534510AABfcED59977213/contracts)
+[0xD0d0d3A2E1c574D8eFb7c902C6Adf788F684d3B5](https://blockscout.com/poa/sokol/address/0xD0d0d3A2E1c574D8eFb7c902C6Adf788F684d3B5/contracts)
 
 # Interface
 

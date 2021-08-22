@@ -9,10 +9,10 @@ pragma solidity 0.8.0;
 /// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin Library is used for secure contract development
 
-import "./ERC2771Context.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/metatx/MinimalForwarder.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     /// @dev Roles
@@ -20,12 +20,12 @@ contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    constructor(MinimalForwarder forwarder) ERC2771Context(address(forwarder)) {
-        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
+    constructor(MinimalForwarder forwarder, address multisig) ERC2771Context(address(forwarder)) {
+        _setupRole(DEFAULT_ADMIN_ROLE, multisig);
 
-        _setupRole(ADMIN_ROLE, _msgSender());
-        _setupRole(TEMPLATER_ROLE, _msgSender());
-        _setupRole(PAUSER_ROLE, _msgSender());
+        _setupRole(ADMIN_ROLE, multisig);
+        _setupRole(TEMPLATER_ROLE, multisig);
+        _setupRole(PAUSER_ROLE, multisig);
     }
 
     /// @dev Functions

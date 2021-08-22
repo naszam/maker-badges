@@ -4,7 +4,10 @@ import "../BadgeRoles.sol";
 
 contract BadgeRolesEchidnaTest {
     BadgeRoles internal roles;
+
+    /// @dev Constructor args
     MinimalForwarder internal forwarder;
+    address internal constant multisig = address(0x41414141);
 
     /// @dev Roles
     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
@@ -13,22 +16,22 @@ contract BadgeRolesEchidnaTest {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     constructor() {
-        roles = new BadgeRoles(forwarder);
+        roles = new BadgeRoles(forwarder, multisig);
     }
 
     function echidna_default_admin_constant() external view returns (bool) {
-        return roles.hasRole(DEFAULT_ADMIN_ROLE, address(this));
+        return roles.hasRole(DEFAULT_ADMIN_ROLE, multisig);
     }
 
     function echidna_admin_constant() external view returns (bool) {
-        return roles.hasRole(ADMIN_ROLE, address(this));
+        return roles.hasRole(ADMIN_ROLE, multisig);
     }
 
     function echidna_templater_constant() external view returns (bool) {
-        return roles.hasRole(TEMPLATER_ROLE, address(this));
+        return roles.hasRole(TEMPLATER_ROLE, multisig);
     }
 
     function echidna_pauser_constant() external view returns (bool) {
-        return roles.hasRole(PAUSER_ROLE, address(this));
+        return roles.hasRole(PAUSER_ROLE, multisig);
     }
 }
