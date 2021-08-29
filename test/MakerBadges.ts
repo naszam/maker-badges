@@ -106,7 +106,7 @@ describe("MakerBadges", () => {
     it("should not allow create a new template from random user", async () => {
       await expect(
         makerbadges.connect(signers.random).createTemplate(template_name, template_description, template_image),
-      ).to.be.revertedWith("MakerBadges: caller is not a template owner")
+      ).to.be.revertedWith("MakerBadges/only-templater")
     })
   })
 
@@ -141,7 +141,7 @@ describe("MakerBadges", () => {
         makerbadges
           .connect(signers.random)
           .updateTemplate(templateId, template_name2, template_description2, template_image2),
-      ).to.be.revertedWith("MakerBadges: caller is not a template owner")
+      ).to.be.revertedWith("MakerBadges/only-templater")
     })
   })
 
@@ -182,12 +182,12 @@ describe("MakerBadges", () => {
     it("should revert when templeteId does not exist", async () => {
       await expect(
         makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId + "1", tokenURI),
-      ).to.be.revertedWith("MakerBadges: no template with that id")
+      ).to.be.revertedWith("MakerBadges/invalid-template-id")
     })
     it("should not allow to activate a new badge form random user", async () => {
       await expect(
         makerbadges.connect(signers.random).activateBadge(tree.proof, templateId, tokenURI),
-      ).to.be.revertedWith("MakerBadges: caller is not a redeemer")
+      ).to.be.revertedWith("MakerBadges/only-redeemer")
     })
     it("redeemer should not be able to activate the same badge twice", async () => {
       await expect(
@@ -207,7 +207,7 @@ describe("MakerBadges", () => {
         const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
         await expect(
           makerbadges.connect(signers.redeemer).transferFrom(signers.redeemer.address, signers.random.address, tokenId),
-        ).to.be.revertedWith("MakerBadges: badge transfer disable")
+        ).to.be.revertedWith("MakerBadges/token-transfer-disable")
       })
       it("should revert on transfer with safeTransferFrom", async () => {
         const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
@@ -216,7 +216,7 @@ describe("MakerBadges", () => {
           makerbadges
             .connect(signers.redeemer)
             ["safeTransferFrom(address,address,uint256)"](signers.redeemer.address, signers.random.address, tokenId),
-        ).to.be.revertedWith("MakerBadges: badge transfer disable")
+        ).to.be.revertedWith("MakerBadges/token-transfer-disable")
       })
     })
   })

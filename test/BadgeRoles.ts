@@ -70,12 +70,12 @@ describe("BadgeRoles", () => {
     })
     it("should not allow to add an admin form random user", async () => {
       await expect(badgeroles.connect(signers.random).addAdmin(signers.admin.address)).to.be.revertedWith(
-        "MakerBadges: caller is not the default admin",
+        "MakerBadges/only-def-admin",
       )
     })
     it("should revert when account is set to zero address", async () => {
       await expect(badgeroles.connect(signers.multisig).addAdmin(AddressZero)).to.be.revertedWith(
-        "MakerBadges: account is the zero address",
+        "MakerBadges/invalid-account-address",
       )
     })
   })
@@ -98,7 +98,7 @@ describe("BadgeRoles", () => {
     })
     it("should not allow to remove an admin form random user", async () => {
       await expect(badgeroles.connect(signers.random).removeAdmin(signers.admin.address)).to.be.revertedWith(
-        "MakerBadges: caller is not the default admin",
+        "MakerBadges/only-def-admin",
       )
     })
   })
@@ -119,12 +119,12 @@ describe("BadgeRoles", () => {
     })
     it("should not allow to add a templater form random user", async () => {
       await expect(badgeroles.connect(signers.random).addTemplater(signers.templater.address)).to.be.revertedWith(
-        "MakerBadges: caller is not the default admin",
+        "MakerBadges/only-def-admin",
       )
     })
     it("should revert when account is set to zero address", async () => {
       await expect(badgeroles.connect(signers.multisig).addTemplater(AddressZero)).to.be.revertedWith(
-        "MakerBadges: account is the zero address",
+        "MakerBadges/invalid-account-address",
       )
     })
   })
@@ -147,7 +147,7 @@ describe("BadgeRoles", () => {
     })
     it("should not allow to remove a templater form random user", async () => {
       await expect(badgeroles.connect(signers.random).removeTemplater(signers.templater.address)).to.be.revertedWith(
-        "MakerBadges: caller is not the default admin",
+        "MakerBadges/only-def-admin",
       )
     })
   })
@@ -166,9 +166,7 @@ describe("BadgeRoles", () => {
         .withArgs(signers.multisig.address)
     })
     it("random accounts cannot pause", async () => {
-      await expect(badgeroles.connect(signers.random).pause()).to.be.revertedWith(
-        "MakerBadges: must have pauser role to pause",
-      )
+      await expect(badgeroles.connect(signers.random).pause()).to.be.revertedWith("MakerBadges/only-pauser")
     })
   })
 
@@ -189,9 +187,7 @@ describe("BadgeRoles", () => {
         .withArgs(signers.multisig.address)
     })
     it("random accounts cannot unpause", async () => {
-      await expect(badgeroles.connect(signers.random).unpause()).to.be.revertedWith(
-        "MakerBadges: must have pauser role to unpause",
-      )
+      await expect(badgeroles.connect(signers.random).unpause()).to.be.revertedWith("MakerBadges/only-pauser")
     })
   })
 })
