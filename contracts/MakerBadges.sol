@@ -1,5 +1,17 @@
+//
+// ╔╦╗╔═╗╦╔═╔═╗╦═╗  ╔╗ ╔═╗╔╦╗╔═╗╔═╗╔═╗
+// ║║║╠═╣╠╩╗║╣ ╠╦╝  ╠╩╗╠═╣ ║║║ ╦║╣ ╚═╗
+// ╩ ╩╩ ╩╩ ╩╚═╝╩╚═  ╚═╝╩ ╩═╩╝╚═╝╚═╝╚═╝ 
+//
+
 /// SPDX-License-Identifier: AGPL-3.0-or-later
+
 pragma solidity 0.8.0;
+
+import "./BadgeRoles.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29, 38
 /// @author Nazzareno Massari @naszam
@@ -9,18 +21,6 @@ pragma solidity 0.8.0;
 /// @dev See https://github.com/makerdao/community/issues/1180
 /// @dev All function calls are currently implemented without side effects through TDD approach
 /// @dev OpenZeppelin Library is used for secure contract development
-
-/*
-╔╦╗╔═╗╦╔═╔═╗╦═╗  ╔╗ ╔═╗╔╦╗╔═╗╔═╗╔═╗
-║║║╠═╣╠╩╗║╣ ╠╦╝  ╠╩╗╠═╣ ║║║ ╦║╣ ╚═╗
-╩ ╩╩ ╩╩ ╩╚═╝╩╚═  ╚═╝╩ ╩═╩╝╚═╝╚═╝╚═╝ 
-*/
-
-import "./BadgeRoles.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-
 contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Libraries
     using Counters for Counters.Counter;
