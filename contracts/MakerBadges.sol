@@ -53,6 +53,9 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         baseTokenURI = "https://ipfs.io/ipfs/";
     }
 
+    /// @notice Cast to uint96
+    /// @dev Revert on overflow
+    /// @param x Value to cast
     function toUint96(uint256 x) internal pure returns (uint96 z) {
         require((z = uint96(x)) == x, "MakerBadges/uint96-overflow");
     }
