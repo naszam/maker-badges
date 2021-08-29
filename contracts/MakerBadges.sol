@@ -53,6 +53,10 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         baseTokenURI = "https://ipfs.io/ipfs/";
     }
 
+    function toUint96(uint256 x) internal pure returns (uint96 z) {
+        require((z = uint96(x)) == x, "MakerBadges/uint96-overflow");
+    }
+
     /// @notice Set the baseURI
     /// @dev Update the baseURI specified in the constructor
     /// @param baseURI New baseURI
@@ -198,7 +202,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @param templateId Template Id
     /// @param _tokenId Token Id
     function _getTokenId(address redeemer, uint256 templateId) private pure returns (uint256 _tokenId) {
-        bytes memory _tokenIdBytes = abi.encodePacked(redeemer, uint96(templateId));
+        bytes memory _tokenIdBytes = abi.encodePacked(redeemer, toUint96(templateId));
         assembly {
             _tokenId := mload(add(_tokenIdBytes, add(0x20, 0)))
         }
