@@ -21,6 +21,8 @@ contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     constructor(MinimalForwarder forwarder, address multisig) ERC2771Context(address(forwarder)) {
+        require(multisig != address(0), "MakerBadges: multisig is the zero address");
+
         _setupRole(DEFAULT_ADMIN_ROLE, multisig);
 
         _setupRole(ADMIN_ROLE, multisig);
