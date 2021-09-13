@@ -17,9 +17,9 @@ interface Hevm {
 
 contract MakerBadgesEchidnaTest is MakerBadges {
     /// @dev Senders
-    address internal multisig = address(0x41414141);
-    address internal user = address(0x42424242);
-    address internal attacker = address(0x43434343);
+    address internal constant multisig = address(0x41414141);
+    address internal constant user = address(0x42424242);
+    address internal constant attacker = address(0x43434343);
 
     /// @dev MetaTx
     MinimalForwarder forwarder = new MinimalForwarder();
