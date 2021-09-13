@@ -29,6 +29,9 @@ async function main(): Promise<void> {
     }
   }
 
+  // Export Contracts Storage Layout
+  await hre.storageLayout.export()
+
   // Deploy MinimalForwarder
   const MinimalForwarder: MinimalForwarder__factory = await ethers.getContractFactory("MinimalForwarder")
   const forwarder: Contract = await MinimalForwarder.connect(deployer).deploy()

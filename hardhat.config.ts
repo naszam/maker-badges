@@ -13,6 +13,7 @@ import "@typechain/hardhat"
 import "solidity-coverage"
 import "hardhat-gas-reporter"
 import "dotenv/config"
+import "hardhat-storage-layout"
 
 const chainIds = {
   hardhat: 31337,
@@ -57,6 +58,11 @@ const config: HardhatUserConfig = {
       optimizer: {
         enabled: false,
         runs: 200,
+      },
+      outputSelection: {
+        "*": {
+          "*": ["storageLayout"],
+        },
       },
     },
   },
