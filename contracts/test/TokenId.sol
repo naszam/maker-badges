@@ -3,7 +3,6 @@
 pragma solidity 0.8.0;
 
 contract TokenId {
-
     constructor() {}
 
     // --- Math ---
@@ -14,7 +13,7 @@ contract TokenId {
     // --- Strings ---
     function cmpStr(string memory a, string memory b) internal view returns (bool) {
         return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
-    }       
+    }
 
     // --- Targets ---
     function getTokenId(address redeemer, uint256 templateId) external pure returns (uint256 _tokenId) {
@@ -23,12 +22,13 @@ contract TokenId {
             _tokenId := mload(add(_tokenIdBytes, add(0x20, 0)))
         }
     }
+
     function unpackTokenId(uint256 tokenId) internal pure returns (address redeemer, uint256 templateId) {
         assembly {
             redeemer := shr(96, and(tokenId, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000))
             templateId := and(tokenId, 0x0000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF)
         }
-    } 
+    }
 
     // --- Fuzz ---
     function tokenId(address redeemer, uint256 templateId) public {
