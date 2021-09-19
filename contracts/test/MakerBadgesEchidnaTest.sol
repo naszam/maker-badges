@@ -67,8 +67,10 @@ contract MakerBadgesEchidnaTest is MakerBadges {
         return balanceOf(user) == 1;
     }
 
+    // prettier-ignore
     function transfer_disabled() public returns (bool) {
-        try this.transferFrom(msg.sender, user, 24) {} catch Error(string memory errmsg) {
+        try this.transferFrom(msg.sender, user, 24) {
+        } catch Error(string memory errmsg) {
             return cmpStr(errmsg, "MakerBadges/token-transfer-disabled");
         } catch {
             assert(false); // echidna will fail if other revert cases are caught
