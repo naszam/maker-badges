@@ -14,3 +14,9 @@ corpusDir: "corpus"
 deployer: '0x41414141'
 #sender is set of addresses transactions may originate from
 sender: ['0x42424242', '0x43434343']
+#prefix is the prefix for Boolean functions that are properties to be checked
+prefix: "echidna_"
+# list of methods to filter
+filterFunctions: ['TokenId.getTokenId(address,uint256)']
+# by default, blacklist methods in filterFunctions
+filterBlacklist: true
