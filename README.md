@@ -5,7 +5,7 @@
 [![#testnet sokol](https://img.shields.io/badge/testnet-Sokol-grey?style=plastic&logo=Ethereum)](#development-deployments)
 
 [![Lint](https://github.com/naszam/maker-badges/actions/workflows/lint.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/lint.yml)
-[![Check](https://github.com/naszam/maker-badges/actions/workflows/check.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/check.yml)
+[![Slither](https://github.com/naszam/maker-badges/actions/workflows/slither.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/slither.yml)
 [![Tests](https://github.com/naszam/maker-badges/actions/workflows/tests.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/tests.yml)
 [![Echidna](https://github.com/naszam/maker-badges/actions/workflows/echidna.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/echidna.yml)
 
