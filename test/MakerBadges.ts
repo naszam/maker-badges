@@ -94,7 +94,7 @@ describe("MakerBadges", () => {
       expect(receipt[0]).to.be.eq(template_name)
       expect(receipt[1]).to.be.eq(template_description)
       expect(receipt[2]).to.be.eq(template_image)
-      expect(await makerbadges.getTemplatesCount()).to.be.eq("1")
+      expect(await makerbadges.templateIds()).to.be.eq("1")
     })
     it("should emit the appropriate event when a template is created", async () => {
       await expect(
@@ -125,7 +125,7 @@ describe("MakerBadges", () => {
       expect(receipt[0]).to.be.eq(template_name2)
       expect(receipt[1]).to.be.eq(template_description2)
       expect(receipt[2]).to.be.eq(template_image2)
-      expect(await makerbadges.getTemplatesCount()).to.be.eq("1")
+      expect(await makerbadges.templateIds()).to.be.eq("1")
     })
     it("should emit the appropriate event when a template is updated", async () => {
       await expect(
@@ -207,7 +207,7 @@ describe("MakerBadges", () => {
         const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
         await expect(
           makerbadges.connect(signers.redeemer).transferFrom(signers.redeemer.address, signers.random.address, tokenId),
-        ).to.be.revertedWith("MakerBadges/token-transfer-disable")
+        ).to.be.revertedWith("MakerBadges/token-transfer-disabled")
       })
       it("should revert on transfer with safeTransferFrom", async () => {
         const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
@@ -216,7 +216,7 @@ describe("MakerBadges", () => {
           makerbadges
             .connect(signers.redeemer)
             ["safeTransferFrom(address,address,uint256)"](signers.redeemer.address, signers.random.address, tokenId),
-        ).to.be.revertedWith("MakerBadges/token-transfer-disable")
+        ).to.be.revertedWith("MakerBadges/token-transfer-disabled")
       })
     })
   })
