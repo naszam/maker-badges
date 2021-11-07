@@ -154,7 +154,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Check if the tokenId exists
     /// @param tokenId Token Id of the Badge
     /// @return redeemer Redeemer address associated with the tokenId
-    function getBadgeRedeemer(uint256 tokenId) external view whenNotPaused returns (address redeemer) {
+    function getBadgeRedeemer(uint256 tokenId) external view returns (address redeemer) {
         require(_exists(tokenId), "MakerBadges/invalid-token-id");
         (redeemer, ) = _unpackTokenId(tokenId);
     }
@@ -163,7 +163,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Check if the tokenId exists
     /// @param tokenId Token Id of the Badge
     /// @return templateId Template Id associated with the tokenId
-    function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256 templateId) {
+    function getBadgeTemplate(uint256 tokenId) external view returns (uint256 templateId) {
         require(_exists(tokenId), "MakerBadges/invalid-token-id");
         (, templateId) = _unpackTokenId(tokenId);
     }
@@ -174,7 +174,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @param redeemer Redeemer address
     /// @param templateId Template Id
     /// @return tokenId Token Id associated with the redeemer and templateId
-    function getTokenId(address redeemer, uint256 templateId) external view whenNotPaused returns (uint256 tokenId) {
+    function getTokenId(address redeemer, uint256 templateId) external view returns (uint256 tokenId) {
         require(templateIds > templateId, "MakerBadges/invalid-template-id");
         tokenId = _getTokenId(redeemer, templateId);
         require(_exists(tokenId), "MakerBadges/invalid-token-id");
@@ -184,12 +184,11 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev _transfer() has been overriden
     /// @dev reverts on transferFrom() and safeTransferFrom()
     function _transfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override {
+        address,
+        address,
+        uint256
+    ) internal pure override {
         revert TransferDisabled();
-        super._transfer(from, to, tokenId);
     }
 
     /// @notice Generate tokenId
@@ -233,7 +232,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
 
     /// @notice Getter function for baseTokenURI
     /// @dev Override _baseURI()
-    function _baseURI() internal view virtual override returns (string memory) {
+    function _baseURI() internal view override returns (string memory) {
         return baseTokenURI;
     }
 
@@ -249,11 +248,11 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         return super.supportsInterface(interfaceId);
     }
 
-    function _msgSender() internal view virtual override(Context, BadgeRoles) returns (address sender) {
+    function _msgSender() internal view override(Context, BadgeRoles) returns (address sender) {
         return super._msgSender();
     }
 
-    function _msgData() internal view virtual override(Context, BadgeRoles) returns (bytes calldata) {
+    function _msgData() internal view override(Context, BadgeRoles) returns (bytes calldata) {
         return super._msgData();
     }
 }
