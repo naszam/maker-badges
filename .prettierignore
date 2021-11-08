@@ -4,6 +4,7 @@ artifacts/
 cache/
 coverage/
 typechain/
+typechain-types/
 crytic-export/
 
 # files
