@@ -61,7 +61,7 @@
     "ethereum-waffle": "^3.3.0",
     "ethers": "5.2.0",
     "fs-extra": "^9.1.0",
-    "hardhat": "^2.5.0",
+    "hardhat": "^2.6.8",
     "hardhat-gas-reporter": "^1.0.4",
     "merkletreejs": "0.2.15",
     "mocha": "^8.3.2",
