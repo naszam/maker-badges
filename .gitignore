@@ -10,7 +10,6 @@ coverage/
 coverage.json
 
 #typechain
-typechain/
 typechain-types/
 
 #echidna

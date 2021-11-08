@@ -4,8 +4,8 @@ import { expect } from "chai"
 import { ethers, waffle, web3 } from "hardhat"
 import { MerkleTree } from "merkletreejs"
 
-import { MinimalForwarder, MinimalForwarder__factory } from "../typechain"
-import { MakerBadges, MakerBadges__factory } from "../typechain"
+import { MinimalForwarder, MinimalForwarder__factory } from "../typechain-types"
+import { MakerBadges, MakerBadges__factory } from "../typechain-types"
 
 const { soliditySha3 } = web3.utils
 const { HashZero, AddressZero } = ethers.constants
