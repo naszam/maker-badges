@@ -39,9 +39,6 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     mapping(uint256 => BadgeTemplate) public templates;
     mapping(uint256 => uint256) public templateQuantities;
 
-    /// @dev Custom Errors
-    error TransferDisabled();
-
     /// @dev Events
     event NewTemplate(uint256 indexed templateId, string name, string description, string image);
     event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
@@ -188,7 +185,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         address,
         uint256
     ) internal pure override {
-        revert TransferDisabled();
+        revert("MakerBadges/token-transfer-disabled");
     }
 
     /// @notice Generate tokenId

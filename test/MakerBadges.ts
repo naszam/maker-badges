@@ -207,7 +207,7 @@ describe("MakerBadges", () => {
         const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
         await expect(
           makerbadges.connect(signers.redeemer).transferFrom(signers.redeemer.address, signers.random.address, tokenId),
-        ).to.be.revertedWith("TransferDisabled")
+        ).to.be.revertedWith("MakerBadges/token-transfer-disabled")
       })
       it("should revert on transfer with safeTransferFrom", async () => {
         const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
@@ -216,7 +216,7 @@ describe("MakerBadges", () => {
           makerbadges
             .connect(signers.redeemer)
             ["safeTransferFrom(address,address,uint256)"](signers.redeemer.address, signers.random.address, tokenId),
-        ).to.be.revertedWith("TransferDisabled")
+        ).to.be.revertedWith("MakerBadges/token-transfer-disabled")
       })
     })
   })
