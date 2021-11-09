@@ -3,8 +3,8 @@
 import { expect } from "chai"
 import { ethers, waffle, web3 } from "hardhat"
 
-import { MinimalForwarder, MinimalForwarder__factory } from "../typechain"
-import { BadgeRoles, BadgeRoles__factory } from "../typechain"
+import { MinimalForwarder, MinimalForwarder__factory } from "../typechain-types"
+import { BadgeRoles, BadgeRoles__factory } from "../typechain-types"
 
 const { soliditySha3 } = web3.utils
 const { HashZero, AddressZero } = ethers.constants
