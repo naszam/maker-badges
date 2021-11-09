@@ -1,6 +1,6 @@
 import hre from "hardhat"
 import { Contract } from "@ethersproject/contracts"
-import { MinimalForwarder__factory, MakerBadges__factory } from "../typechain"
+import { MinimalForwarder__factory, MakerBadges__factory } from "../typechain-types"
 import { Signer } from "@ethersproject/abstract-signer"
 import fs from "fs"
 

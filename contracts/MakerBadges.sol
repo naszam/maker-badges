@@ -6,10 +6,9 @@
 
 /// SPDX-License-Identifier: AGPL-3.0-or-later
 
-pragma solidity 0.8.0;
+pragma solidity 0.8.4;
 
 import "./BadgeRoles.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
@@ -23,10 +22,9 @@ import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 /// @dev OpenZeppelin Library is used for secure contract development
 contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Libraries
-    using Counters for Counters.Counter;
     using MerkleProof for bytes32[];
 
-    Counters.Counter private _templateIdTracker;
+    uint256 public templateIds;
 
     string public baseTokenURI;
 
@@ -90,14 +88,13 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     ) external whenNotPaused {
         require(hasRole(TEMPLATER_ROLE, _msgSender()), "MakerBadges/only-templater");
 
-        uint256 templateId = _templateIdTracker.current();
+        uint256 id = templateIds++;
 
-        templates[templateId].name = name;
-        templates[templateId].description = description;
-        templates[templateId].image = image;
+        templates[id].name = name;
+        templates[id].description = description;
+        templates[id].image = image;
 
-        _templateIdTracker.increment();
-        emit NewTemplate(templateId, name, description, image);
+        emit NewTemplate(id, name, description, image);
     }
 
     /// @notice Update a template
@@ -113,18 +110,11 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         string calldata image
     ) external whenNotPaused {
         require(hasRole(TEMPLATER_ROLE, _msgSender()), "MakerBadges/only-templater");
-        require(_templateIdTracker.current() > templateId, "MakerBadges/invalid-template-id");
+        require(templateIds > templateId, "MakerBadges/invalid-template-id");
         templates[templateId].name = name;
         templates[templateId].description = description;
         templates[templateId].image = image;
         emit TemplateUpdated(templateId, name, description, image);
-    }
-
-    /// @notice Getter function for templates count
-    /// @dev Return lenght of template array
-    /// @return count The current number of templates
-    function getTemplatesCount() external view whenNotPaused returns (uint256 count) {
-        return _templateIdTracker.current();
     }
 
     /// @dev Badges
@@ -140,7 +130,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         uint256 templateId,
         string calldata tokenURI
     ) external whenNotPaused returns (bool) {
-        require(_templateIdTracker.current() > templateId, "MakerBadges/invalid-template-id");
+        require(templateIds > templateId, "MakerBadges/invalid-template-id");
         require(
             proof.verify(roots[templateId], keccak256(abi.encodePacked(_msgSender()))),
             "MakerBadges/only-redeemer"
@@ -161,7 +151,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Check if the tokenId exists
     /// @param tokenId Token Id of the Badge
     /// @return redeemer Redeemer address associated with the tokenId
-    function getBadgeRedeemer(uint256 tokenId) external view whenNotPaused returns (address redeemer) {
+    function getBadgeRedeemer(uint256 tokenId) external view returns (address redeemer) {
         require(_exists(tokenId), "MakerBadges/invalid-token-id");
         (redeemer, ) = _unpackTokenId(tokenId);
     }
@@ -170,7 +160,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Check if the tokenId exists
     /// @param tokenId Token Id of the Badge
     /// @return templateId Template Id associated with the tokenId
-    function getBadgeTemplate(uint256 tokenId) external view whenNotPaused returns (uint256 templateId) {
+    function getBadgeTemplate(uint256 tokenId) external view returns (uint256 templateId) {
         require(_exists(tokenId), "MakerBadges/invalid-token-id");
         (, templateId) = _unpackTokenId(tokenId);
     }
@@ -181,8 +171,8 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @param redeemer Redeemer address
     /// @param templateId Template Id
     /// @return tokenId Token Id associated with the redeemer and templateId
-    function getTokenId(address redeemer, uint256 templateId) external view whenNotPaused returns (uint256 tokenId) {
-        require(_templateIdTracker.current() > templateId, "MakerBadges/invalid-template-id");
+    function getTokenId(address redeemer, uint256 templateId) external view returns (uint256 tokenId) {
+        require(templateIds > templateId, "MakerBadges/invalid-template-id");
         tokenId = _getTokenId(redeemer, templateId);
         require(_exists(tokenId), "MakerBadges/invalid-token-id");
     }
@@ -191,12 +181,11 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev _transfer() has been overriden
     /// @dev reverts on transferFrom() and safeTransferFrom()
     function _transfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override {
-        require(false, "MakerBadges/token-transfer-disabled");
-        super._transfer(from, to, tokenId);
+        address,
+        address,
+        uint256
+    ) internal pure override {
+        revert("MakerBadges/token-transfer-disabled");
     }
 
     /// @notice Generate tokenId
@@ -240,7 +229,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
 
     /// @notice Getter function for baseTokenURI
     /// @dev Override _baseURI()
-    function _baseURI() internal view virtual override returns (string memory) {
+    function _baseURI() internal view override returns (string memory) {
         return baseTokenURI;
     }
 
@@ -256,11 +245,11 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         return super.supportsInterface(interfaceId);
     }
 
-    function _msgSender() internal view virtual override(Context, BadgeRoles) returns (address sender) {
+    function _msgSender() internal view override(Context, BadgeRoles) returns (address sender) {
         return super._msgSender();
     }
 
-    function _msgData() internal view virtual override(Context, BadgeRoles) returns (bytes calldata) {
+    function _msgData() internal view override(Context, BadgeRoles) returns (bytes calldata) {
         return super._msgData();
     }
 }
