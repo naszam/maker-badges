@@ -55,7 +55,6 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     error InvalidTokenId();
     error TransferDisabled();
 
-
     constructor(MinimalForwarder forwarder, address multisig)
         ERC721("MakerBadges", "MAKER")
         BadgeRoles(forwarder, multisig)
