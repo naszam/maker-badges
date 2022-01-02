@@ -21,6 +21,11 @@ contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     bytes32 public constant TEMPLATER_ROLE = keccak256("TEMPLATER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
+    /// @dev Errors
+    error OnlyDefAdmin();
+    error ZeroAddress();
+    error OnlyPauser();
+
     constructor(MinimalForwarder forwarder, address multisig) ERC2771Context(address(forwarder)) {
         require(multisig != address(0), "MakerBadges/invalid-multisig-address");
 
@@ -38,8 +43,8 @@ contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     /// @param account Address of the new Admin
     /// @return True if account is added as Admin
     function addAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges/only-def-admin");
-        require(account != address(0), "MakerBadges/invalid-account-address");
+        if (!hasRole(DEFAULT_ADMIN_ROLE, _msgSender())) revert OnlyDefAdmin();
+        if (account == address(0)) revert ZeroAddress();
         grantRole(ADMIN_ROLE, account);
         return true;
     }
@@ -49,7 +54,7 @@ contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     /// @param account Address of the Admin
     /// @return True if account is removed as Admin
     function removeAdmin(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges/only-def-admin");
+        if (!hasRole(DEFAULT_ADMIN_ROLE, _msgSender())) revert OnlyDefAdmin();
         revokeRole(ADMIN_ROLE, account);
         return true;
     }
@@ -59,8 +64,8 @@ contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     /// @param account Address of the new Templater
     /// @return True if account is added as Templater
     function addTemplater(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges/only-def-admin");
-        require(account != address(0), "MakerBadges/invalid-account-address");
+        if (!hasRole(DEFAULT_ADMIN_ROLE, _msgSender())) revert OnlyDefAdmin();
+        if (account == address(0)) revert ZeroAddress();
         grantRole(TEMPLATER_ROLE, account);
         return true;
     }
@@ -70,7 +75,7 @@ contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     /// @param account Address of the Templater
     /// @return True if account is removed as Templater
     function removeTemplater(address account) external returns (bool) {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges/only-def-admin");
+        if (!hasRole(DEFAULT_ADMIN_ROLE, _msgSender())) revert OnlyDefAdmin();
         revokeRole(TEMPLATER_ROLE, account);
         return true;
     }
@@ -78,14 +83,14 @@ contract BadgeRoles is AccessControlEnumerable, Pausable, ERC2771Context {
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges/only-pauser");
+        if (!hasRole(PAUSER_ROLE, _msgSender())) revert OnlyPauser();
         _pause();
     }
 
     /// @notice Unpause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function unpause() external {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "MakerBadges/only-pauser");
+        if (!hasRole(PAUSER_ROLE, _msgSender())) revert OnlyPauser();
         _unpause();
     }
 

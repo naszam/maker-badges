@@ -44,6 +44,18 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     event TemplateUpdated(uint256 indexed templateId, string name, string description, string image);
     event BadgeActivated(uint256 indexed tokenId, uint256 indexed templateId);
 
+    /// @dev Errors
+    error OverflowUint96();
+    error OnlyDefAmin();
+    error OnlyAdmin();
+    error OnlyTemplater();
+    error InvalidTemplateId();
+    error OnlyRedeemer();
+    error AlreadyClaimed();
+    error InvalidTokenId();
+    error TransferDisabled();
+
+
     constructor(MinimalForwarder forwarder, address multisig)
         ERC721("MakerBadges", "MAKER")
         BadgeRoles(forwarder, multisig)
@@ -55,14 +67,15 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Revert on overflow
     /// @param x Value to cast
     function toUint96(uint256 x) internal pure returns (uint96 z) {
-        require((z = uint96(x)) == x, "MakerBadges/uint96-overflow");
+        z = uint96(x);
+        if (z != x) revert OverflowUint96();
     }
 
     /// @notice Set the baseURI
     /// @dev Update the baseURI specified in the constructor
     /// @param baseURI New baseURI
     function setBaseURI(string calldata baseURI) external {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "MakerBadges/only-def-admin");
+        if (!hasRole(DEFAULT_ADMIN_ROLE, _msgSender())) revert OnlyDefAdmin();
         baseTokenURI = baseURI;
     }
 
@@ -70,7 +83,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Called by admin to update roots for different address batches by templateId
     /// @param _roots Root hashes of the Merkle Trees by templateId
     function setRootHashes(bytes32[] calldata _roots) external whenNotPaused {
-        require(hasRole(ADMIN_ROLE, _msgSender()), "MakerBadges/only-admin");
+        if (!hasRole(ADMIN_ROLE, _msgSender())) revert OnlyAdmin();
         roots = _roots;
     }
 
@@ -86,7 +99,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         string calldata description,
         string calldata image
     ) external whenNotPaused {
-        require(hasRole(TEMPLATER_ROLE, _msgSender()), "MakerBadges/only-templater");
+        if (!hasRole(TEMPLATER_ROLE, _msgSender())) revert OnlyTemplater();
 
         uint256 id = templateIds++;
 
@@ -109,8 +122,8 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         string calldata description,
         string calldata image
     ) external whenNotPaused {
-        require(hasRole(TEMPLATER_ROLE, _msgSender()), "MakerBadges/only-templater");
-        require(templateIds > templateId, "MakerBadges/invalid-template-id");
+        if (!hasRole(TEMPLATER_ROLE, _msgSender())) revert OnlyTemplater();
+        if (templateIds <= templateId) revert InvalidTemplateId();
         templates[templateId].name = name;
         templates[templateId].description = description;
         templates[templateId].image = image;
@@ -130,18 +143,15 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         uint256 templateId,
         string calldata tokenURI
     ) external whenNotPaused returns (bool) {
-        require(templateIds > templateId, "MakerBadges/invalid-template-id");
-        require(
-            proof.verify(roots[templateId], keccak256(abi.encodePacked(_msgSender()))),
-            "MakerBadges/only-redeemer"
-        );
+        if (templateIds <= templateId) revert InvalidTemplateId();
+        if (!proof.verify(roots[templateId], keccak256(abi.encodePacked(_msgSender())))) revert OnlyRedeemer();
 
         uint256 _tokenId = _getTokenId(_msgSender(), templateId);
 
         /// @dev Increase the quantities
         templateQuantities[templateId] += 1;
 
-        require(_mintWithTokenURI(_msgSender(), _tokenId, tokenURI), "MakerBadges/badge-not-minted");
+        if (!_mintWithTokenURI(_msgSender(), _tokenId, tokenURI)) revert AlreadyClaimed();
 
         emit BadgeActivated(_tokenId, templateId);
         return true;
@@ -152,7 +162,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @param tokenId Token Id of the Badge
     /// @return redeemer Redeemer address associated with the tokenId
     function getBadgeRedeemer(uint256 tokenId) external view returns (address redeemer) {
-        require(_exists(tokenId), "MakerBadges/invalid-token-id");
+        if (!_exists(tokenId)) revert InvalidTokenId();
         (redeemer, ) = _unpackTokenId(tokenId);
     }
 
@@ -161,7 +171,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @param tokenId Token Id of the Badge
     /// @return templateId Template Id associated with the tokenId
     function getBadgeTemplate(uint256 tokenId) external view returns (uint256 templateId) {
-        require(_exists(tokenId), "MakerBadges/invalid-token-id");
+        if (!_exists(tokenId)) revert InvalidTokenId();
         (, templateId) = _unpackTokenId(tokenId);
     }
 
@@ -172,9 +182,9 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @param templateId Template Id
     /// @return tokenId Token Id associated with the redeemer and templateId
     function getTokenId(address redeemer, uint256 templateId) external view returns (uint256 tokenId) {
-        require(templateIds > templateId, "MakerBadges/invalid-template-id");
+        if (templateIds <= templateId) revert InvalidTemplateId();
         tokenId = _getTokenId(redeemer, templateId);
-        require(_exists(tokenId), "MakerBadges/invalid-token-id");
+        if (!_exists(tokenId)) revert InvalidTokenId();
     }
 
     /// @notice ERC721 _transfer() Disabled
@@ -185,7 +195,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         address,
         uint256
     ) internal pure override {
-        revert("MakerBadges/token-transfer-disabled");
+        revert TransferDisabled();
     }
 
     /// @notice Generate tokenId
