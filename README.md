@@ -1,8 +1,9 @@
-[![#ubuntu 20.04](https://img.shields.io/badge/ubuntu-v20.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
-[![#node 12](https://img.shields.io/badge/node-v12-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
+[![#ubuntu 20.04.3](https://img.shields.io/badge/ubuntu-v20.04.3-orange?style=plastic)](https://wiki.ubuntu.com/Releases)
+[![#node 16.13.1](https://img.shields.io/badge/node-v16.13.1-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![built-with openzeppelin](https://img.shields.io/badge/built%20with-OpenZeppelin-3677FF?style=plastic)](https://docs.openzeppelin.com/)
-[![#solc 0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
+[![#solc 0.8.4](https://img.shields.io/badge/solc-v0.8.4-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.8.4)
 [![#testnet sokol](https://img.shields.io/badge/testnet-Sokol-grey?style=plastic&logo=Ethereum)](#development-deployments)
+[![#license AGPLv3](https://img.shields.io/badge/license-AGPLv3-purple?style=plastic)](https://www.gnu.org/licenses/agpl-3.0)
 
 [![Lint](https://github.com/naszam/maker-badges/actions/workflows/lint.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/lint.yml)
 [![Check](https://github.com/naszam/maker-badges/actions/workflows/check.yml/badge.svg)](https://github.com/naszam/maker-badges/actions/workflows/check.yml)
