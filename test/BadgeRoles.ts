@@ -74,9 +74,7 @@ describe("BadgeRoles", () => {
       )
     })
     it("should revert when account is set to zero address", async () => {
-      await expect(badgeroles.connect(signers.multisig).addAdmin(AddressZero)).to.be.revertedWith(
-        "ZeroAddress",
-      )
+      await expect(badgeroles.connect(signers.multisig).addAdmin(AddressZero)).to.be.revertedWith("ZeroAddress")
     })
   })
 
@@ -123,9 +121,7 @@ describe("BadgeRoles", () => {
       )
     })
     it("should revert when account is set to zero address", async () => {
-      await expect(badgeroles.connect(signers.multisig).addTemplater(AddressZero)).to.be.revertedWith(
-        "ZeroAddress",
-      )
+      await expect(badgeroles.connect(signers.multisig).addTemplater(AddressZero)).to.be.revertedWith("ZeroAddress")
     })
   })
 
