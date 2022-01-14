@@ -1,7 +1,7 @@
 [![#ubuntu 20.04.3](https://img.shields.io/badge/ubuntu-v20.04.3-orange?style=plastic)](https://wiki.ubuntu.com/Releases)
 [![#node 16.13.1](https://img.shields.io/badge/node-v16.13.1-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![built-with openzeppelin](https://img.shields.io/badge/built%20with-OpenZeppelin-3677FF?style=plastic)](https://docs.openzeppelin.com/)
-[![#solc 0.8.4](https://img.shields.io/badge/solc-v0.8.4-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.8.4)
+[![#solc 0.8.9](https://img.shields.io/badge/solc-v0.8.9-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.8.9)
 [![#testnet sokol](https://img.shields.io/badge/testnet-Sokol-grey?style=plastic&logo=Ethereum)](#development-deployments)
 [![#license AGPLv3](https://img.shields.io/badge/license-AGPLv3-purple?style=plastic)](https://www.gnu.org/licenses/agpl-3.0)
 
