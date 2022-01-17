@@ -9,6 +9,7 @@
     "const-name-snakecase": "off",
     "func-name-mixedcase": "off",
     "state-visibility": "off",
+    "no-empty-blocks": "off",
     "func-visibility": ["error", { "ignoreConstructors": true }]
   }
 }
