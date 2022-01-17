@@ -6,8 +6,6 @@ checkAsserts: true
 seqLen: 200
 #testLimit is the number of test sequences to run
 testLimit: 1000000
-#estimateGas makes echidna perform analysis of maximum gas costs for functions (experimental)
-estimateGas: true
 #directory to save the corpus; by default is disabled
 corpusDir: "corpus"
 #deployer is address of the contract deployer (who often is privileged owner, etc.)

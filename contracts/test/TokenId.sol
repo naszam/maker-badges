@@ -32,8 +32,8 @@ contract TokenId {
 
     // --- Fuzz ---
     function badge(address redeemer, uint256 templateId) public view {
-        try this.getTokenId(redeemer, templateId) returns (uint256 tokenId) {
-            (address redeemer2, uint256 templateId2) = unpackTokenId(tokenId);
+        try this.getTokenId(redeemer, templateId) returns (uint256 id) {
+            (address redeemer2, uint256 templateId2) = unpackTokenId(id);
             assert(redeemer == redeemer2);
             assert(templateId == templateId2);
         } catch Error(string memory errmsg) {
