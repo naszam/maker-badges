@@ -39,5 +39,5 @@ jobs:
           check-asserts: true
           test-limit: 50000
           seq-len: 100
-          solc-version: 0.8.4
+          solc-version: 0.8.9
           crytic-args: --hardhat-ignore-compile
