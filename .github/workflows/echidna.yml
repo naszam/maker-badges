@@ -1,6 +1,6 @@
 name: Echidna
 
-on: [push]
+on: push
 
 jobs:
   echidna:
