@@ -6,7 +6,15 @@ checkAsserts: true
 seqLen: 200
 #testLimit is the number of test sequences to run
 testLimit: 1000000
-#estimateGas makes echidna perform analysis of maximum gas costs for functions (experimental)
-estimateGas: true
 #directory to save the corpus; by default is disabled
 corpusDir: "corpus"
+#deployer is address of the contract deployer (who often is privileged owner, etc.)
+deployer: '0x41414141'
+#sender is set of addresses transactions may originate from
+sender: ['0x42424242', '0x43434343']
+#prefix is the prefix for Boolean functions that are properties to be checked
+prefix: "echidna_"
+# list of methods to filter
+filterFunctions: ['TokenId.getTokenId(address,uint256)']
+# by default, blacklist methods in filterFunctions
+filterBlacklist: true
