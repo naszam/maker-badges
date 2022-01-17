@@ -26,7 +26,6 @@ describe("MakerBadges", () => {
 
   const DEFAULT_ADMIN_ROLE = HashZero!
   const TEMPLATER_ROLE = soliditySha3("TEMPLATER_ROLE")!
-  const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")!
 
   const baseURI2 = "https://badges.com/token/"
   const tokenURI = "bafkreiezytlcoswltsjjjwvf4xy22puwy67up7pwcr5buzqoizgmpkbxjm"
@@ -55,10 +54,6 @@ describe("MakerBadges", () => {
     it("multisig has the templater role", async () => {
       expect(await makerbadges.getRoleMemberCount(TEMPLATER_ROLE)).to.be.eq("1")
       expect(await makerbadges.getRoleMember(TEMPLATER_ROLE, 0)).to.be.eq(signers.multisig.address)
-    })
-    it("multisig has the pauser role", async () => {
-      expect(await makerbadges.getRoleMemberCount(PAUSER_ROLE)).to.be.eq("1")
-      expect(await makerbadges.getRoleMember(PAUSER_ROLE, 0)).to.be.eq(signers.multisig.address)
     })
   })
 

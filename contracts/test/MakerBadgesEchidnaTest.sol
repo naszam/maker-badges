@@ -25,8 +25,4 @@ contract MakerBadgesEchidnaTest is MakerBadges {
     function echidna_templater_constant() public view returns (bool) {
         return hasRole(TEMPLATER_ROLE, multisig);
     }
-
-    function echidna_pauser_constant() public view returns (bool) {
-        return hasRole(PAUSER_ROLE, multisig);
-    }
 }

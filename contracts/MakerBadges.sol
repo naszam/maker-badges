@@ -81,7 +81,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @notice Set Merkle Tree Root Hashes array
     /// @dev Called by admin to update roots for different address batches by templateId
     /// @param _roots Root hashes of the Merkle Trees by templateId
-    function setRootHashes(bytes32[] calldata _roots) external whenNotPaused {
+    function setRootHashes(bytes32[] calldata _roots) external {
         if (!hasRole(ADMIN_ROLE, _msgSender())) revert OnlyAdmin();
         roots = _roots;
     }
@@ -97,7 +97,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         string calldata name,
         string calldata description,
         string calldata image
-    ) external whenNotPaused {
+    ) external {
         if (!hasRole(TEMPLATER_ROLE, _msgSender())) revert OnlyTemplater();
 
         uint256 id = templateIds++;
@@ -120,7 +120,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         string calldata name,
         string calldata description,
         string calldata image
-    ) external whenNotPaused {
+    ) external {
         if (!hasRole(TEMPLATER_ROLE, _msgSender())) revert OnlyTemplater();
         if (templateIds <= templateId) revert InvalidTemplateId();
         templates[templateId].name = name;
@@ -141,7 +141,7 @@ contract MakerBadges is BadgeRoles, ERC721URIStorage {
         bytes32[] calldata proof,
         uint256 templateId,
         string calldata tokenURI
-    ) external whenNotPaused returns (bool) {
+    ) external returns (bool) {
         if (templateIds <= templateId) revert InvalidTemplateId();
         if (!proof.verify(roots[templateId], keccak256(abi.encodePacked(_msgSender())))) revert OnlyRedeemer();
 
