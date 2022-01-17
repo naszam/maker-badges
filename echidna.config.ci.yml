@@ -10,4 +10,3 @@ prefix: "echidna_"
 filterFunctions: ['TokenId.getTokenId(address,uint256)']
 # by default, blacklist methods in filterFunctions
 filterBlacklist: true
-
