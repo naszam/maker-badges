@@ -22,6 +22,7 @@
     "test": "hardhat test",
     "fuzz:badge": "echidna-test . --contract MakerBadgesEchidnaTest --config echidna.config.yml",
     "fuzz:token": "echidna-test . --contract TokenId --config echidna.config.yml",
+    "slither:triage": "slither . --triage-mode",
     "gas": "cross-env REPORT_GAS=true hardhat test",
     "dev": "hardhat node",
     "deploy:local": "yarn hardhat run scripts/deploy.ts --network localhost",
