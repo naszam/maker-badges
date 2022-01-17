@@ -29,23 +29,15 @@ jobs:
       - name: Compile
         run: yarn build
 
-      - name:
+      - name: Fuzz ${{ matrix.testName}}
         uses: crytic/echidna-action@v1
         with:
-          solc-version: 0.7.6
           files: .
-          contract: TokenEchidna
+          contract: ${{ matrix.testName }}
+          config: echidna.config.ci.yml
+          format: text
+          check-asserts: true
+          test-limit: 50000
+          seq-len: 100
+          solc-version: 0.8.4
           crytic-args: --hardhat-ignore-compile
-
-        - name: Fuzz ${{ matrix.testName}}
-          uses: crytic/echidna-action@v1
-          with:
-            files: .
-            contract: ${{ matrix.testName }}
-            config: echidna.config.ci.yml
-            format: text
-            check-asserts: true
-            test-limit: 50000
-            seq-len: 100
-            solc-version: 0.8.4
-            crytic-args: --hardhat-ignore-compile
