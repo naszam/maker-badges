@@ -9,11 +9,7 @@ import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29, 38
 /// @author Nazzareno Massari @naszam
 /// @notice BadgeRoles Access Management for Default Admin and Templater Roles
-/// @dev See https://github.com/makerdao/community/issues/537
-/// @dev See https://github.com/makerdao/community/issues/721
-/// @dev See https://github.com/makerdao/community/issues/1180
-/// @dev All function calls are currently implemented without side effects through TDD approach
-/// @dev OpenZeppelin Library is used for secure contract development
+
 contract BadgeRoles is AccessControlEnumerable, ERC2771Context {
     /// @dev Roles
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");

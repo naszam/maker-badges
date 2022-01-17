@@ -15,11 +15,7 @@ import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 /// @title Non-transferable Badges for Maker Ecosystem Activity, CDIP 18, 29, 38
 /// @author Nazzareno Massari @naszam
 /// @notice MakerBadges to manage Templates and activate Non-transferable MakerBadges by redeemers
-/// @dev See https://github.com/makerdao/community/issues/537
-/// @dev See https://github.com/makerdao/community/issues/721
-/// @dev See https://github.com/makerdao/community/issues/1180
-/// @dev All function calls are currently implemented without side effects through TDD approach
-/// @dev OpenZeppelin Library is used for secure contract development
+
 contract MakerBadges is BadgeRoles, ERC721URIStorage {
     /// @dev Libraries
     using MerkleProof for bytes32[];
