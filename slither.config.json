@@ -1,0 +1,8 @@
+{
+  "detectors_to_exclude": "unused-return,shadowing-local,variable-scope,external-function",
+  "exclude_informational": true,
+  "exclude_low": false,
+  "exclude_medium": false,
+  "exclude_high": false,
+  "disable_color": false
+}
