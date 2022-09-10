@@ -1,20 +1,7 @@
-# node
-node_modules/
-
-# hardhat
-artifacts/
+# foundry
 cache/
-
-# coverage
-coverage/
-coverage.json
-
-#typechain
-typechain-types/
+out/
 
 #echidna
 crytic-export/
 corpus/
-
-#env
-.env

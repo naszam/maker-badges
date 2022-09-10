@@ -1,27 +1,20 @@
 name: Tests
 
-on: push
+on: [push, pull_request]
 
 jobs:
-  unit-tests:
-    name: Unit Tests
+  tests:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Node
-        uses: actions/setup-node@v2
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v3
         with:
-          node-version: 12
-          cache: 'yarn'
+          submodules: recursive
 
-      - name: Install dependencies
-        run: yarn --no-progress --non-interactive --frozen-lockfile
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
 
-      # This is required separately from yarn test because it generates the typechain definitions
-      - name: Compile
-        run: yarn build
-
-      - name: Run Unit Tests
-        run: yarn test
+      - name: Run tests
+        run: make test-forge
