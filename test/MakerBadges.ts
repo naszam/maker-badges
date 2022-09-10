@@ -26,7 +26,6 @@ describe("MakerBadges", () => {
 
   const DEFAULT_ADMIN_ROLE = HashZero!
   const TEMPLATER_ROLE = soliditySha3("TEMPLATER_ROLE")!
-  const PAUSER_ROLE = soliditySha3("PAUSER_ROLE")!
 
   const baseURI2 = "https://badges.com/token/"
   const tokenURI = "bafkreiezytlcoswltsjjjwvf4xy22puwy67up7pwcr5buzqoizgmpkbxjm"
@@ -55,10 +54,6 @@ describe("MakerBadges", () => {
     it("multisig has the templater role", async () => {
       expect(await makerbadges.getRoleMemberCount(TEMPLATER_ROLE)).to.be.eq("1")
       expect(await makerbadges.getRoleMember(TEMPLATER_ROLE, 0)).to.be.eq(signers.multisig.address)
-    })
-    it("multisig has the pauser role", async () => {
-      expect(await makerbadges.getRoleMemberCount(PAUSER_ROLE)).to.be.eq("1")
-      expect(await makerbadges.getRoleMember(PAUSER_ROLE, 0)).to.be.eq(signers.multisig.address)
     })
   })
 
@@ -106,7 +101,7 @@ describe("MakerBadges", () => {
     it("should not allow create a new template from random user", async () => {
       await expect(
         makerbadges.connect(signers.random).createTemplate(template_name, template_description, template_image),
-      ).to.be.revertedWith("MakerBadges/only-templater")
+      ).to.be.revertedWith("OnlyTemplater")
     })
   })
 
@@ -141,7 +136,7 @@ describe("MakerBadges", () => {
         makerbadges
           .connect(signers.random)
           .updateTemplate(templateId, template_name2, template_description2, template_image2),
-      ).to.be.revertedWith("MakerBadges/only-templater")
+      ).to.be.revertedWith("OnlyTemplater")
     })
   })
 
@@ -182,12 +177,12 @@ describe("MakerBadges", () => {
     it("should revert when templeteId does not exist", async () => {
       await expect(
         makerbadges.connect(signers.redeemer).activateBadge(tree.proof, templateId + "1", tokenURI),
-      ).to.be.revertedWith("MakerBadges/invalid-template-id")
+      ).to.be.revertedWith("InvalidTemplateId")
     })
     it("should not allow to activate a new badge form random user", async () => {
       await expect(
         makerbadges.connect(signers.random).activateBadge(tree.proof, templateId, tokenURI),
-      ).to.be.revertedWith("MakerBadges/only-redeemer")
+      ).to.be.revertedWith("OnlyRedeemer")
     })
     it("redeemer should not be able to activate the same badge twice", async () => {
       await expect(
@@ -207,7 +202,7 @@ describe("MakerBadges", () => {
         const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
         await expect(
           makerbadges.connect(signers.redeemer).transferFrom(signers.redeemer.address, signers.random.address, tokenId),
-        ).to.be.revertedWith("MakerBadges/token-transfer-disabled")
+        ).to.be.revertedWith("TransferDisabled")
       })
       it("should revert on transfer with safeTransferFrom", async () => {
         const tokenId = await makerbadges.getTokenId(signers.redeemer.address, templateId)
@@ -216,7 +211,7 @@ describe("MakerBadges", () => {
           makerbadges
             .connect(signers.redeemer)
             ["safeTransferFrom(address,address,uint256)"](signers.redeemer.address, signers.random.address, tokenId),
-        ).to.be.revertedWith("MakerBadges/token-transfer-disabled")
+        ).to.be.revertedWith("TransferDisabled")
       })
     })
   })

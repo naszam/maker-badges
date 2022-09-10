@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-pragma solidity 0.8.4;
+pragma solidity 0.8.9;
 
 import "../MakerBadges.sol";
 
@@ -24,9 +24,5 @@ contract MakerBadgesEchidnaTest is MakerBadges {
 
     function echidna_templater_constant() public view returns (bool) {
         return hasRole(TEMPLATER_ROLE, multisig);
-    }
-
-    function echidna_pauser_constant() public view returns (bool) {
-        return hasRole(PAUSER_ROLE, multisig);
     }
 }

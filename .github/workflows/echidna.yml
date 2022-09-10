@@ -39,6 +39,6 @@ jobs:
           test-mode: assertion
           test-limit: 50000
           seq-len: 100
-          solc-version: 0.8.4
+          solc-version: 0.8.9
           echidna-version: v2.0.0
           crytic-args: --hardhat-ignore-compile
