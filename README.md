@@ -14,6 +14,9 @@
 
 <img src="Badges.png" width="30%">
 
+# ⚠️ DEPRECATED
+This repository is no longer maintained.
+
 # Maker Badges
 
 > Non-transferable Badges for Maker Ecosystem Activity
